@@ -1,3 +1,5 @@
+import fs from "node:fs/promises";
+
 import satori, { type Font } from "satori";
 
 import { renderAsync, type ResvgRenderOptions } from "@resvg/resvg-js";
@@ -8,7 +10,21 @@ const svg = (() => {
   const fonts = (() => {
     let fonts: Font[];
 
-    return async () => (fonts ??= await (import.meta.env.DEV ? await import("./core/font-dev") : await import("./core/font-prod")).load());
+    const file = async (source: string, name: string, style?: Font["style"], weight?: Font["weight"]) => ({
+      data: await fs.readFile(source),
+      name,
+      style,
+      weight,
+    });
+
+    const load = async () =>
+      await Promise.all(
+        ([300, 400, 500, 600, 700] as const).map((weight) =>
+          file("./public/fonts/source-code-pro-${weight}.woff", "source-code-pro", "normal", weight)
+        )
+      );
+
+    return async () => (fonts ??= await load());
   })();
 
   return async (node: Node.Root) => {
