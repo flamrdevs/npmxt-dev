@@ -1,0 +1,37 @@
+.xt-switch {
+  &-control {
+    @apply inline-flex items-center w-[2.75rem] h-[1.5rem] bg-neutral-1 border border-neutral-6 rounded-full outline-none cursor-pointer;
+    padding: 0.125rem;
+    transition: 200ms background-color;
+
+    &[data-checked] {
+      @apply bg-primary-9 border-primary-10;
+    }
+
+    &[data-disabled] {
+      @apply opacity-90 pointer-events-none bg-neutral-5 border-neutral-6;
+    }
+  }
+
+  &-input:focus-visible + &-control {
+    @apply outline-1 outline-neutral-9;
+
+    &[data-checked] {
+      @apply outline-primary-9;
+    }
+  }
+
+  &-thumb {
+    @apply size-[1.125rem] bg-neutral-9 rounded-full;
+    transition: 200ms background-color, 200ms transform;
+
+    &[data-checked] {
+      @apply bg-white;
+      transform: translateX(1.25rem);
+    }
+
+    &[data-disabled] {
+      @apply bg-neutral-8;
+    }
+  }
+}
