@@ -14,6 +14,14 @@ export default defineConfig({
       close: async () => {
         const cwd = process.cwd();
 
+        await fs.writeFile(
+          ".netlify/functions-internal/netlify.toml",
+          `
+[functions]
+  included_files = ["server/**"]
+`
+        );
+
         await Promise.all(
           [300, 400, 500, 600, 700].map((weight) => {
             const woff = `source-code-pro-${weight}.woff`;
