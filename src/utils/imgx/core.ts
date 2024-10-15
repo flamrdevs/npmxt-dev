@@ -20,7 +20,12 @@ const svg = (() => {
     const load = async () =>
       await Promise.all(
         ([300, 400, 500, 600, 700] as const).map((weight) =>
-          file(`.${import.meta.env.DEV ? "/public" : ""}/fonts/source-code-pro-${weight}.woff`, "source-code-pro", "normal", weight)
+          file(
+            `${import.meta.env.DEV ? "." : "./node_modules"}/public/fonts/source-code-pro-${weight}.woff`,
+            "source-code-pro",
+            "normal",
+            weight
+          )
         )
       );
 
