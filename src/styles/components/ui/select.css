@@ -1,0 +1,99 @@
+.xt-select {
+  &[data-disabled] {
+    @apply select-none;
+  }
+
+  &-trigger {
+    @apply appearance-none inline-flex items-center justify-between border rounded-[0.625rem] outline-none focus:outline-1 select-none cursor-pointer;
+    @apply bg-neutral-1 border-neutral-6 hover:border-neutral-7 focus:outline-primary-9;
+    @apply min-w-[16rem] h-10 px-3 py-2 font-medium text-base;
+
+    &[data-invalid] {
+      @apply border-error-6 hover:border-error-7 focus:outline-error-9;
+    }
+
+    &[data-disabled] {
+      @apply opacity-90 pointer-events-none bg-neutral-5 border-neutral-6;
+    }
+  }
+
+  &-value {
+    @apply text-neutral-11 text-ellipsis whitespace-nowrap overflow-hidden;
+
+    &[data-placeholder-shown] {
+      @apply text-neutral-10;
+    }
+
+    &[data-disabled] {
+      @apply text-neutral-8;
+    }
+  }
+
+  &-icon {
+    @apply size-4 text-neutral-10;
+
+    > svg {
+      @apply size-full;
+    }
+  }
+
+  &-content {
+    transform-origin: var(--kb-select-content-transform-origin);
+    animation: xt-select-content-hide 100ms ease-in forwards;
+    @apply relative z-50 bg-neutral-1/80 border border-neutral-3 rounded-[0.625rem] outline-none shadow backdrop-blur-md;
+
+    @keyframes xt-select-content-hide {
+      from {
+        opacity: 1;
+        transform: scale(1);
+      }
+      to {
+        opacity: 0;
+        transform: scale(0.96);
+      }
+    }
+
+    &[data-expanded] {
+      animation: xt-select-content-show 80ms ease-out;
+
+      @keyframes xt-select-content-show {
+        from {
+          opacity: 0;
+          transform: scale(0.96);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+    }
+  }
+
+  &-listbox {
+    @apply outline-none max-h-[24rem] p-1.5 overflow-y-auto;
+  }
+
+  &-item {
+    @apply relative flex items-center justify-between h-9 px-2 py-1 bg-transparent text-neutral-11 font-normal text-base rounded-[0.375rem] outline-none select-none;
+
+    &[data-selected] {
+      @apply text-neutral-12;
+    }
+
+    &[data-highlighted] {
+      @apply bg-primary-9 text-white;
+    }
+
+    &-label {
+      @apply text-inherit text-ellipsis whitespace-nowrap overflow-hidden;
+    }
+
+    &-indicator {
+      @apply size-3.5 text-inherit;
+
+      > svg {
+        @apply size-full;
+      }
+    }
+  }
+}
