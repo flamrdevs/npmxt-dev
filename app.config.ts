@@ -21,7 +21,10 @@ export default defineConfig({
         await Promise.all(
           [300, 400, 500, 600, 700].map((weight) => {
             const woff = `source-code-pro-${weight}.woff`;
-            return cp(path.resolve(cwd, `public/fonts/${woff}`), path.resolve(cwd, `.netlify/functions-internal/server/fonts/${woff}`));
+            return cp(
+              path.resolve(cwd, `public/fonts/${woff}`),
+              path.resolve(cwd, `.netlify/functions-internal/server/chunks/fonts/${woff}`)
+            );
           })
         );
       },
