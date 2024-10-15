@@ -1,7 +1,17 @@
 import fs from "node:fs/promises";
 
 export async function GET() {
-  return (await fs.readdir("./", { withFileTypes: true, recursive: true }))
-    .filter((d) => !d.name.startsWith("node_modules"))
-    .filter((d) => d.isFile());
+  const dirents = await fs.readdir("./", { withFileTypes: true, recursive: true });
+  const result: string[] = [];
+
+  for (const dirent of dirents) {
+    const name = dirent.name;
+    if (name.startsWith("node_modules/public")) {
+      result.push(name);
+    } else if (!name.startsWith("node_modules")) {
+      result.push(name);
+    }
+  }
+
+  return result;
 }
