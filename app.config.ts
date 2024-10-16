@@ -6,6 +6,7 @@ export default defineConfig({
     prerender: {
       routes: ["/", "/about", "/ui"],
     },
+    minify: true,
     sourceMap: false,
   },
 });
