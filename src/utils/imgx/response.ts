@@ -1,5 +1,4 @@
 import type { Node } from "./types";
-import * as core from "./core";
 
 type Options = { maxAge?: number };
 
@@ -10,12 +9,10 @@ const init = (contentType: string, options?: Options) => ({
   },
 });
 
-const svg = async (node: Node.Root, options?: Options) => {
-  return new Response(await core.svg(node), init("image/svg+xml", options));
+export const svg = async (node: Node.Root, options?: Options) => {
+  return new Response(await (await import("./core/svg")).svg(node), init("image/svg+xml", options));
 };
 
-const png = async (node: Node.Root, options?: Options) => {
-  return new Response(await core.png(node), init("image/png", options));
+export const png = async (node: Node.Root, options?: Options) => {
+  return new Response(await (await import("./core/png")).png(node), init("image/png", options));
 };
-
-export { svg, png };
