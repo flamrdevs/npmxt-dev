@@ -1,7 +1,5 @@
 import { Show } from "solid-js";
 
-import * as env from "~/env";
-
 import { Meta } from "~/components";
 
 import { usePackageNameParams } from "~/utils/npm/primitives";
@@ -21,11 +19,12 @@ const InvalidPackageName = (props: { raw?: string }) => {
 const validPackageName = (name: Solid.Accessor<string>) => {
   const title = () => `${name()} - download`;
   const description = () => `${name()} - download`;
+  const og = () => `d/${name()}`;
 
   return (
     <>
       <Meta.Base title={title()} description={description()} />
-      <Meta.OG url={`${env.HOST}/og/d/${name()}`} title={title()} description={description()} />
+      <Meta.OG url={og()} title={title()} description={description()} image={og()} />
 
       <div class="flex items-center justify-center w-dvw h-dvh bg-neutral-1 font-bold text-4xl text-neutral-12">
         <h1>Download[{name()}]Page</h1>

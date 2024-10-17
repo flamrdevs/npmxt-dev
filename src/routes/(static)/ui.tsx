@@ -6,8 +6,6 @@ import { useColorMode } from "@kobalte/core/color-mode";
 
 import { PaletteIcon, RocketIcon, Settings2Icon } from "lucide-solid";
 
-import * as env from "~/env";
-
 import { Meta } from "~/components";
 import { Popover, Button, IconButton, TextField, Select, Checkbox, Switch, Separator, defaultProps } from "~/components/ui";
 
@@ -322,7 +320,7 @@ export default function UIPage() {
   return (
     <>
       <Meta.Base title="UI" description="UI npmxt" />
-      <Meta.OG url={`${env.HOST}/ui`} title="UI" description="UI npmxt" />
+      <Meta.OG url="ui" title="UI" description="UI npmxt" image="ui" />
 
       <div class="w-full max-w-5xl mx-auto p-2">
         <div class="flex items-center justify-end p-2">

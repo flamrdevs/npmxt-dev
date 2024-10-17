@@ -1,5 +1,5 @@
 import { Meta, Title, useHead } from "@solidjs/meta";
-import { createUniqueId } from "solid-js";
+import { createMemo, createUniqueId } from "solid-js";
 
 import * as env from "~/env";
 
@@ -7,8 +7,8 @@ import { createMergeDefaultProps } from "~/utils";
 
 const TITLE = "npmxt";
 const DESCRIPTION = "npmxt";
-const URL = `${env.HOST}`;
-const IMAGE = `${env.HOST}/og/main`;
+const URL = ``;
+const IMAGE = `main`;
 
 export namespace Base {
   export type Props = { title?: string; description?: string };
@@ -56,17 +56,26 @@ export const OG = (() => {
   return (props: OG.Props) => {
     props = mergeOGDefaultProps(props);
 
+    const url = createMemo(() => {
+      const prop = props.url || URL;
+      return `${env.HOST}${prop ? `/${prop}` : ""}`;
+    });
+    const image = createMemo(() => {
+      const prop = props.image || IMAGE;
+      return `${env.HOST}/og/${prop}`;
+    });
+
     use("og:type", "website");
-    use("og:url", props.url);
+    use("og:url", url());
     use("og:title", props.title);
     use("og:description", props.description);
-    use("og:image", props.image);
+    use("og:image", image());
 
     use("twitter:card", "summary_large_image");
-    use("twitter:url", props.url);
+    use("twitter:url", url());
     use("twitter:title", props.title);
     use("twitter:description", props.description);
-    use("twitter:image", props.image);
+    use("twitter:image", image());
 
     return null;
   };
