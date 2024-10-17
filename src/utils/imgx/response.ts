@@ -5,7 +5,7 @@ type Options = { maxAge?: number };
 const init = (contentType: string, options?: Options) => ({
   headers: {
     "content-type": contentType,
-    "cache-control": `public, max-age=${options?.maxAge ?? (import.meta.dev ? 1 : 86400)}`,
+    "cache-control": `public, max-age=${options?.maxAge ?? (import.meta.env.DEV ? 1 : 86400)}`,
   },
 });
 

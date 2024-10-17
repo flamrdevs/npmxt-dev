@@ -1,7 +1,7 @@
 import type { CSS, Children } from "~/utils/imgx/types";
 import { h, response } from "~/utils/imgx";
 
-export const og = (callback: (e: typeof h.e) => Children, style: Partial<CSS.Properties.Root> = {}) =>
+export const og = (children: (e: typeof h.e) => Children, style: Partial<CSS.Properties.Root> = {}) =>
   response.png(
     h.r("div", {
       style: {
@@ -9,6 +9,6 @@ export const og = (callback: (e: typeof h.e) => Children, style: Partial<CSS.Pro
         height: 680,
         ...style,
       },
-      children: callback(h.e),
+      children: children(h.e),
     })
   );
