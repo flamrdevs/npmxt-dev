@@ -1,5 +1,5 @@
 import type { JSX } from "solid-js";
-import type { Component, ParentComponent, ParentProps, ValidComponent } from "solid-js";
+import type { Accessor, Component, ParentComponent, ParentProps, ValidComponent } from "solid-js";
 
 import type { ClassValue } from "clsx";
 
@@ -26,7 +26,7 @@ declare global {
 
   namespace Solid {
     export type { JSX };
-    export type { Component, ParentComponent, ParentProps, ValidComponent };
+    export type { Accessor, Component, ParentComponent, ParentProps, ValidComponent };
 
     export type ClassProps = {
       class?: string;

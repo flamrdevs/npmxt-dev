@@ -1,12 +1,14 @@
 import { Meta, Title, useHead } from "@solidjs/meta";
 import { createUniqueId } from "solid-js";
 
+import * as env from "~/env";
+
 import { createMergeDefaultProps } from "~/utils";
 
 const TITLE = "npmxt";
 const DESCRIPTION = "npmxt";
-const URL = "http://localhost:3000";
-const IMAGE = "http://localhost:3000/og/main";
+const URL = `${env.HOST}`;
+const IMAGE = `${env.HOST}/og/main`;
 
 export namespace Base {
   export type Props = { title?: string; description?: string };
