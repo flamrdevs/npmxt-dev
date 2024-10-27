@@ -1,23 +1,23 @@
 ::-webkit-scrollbar {
-  width: 10px;
+	width: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--color-neutral-3);
+	background: var(--color-neutral-3);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-neutral-8);
+	background: var(--color-neutral-8);
 
-  &:hover {
-    background: var(--color-neutral-9);
-  }
+	&:hover {
+		background: var(--color-neutral-9);
+	}
 }
 
 ::selection {
-  color: white;
-  background: var(--color-primary-9);
+	color: white;
+	background: var(--color-primary-9);
 }
 
 body {
-  @apply bg-neutral-1 text-neutral-12;
-  @apply font-sans;
+	@apply bg-neutral-1 text-neutral-12;
+	@apply font-sans;
 }

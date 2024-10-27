@@ -1,41 +1,41 @@
-import type { APIEvent } from "@solidjs/start/server";
-import { json } from "@solidjs/router";
+import { json } from '@solidjs/router';
+import type { APIEvent } from '@solidjs/start/server';
 
-import { createKeyedCache } from "~/utils/server/response";
+import { createKeyedCache } from '~/utils/server/response';
 
-import { parsePackageNameAPIEventParams } from "~/utils/npm/server";
-import { og } from "~/utils/og";
+import { parsePackageNameAPIEventParams } from '~/utils/npm/server';
+import { og } from '~/utils/og';
 
 const cache = createKeyedCache();
 
 export async function GET(event: APIEvent) {
-  try {
-    const { name } = parsePackageNameAPIEventParams(event);
+	try {
+		const { name } = parsePackageNameAPIEventParams(event);
 
-    if (name === "cache") return Object.keys(cache.v);
+		if (name === 'cache') return Object.keys(cache.v);
 
-    return await cache(name, () =>
-      og(
-        (e) => [
-          e("div", {
-            style: {
-              fontSize: "24px",
-              fontWeight: "bold",
-            },
-            children: `Package[${name}]Page`,
-          }),
-        ],
-        {
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          backgroundColor: "black",
-          color: "white",
-          border: "1px solid black",
-        }
-      )
-    );
-  } catch (error) {
-    return json({ error }, { status: 500 });
-  }
+		return await cache(name, () =>
+			og(
+				(e) => [
+					e('div', {
+						style: {
+							fontSize: '24px',
+							fontWeight: 'bold',
+						},
+						children: `Package[${name}]Page`,
+					}),
+				],
+				{
+					display: 'flex',
+					alignItems: 'center',
+					justifyContent: 'center',
+					backgroundColor: 'black',
+					color: 'white',
+					border: '1px solid black',
+				},
+			),
+		);
+	} catch (error) {
+		return json({ error }, { status: 500 });
+	}
 }

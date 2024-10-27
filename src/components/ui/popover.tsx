@@ -1,42 +1,40 @@
-import { Show, splitProps } from "solid-js";
+import { Show, splitProps } from 'solid-js';
 
-import * as K from "@kobalte/core/popover";
+import * as K from '@kobalte/core/popover';
 
-import { CloseButton } from "./utils";
+import { CloseButton } from './utils';
 
 export namespace Popover {
-  export type Props = Solid.ParentProps<
-    Pick<K.PopoverRootProps, "open" | "onOpenChange" | "placement" | "gutter"> & {
-      trigger: Solid.Component<Record<string, any>>;
-      title?: string;
-      description?: string;
-    }
-  >;
+	export type Props = Solid.ParentProps<
+		Pick<K.PopoverRootProps, 'open' | 'onOpenChange' | 'placement' | 'gutter'> & {
+			trigger: Solid.Component<Record<string, any>>;
+			title?: string;
+			description?: string;
+		}
+	>;
 }
 
-const localSplitter = ["trigger", "title", "description", "children"] as const satisfies (keyof Popover.Props)[];
+const localSplitter = ['trigger', 'title', 'description', 'children'] as const satisfies (keyof Popover.Props)[];
 
 export const Popover = (props: Popover.Props) => {
-  let [local, others] = splitProps(props as Popover.Props, localSplitter);
+	const [local, others] = splitProps(props as Popover.Props, localSplitter);
 
-  const scope = "xt-popover";
+	const scope = 'xt-popover';
 
-  return (
-    <K.Root flip slide {...others}>
-      <K.Trigger as={local.trigger} />
-      <K.Portal>
-        <K.Content class={`${scope}-content`}>
-          <K.Arrow class={`${scope}-arrow`} style={{ fill: undefined, stroke: undefined }} />
-          <K.CloseButton as={CloseButton} class={`${scope}-close-button`} />
+	return (
+		<K.Root flip slide {...others}>
+			<K.Trigger as={local.trigger} />
+			<K.Portal>
+				<K.Content class={`${scope}-content`}>
+					<K.Arrow class={`${scope}-arrow`} style={{ fill: undefined, stroke: undefined }} />
+					<K.CloseButton as={CloseButton} class={`${scope}-close-button`} />
 
-          <Show when={local.title}>{(title) => <K.Title class={`${scope}-title`}>{title()}</K.Title>}</Show>
-          <Show when={local.description}>
-            {(description) => <K.Description class={`${scope}-description`}>{description()}</K.Description>}
-          </Show>
+					<Show when={local.title}>{(title) => <K.Title class={`${scope}-title`}>{title()}</K.Title>}</Show>
+					<Show when={local.description}>{(description) => <K.Description class={`${scope}-description`}>{description()}</K.Description>}</Show>
 
-          {local.children}
-        </K.Content>
-      </K.Portal>
-    </K.Root>
-  );
+					{local.children}
+				</K.Content>
+			</K.Portal>
+		</K.Root>
+	);
 };

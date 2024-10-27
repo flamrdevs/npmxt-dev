@@ -1,1 +1,1 @@
-export * as Meta from "./meta";
+export * as Meta from './meta';

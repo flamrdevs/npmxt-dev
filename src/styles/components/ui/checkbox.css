@@ -1,39 +1,39 @@
 .xt-checkbox {
-  &-control {
-    @apply relative size-[1.5rem] bg-neutral-1 border border-neutral-6 rounded-[0.625rem] outline-none cursor-pointer;
-    transition: 200ms background-color;
+	&-control {
+		@apply relative size-[1.5rem] bg-neutral-1 border border-neutral-6 rounded-[0.625rem] outline-none cursor-pointer;
+		transition: 200ms background-color;
 
-    &[data-checked] {
-      @apply bg-primary-9 border-primary-10;
-    }
+		&[data-checked] {
+			@apply bg-primary-9 border-primary-10;
+		}
 
-    &[data-disabled] {
-      @apply opacity-90 pointer-events-none bg-neutral-5 border-neutral-6;
-    }
-  }
+		&[data-disabled] {
+			@apply opacity-90 pointer-events-none bg-neutral-5 border-neutral-6;
+		}
+	}
 
-  &-input:focus-visible + &-control {
-    @apply outline-1 outline-neutral-9;
+	&-input:focus-visible + &-control {
+		@apply outline-1 outline-neutral-9;
 
-    &[data-checked] {
-      @apply outline-primary-9;
-    }
-  }
+		&[data-checked] {
+			@apply outline-primary-9;
+		}
+	}
 
-  &-indicator {
-    @apply flex items-center justify-center size-full text-neutral-9 rounded-[0.625rem];
-    transition: 200ms color, 200ms transform;
+	&-indicator {
+		@apply flex items-center justify-center size-full text-neutral-9 rounded-[0.625rem];
+		transition: 200ms color, 200ms transform;
 
-    > svg {
-      @apply size-3/4;
-    }
+		> svg {
+			@apply size-3/4;
+		}
 
-    &[data-checked] {
-      @apply text-white;
-    }
+		&[data-checked] {
+			@apply text-white;
+		}
 
-    &[data-disabled] {
-      @apply text-neutral-8;
-    }
-  }
+		&[data-disabled] {
+			@apply text-neutral-8;
+		}
+	}
 }
