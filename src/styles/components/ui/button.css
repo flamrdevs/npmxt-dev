@@ -1,30 +1,30 @@
 .xt-button {
-  @apply appearance-none inline-flex items-center justify-center border outline-none focus-visible:outline-1 select-none cursor-pointer;
+	@apply appearance-none inline-flex items-center justify-center border outline-none focus-visible:outline-1 select-none cursor-pointer;
 
-  &.x {
-    &-color {
-      &-neutral {
-        @apply bg-neutral-3 hover:bg-neutral-4 active:bg-neutral-5 text-neutral-11 border-neutral-6 active:border-neutral-7 focus-visible:outline-neutral-9;
-      }
-      &-primary {
-        @apply bg-primary-3 hover:bg-primary-4 active:bg-primary-5 text-primary-11 border-primary-6 active:border-primary-7 focus-visible:outline-primary-9;
-      }
-    }
+	&.x {
+		&-color {
+			&-neutral {
+				@apply bg-neutral-3 hover:bg-neutral-4 active:bg-neutral-5 text-neutral-11 border-neutral-6 active:border-neutral-7 focus-visible:outline-neutral-9;
+			}
+			&-primary {
+				@apply bg-primary-3 hover:bg-primary-4 active:bg-primary-5 text-primary-11 border-primary-6 active:border-primary-7 focus-visible:outline-primary-9;
+			}
+		}
 
-    &-size {
-      &-sm {
-        @apply h-8 px-4 py-2 font-normal text-sm rounded-[0.5rem];
-      }
-      &-md {
-        @apply h-10 px-5 py-3 font-medium text-base rounded-[0.625rem];
-      }
-      &-lg {
-        @apply h-12 px-6 py-4 font-medium text-lg rounded-[0.75rem];
-      }
-    }
-  }
+		&-size {
+			&-sm {
+				@apply h-8 px-4 py-2 font-normal text-sm rounded-[0.5rem];
+			}
+			&-md {
+				@apply h-10 px-5 py-3 font-medium text-base rounded-[0.625rem];
+			}
+			&-lg {
+				@apply h-12 px-6 py-4 font-medium text-lg rounded-[0.75rem];
+			}
+		}
+	}
 
-  &[data-disabled] {
-    @apply opacity-90 pointer-events-none bg-neutral-5 text-neutral-8 border-neutral-6;
-  }
+	&[data-disabled] {
+		@apply opacity-90 pointer-events-none bg-neutral-5 text-neutral-8 border-neutral-6;
+	}
 }
