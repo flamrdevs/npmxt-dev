@@ -1,6 +1,6 @@
 import { type ResvgRenderOptions, renderAsync } from '@resvg/resvg-js';
 
-import type { Node } from './../types';
+import type { Node } from './types';
 
 import { svg } from './svg';
 

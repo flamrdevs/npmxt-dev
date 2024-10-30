@@ -13,14 +13,4 @@ export const createParser = <T extends UnknownBaseSchema>(schema: T) => {
 	return fn;
 };
 
-export const createStrictParserCreator =
-	<Fx extends (input: any) => any>(fx: Fx) =>
-	<T extends UnknownBaseSchema>(schema: T) => {
-		type FxInput = Parameters<Fx>[0];
-		const fn = ((input: FxInput) => v.parse(schema, fx(input))) as Parser<T, FxInput>;
-		fn.safe = (input: FxInput) => v.safeParse(schema, fx(input));
-		return fn;
-	};
-
-// export const simpleSafeParseResult = <T extends UnknownBaseSchema>(result: v.SafeParseResult<T>) =>
-//   result.success ? ([undefined, result.output] as const) : ([result.issues, undefined] as const);
+export const getErrorMessage = (error: v.ValiError<any>) => error.issues[0].message || error.message;

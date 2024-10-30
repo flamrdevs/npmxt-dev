@@ -1,4 +1,3 @@
-import { For } from 'solid-js';
 import { type SetStoreFunction, createStore } from 'solid-js/store';
 
 import { useColorMode } from '@kobalte/core/color-mode';
@@ -6,8 +5,9 @@ import { Root as Link } from '@kobalte/core/link';
 
 import { PaletteIcon, RocketIcon, Settings2Icon } from 'lucide-solid';
 
-import { Meta } from '~/components';
-import { Button, Checkbox, IconButton, Popover, Select, Separator, Switch, TextField, defaultProps } from '~/components/ui';
+import * as Meta from '~/components/meta';
+import { Button, Checkbox, IconButton, Popover, Select, Separator, Switch, TextField } from '~/components/ui';
+import * as defaultProps from '~/components/ui/default-props';
 
 const Blocks: Solid.Component = (() => {
 	const Panel = (() => {
@@ -347,7 +347,7 @@ export default function UIPage() {
 	return (
 		<>
 			<Meta.Base title="UI" description="UI npmxt" />
-			<Meta.OG url="ui" title="UI" description="UI npmxt" image="ui" />
+			<Meta.OG title="UI" description="UI npmxt" img="ui" />
 
 			<div class="w-full max-w-5xl mx-auto p-2">
 				<div class="flex items-center justify-end p-2">

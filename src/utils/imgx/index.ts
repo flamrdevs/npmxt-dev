@@ -1,2 +1,2 @@
-export * as h from './h';
-export * as response from './response';
+export type * from './types';
+export { h } from './h';

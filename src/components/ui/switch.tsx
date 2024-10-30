@@ -1,8 +1,5 @@
-import { splitProps } from 'solid-js';
-
 import * as K from '@kobalte/core/switch';
 
-import { classesSplitter, classesx } from '~/utils';
 import { type InlineFormControlProps, ShowInlineFormControlLayout, inlineFormControlSplitter } from './utils';
 
 export namespace Switch {
@@ -18,7 +15,7 @@ export const Switch = (props: Switch.Props) => {
 	const scope = 'xt-switch';
 
 	return (
-		<K.Root class={classesx(classes, [ShowInlineFormControlLayout.scope, scope])} {...others}>
+		<K.Root class={clsx(ShowInlineFormControlLayout.scope, scope, classesToArray(classes))} {...others}>
 			<ShowInlineFormControlLayout {...inlineFormControl} Label={K.Label} defaultLabelPosition="left">
 				<K.Input class={`${scope}-input`} />
 				<K.Control class={`${scope}-control`}>

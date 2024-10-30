@@ -1,13 +1,12 @@
 import satori, { type Font } from 'satori';
 
-import type { Node } from './../types';
+import type { Node } from './types';
 
-import { name } from './font';
+import { name } from './font/config';
 
 const fonts = (() => {
 	let fonts: Font[];
-
-	return async () => (fonts ??= await (import.meta.env.DEV ? await import('./font-dev') : await import('./font-prod')).load());
+	return async () => (fonts ??= await (__DEV__ ? await import('./font/dev') : await import('./font/prod')).load());
 })();
 
 export const svg = async (node: Node.Root) => {

@@ -1,0 +1,23 @@
+{
+  "javascript": {
+    "globals": [
+      "ErrorBoundary",
+      "For",
+      "HttpStatusCode",
+      "Show",
+      "Suspense",
+      "classesSplitter",
+      "classesToArray",
+      "clsx",
+      "createAsync",
+      "createMemo",
+      "createSignal",
+      "createUniqueId",
+      "json",
+      "splitProps",
+      "useLocation",
+      "useParams",
+      "useSearchParams"
+    ]
+  }
+}

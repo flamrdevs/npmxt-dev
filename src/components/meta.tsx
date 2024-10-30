@@ -1,53 +1,36 @@
 import { Meta, Title, useHead } from '@solidjs/meta';
-import { createMemo, createUniqueId } from 'solid-js';
 
 import * as env from '~/env';
 
-import { createMergeDefaultProps } from '~/utils';
-
 const TITLE = 'npmxt';
 const DESCRIPTION = 'npmxt';
-const URL = '';
-const IMAGE = 'main';
 
 export namespace Base {
 	export type Props = { title?: string; description?: string };
 }
 
-const mergeBaseDefaultProps = createMergeDefaultProps<Base.Props>({
-	title: TITLE,
-	description: DESCRIPTION,
-});
-
 export const Base = (props: Base.Props) => {
-	props = mergeBaseDefaultProps(props);
+	const title = createMemo(() => `${props.title || TITLE}`);
+	const description = createMemo(() => `${props.description || DESCRIPTION}`);
 
 	return (
 		<>
-			<Title>{props.title}</Title>
-			<Meta name="description" content={props.description} />
+			<Title>{title()}</Title>
+			<Meta name="description" content={description()} />
 		</>
 	);
 };
 
 export namespace OG {
 	export type Props = {
-		url?: string;
 		title?: string;
 		description?: string;
-		image?: string;
+		img?: string;
 	};
 }
 
-const mergeOGDefaultProps = createMergeDefaultProps<OG.Props>({
-	url: URL,
-	title: TITLE,
-	description: DESCRIPTION,
-	image: IMAGE,
-});
-
 export const OG = (() => {
-	const use = (property: string, content?: string) => {
+	const use = (property: string, content: string) => {
 		useHead({
 			tag: 'meta',
 			props: { property, content },
@@ -59,27 +42,23 @@ export const OG = (() => {
 	};
 
 	return (props: OG.Props) => {
-		props = mergeOGDefaultProps(props);
+		const location = useLocation();
 
-		const url = createMemo(() => {
-			const prop = props.url || URL;
-			return `${env.HOST}${prop ? `/${prop}` : ''}`;
-		});
-		const image = createMemo(() => {
-			const prop = props.image || IMAGE;
-			return `${env.HOST}/og/${prop}`;
-		});
+		const title = createMemo(() => `${props.title || TITLE}`);
+		const description = createMemo(() => `${props.description || DESCRIPTION}`);
+		const url = createMemo(() => `${env.HOST}/${location.pathname}`);
+		const image = createMemo(() => `${env.HOST}/og/${props.img || 'main'}`);
 
 		use('og:type', 'website');
 		use('og:url', url());
-		use('og:title', props.title);
-		use('og:description', props.description);
+		use('og:title', title());
+		use('og:description', description());
 		use('og:image', image());
 
 		use('twitter:card', 'summary_large_image');
 		use('twitter:url', url());
-		use('twitter:title', props.title);
-		use('twitter:description', props.description);
+		use('twitter:title', title());
+		use('twitter:description', description());
 		use('twitter:image', image());
 
 		return null;

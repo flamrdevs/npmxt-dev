@@ -1,8 +1,5 @@
-import { splitProps } from 'solid-js';
-
 import * as K from '@kobalte/core/text-field';
 
-import { classesSplitter, classesx } from '~/utils';
 import { type FormControlProps, ShowFormControlLayout, formControlSplitter, formControlValidationState } from './utils';
 
 export namespace TextField {
@@ -21,7 +18,7 @@ export const TextField = (props: TextField.Props) => {
 	const scope = 'xt-text-field';
 
 	return (
-		<K.Root class={classesx(classes, [ShowFormControlLayout.scope, scope])} {...others} validationState={formControlValidationState(formControl)}>
+		<K.Root class={clsx(ShowFormControlLayout.scope, scope, classesToArray(classes))} {...others} validationState={formControlValidationState(formControl)}>
 			<ShowFormControlLayout {...formControl} Label={K.Label} Description={K.Description} ErrorMessage={K.ErrorMessage}>
 				<K.Input class={`${scope}-input`} placeholder={local.placeholder} />
 			</ShowFormControlLayout>

@@ -1,13 +1,8 @@
-import { Show, children, createMemo, splitProps } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
 
 import { type ValidationState, mergeDefaultProps } from '@kobalte/utils';
 
 import { XIcon } from 'lucide-solid';
-
-import clsx from 'clsx';
-
-import { classesSplitter, classesx, xvariants } from '~/utils';
 
 export type FormControlProps = {
 	label?: string;
@@ -81,7 +76,7 @@ export const ShowInlineFormControlLayout = (props: ShowInlineFormControlLayout.P
 	const labelPositionLeft = () => props.labelPosition === 'left';
 	const labelPositionRight = () => props.labelPosition === 'right';
 
-	const labelClass = createMemo(() => clsx(`${scope}-label`, xvariants({ l: labelPositionLeft(), r: labelPositionRight() })));
+	const labelClass = createMemo(() => clsx(`${scope}-label`, labelPositionLeft() && 'x-l', labelPositionRight() && 'x-r'));
 
 	const childrenPositionLeft = children(() => labelPositionRight() && props.children);
 	const childrenPositionRight = children(() => labelPositionLeft() && props.children);
@@ -111,7 +106,7 @@ export const formControlValidationState = (props: FormControlProps): ValidationS
 export const CloseButton = (props: Solid.NeverChildrenProps<Solid.JSX.IntrinsicElements['button']>) => {
 	const [classes, others] = splitProps(props, classesSplitter);
 	return (
-		<button class={classesx(classes, 'xt-close-button')} {...others}>
+		<button class={clsx('xt-close-button', classesToArray(classes))} {...others}>
 			<XIcon />
 		</button>
 	);

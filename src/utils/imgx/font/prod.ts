@@ -1,6 +1,6 @@
 import type { Font } from 'satori';
 
-import { name, weights } from './font';
+import { name, weights } from './config';
 
 const file = async (source: string, name: string, style?: Font['style'], weight?: Font['weight']) => ({
 	data: (await import(source)).default,

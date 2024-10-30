@@ -1,8 +1,9 @@
-import { h, response } from '~/utils/imgx';
-import type { CSS, Children } from '~/utils/imgx/types';
+import { type CSS, type Children, h } from '~/utils/imgx';
+
+import { png } from './imgx';
 
 export const og = (children: (e: typeof h.e) => Children, style: Partial<CSS.Properties.Root> = {}) =>
-	response.png(
+	png(
 		h.r('div', {
 			style: {
 				width: 1200,

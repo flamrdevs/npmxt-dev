@@ -1,6 +1,8 @@
 // @refresh reload
 import { StartServer, createHandler } from '@solidjs/start/server';
 
+if (__ENABLE_MSW__) (await import('~/mocks/server')).listen();
+
 export default createHandler(() => (
 	<StartServer
 		document={({ assets, children, scripts }) => (
