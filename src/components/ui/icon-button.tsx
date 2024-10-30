@@ -1,31 +1,41 @@
-import { createMemo, splitProps } from 'solid-js';
-
 import * as K from '@kobalte/core/button';
 import type { PolymorphicProps } from '@kobalte/core/polymorphic';
 
-import { classesSplitter, classesx, createXVariantsProps } from '~/utils';
-
-import { type Button, defaultButtonVariantsProps } from './button';
+import { type VariantsOf, klass } from '@klass/core';
 
 type As = 'button';
 
 export namespace IconButton {
-	export type Variants = Button.Variants;
+	export type Variants = VariantsOf<typeof iconButtonVariants>;
 
 	export type Props<T extends Solid.ValidComponent = As> = K.ButtonRootProps<T> & CLSX.ClassesValueProps & Variants;
 }
 
-export const defaultIconButtonVariantsProps: IconButton.Variants = {
-	...defaultButtonVariantsProps,
-};
+export const defaultIconButtonVariantsProps = {
+	color: 'neutral',
+	size: 'md',
+} as const;
 
-const [variantsSplitter, mergeDefaultVariantsProps, xvariants] = createXVariantsProps<IconButton.Variants>(defaultIconButtonVariantsProps);
+export const iconButtonVariants = klass({
+	base: 'xt-icon-button',
+	variants: {
+		color: {
+			neutral: 'x-neutral',
+			primary: 'x-primary',
+		},
+		size: {
+			sm: 'x-sm',
+			md: 'x-md',
+			lg: 'x-lg',
+		},
+	},
+	defaults: defaultIconButtonVariantsProps,
+});
 
 export const IconButton = <T extends Solid.ValidComponent = As>(props: PolymorphicProps<T, IconButton.Props<T>>) => {
-	let [classes, variants, others] = splitProps(props as IconButton.Props, classesSplitter, variantsSplitter);
-	variants = mergeDefaultVariantsProps(variants);
+	const [classes, variants, others] = splitProps(props as IconButton.Props, classesSplitter, iconButtonVariants.k);
 
-	const $class = createMemo(() => classesx(classes, ['xt-icon-button', xvariants(variants)]));
+	const $class = createMemo(() => iconButtonVariants(variants, classesToArray(classes)));
 
 	return <K.Root<As> class={$class()} {...others} />;
 };

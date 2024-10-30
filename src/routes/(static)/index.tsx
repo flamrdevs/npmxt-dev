@@ -1,4 +1,4 @@
-import { Meta } from '~/components';
+import * as Meta from '~/components/meta';
 
 export default function IndexPage() {
 	return (

@@ -1,7 +1,3 @@
-import { createMemo } from 'solid-js';
-
-import { useSearchParams } from '@solidjs/router';
-
 import { ColorModeProvider, ColorModeScript, type ConfigColorMode, type MaybeConfigColorMode } from '@kobalte/core/color-mode';
 
 export const ColorMode = (props: Solid.ParentProps) => {

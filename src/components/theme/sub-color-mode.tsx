@@ -1,5 +1,3 @@
-import { createMemo, createSignal, splitProps } from 'solid-js';
-
 import { type ColorMode, ColorModeContext, useColorMode } from '@kobalte/core/color-mode';
 import { Polymorphic, type PolymorphicProps } from '@kobalte/core/polymorphic';
 

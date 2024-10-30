@@ -1,10 +1,7 @@
-import { splitProps } from 'solid-js';
-
 import * as K from '@kobalte/core/checkbox';
 
 import { CheckIcon } from 'lucide-solid';
 
-import { classesSplitter, classesx } from '~/utils';
 import { type InlineFormControlProps, ShowInlineFormControlLayout, inlineFormControlSplitter } from './utils';
 
 export namespace Checkbox {
@@ -20,7 +17,7 @@ export const Checkbox = (props: Checkbox.Props) => {
 	const scope = 'xt-checkbox';
 
 	return (
-		<K.Root class={classesx(classes, [ShowInlineFormControlLayout.scope, scope])} {...others}>
+		<K.Root class={clsx(ShowInlineFormControlLayout.scope, scope, classesToArray(classes))} {...others}>
 			<ShowInlineFormControlLayout {...inlineFormControl} Label={K.Label} defaultLabelPosition="right">
 				<K.Input class={`${scope}-input`} />
 				<K.Control class={`${scope}-control`}>

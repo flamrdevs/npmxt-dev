@@ -1,5 +1,5 @@
-import { og } from '~/utils/og';
-import { createNonKeyedCache } from '~/utils/server/response';
+import { createNonKeyedCache } from '~/utils/server/response/cache';
+import { og } from '~/utils/server/response/og';
 
 const cache = createNonKeyedCache();
 
@@ -10,13 +10,14 @@ export async function GET() {
 				e('div', {
 					style: {
 						fontSize: '24px',
-						fontWeight: 'bold',
+						fontWeight: 700,
 					},
 					children: 'UI',
 				}),
 			],
 			{
 				display: 'flex',
+				flexDirection: 'column',
 				alignItems: 'center',
 				justifyContent: 'center',
 				backgroundColor: 'black',

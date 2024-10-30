@@ -1,33 +1,41 @@
-import { createMemo, splitProps } from 'solid-js';
-
 import * as K from '@kobalte/core/button';
 import type { PolymorphicProps } from '@kobalte/core/polymorphic';
 
-import { classesSplitter, classesx, createXVariantsProps } from '~/utils';
+import { type VariantsOf, klass } from '@klass/core';
 
 type As = 'button';
 
 export namespace Button {
-	export type Variants = {
-		color?: 'neutral' | 'primary';
-		size?: 'sm' | 'md' | 'lg';
-	};
+	export type Variants = VariantsOf<typeof buttonVariants>;
 
 	export type Props<T extends Solid.ValidComponent = As> = K.ButtonRootProps<T> & CLSX.ClassesValueProps & Variants;
 }
 
-export const defaultButtonVariantsProps: Button.Variants = {
+export const defaultButtonVariantsProps = {
 	color: 'neutral',
 	size: 'md',
-};
+} as const;
 
-const [variantsSplitter, mergeDefaultVariantsProps, xvariants] = createXVariantsProps<Button.Variants>(defaultButtonVariantsProps);
+export const buttonVariants = klass({
+	base: 'xt-button',
+	variants: {
+		color: {
+			neutral: 'x-neutral',
+			primary: 'x-primary',
+		},
+		size: {
+			sm: 'x-sm',
+			md: 'x-md',
+			lg: 'x-lg',
+		},
+	},
+	defaults: defaultButtonVariantsProps,
+});
 
 export const Button = <T extends Solid.ValidComponent = As>(props: PolymorphicProps<T, Button.Props<T>>) => {
-	let [classes, variants, others] = splitProps(props as Button.Props, classesSplitter, variantsSplitter);
-	variants = mergeDefaultVariantsProps(variants);
+	const [classes, variants, others] = splitProps(props as Button.Props, classesSplitter, buttonVariants.k);
 
-	const $class = createMemo(() => classesx(classes, ['xt-button', xvariants(variants)]));
+	const $class = createMemo(() => buttonVariants(variants, classesToArray(classes)));
 
 	return <K.Root<As> class={$class()} {...others} />;
 };

@@ -1,9 +1,16 @@
 import type { JSX } from 'solid-js';
 import type { Accessor, Component, ParentComponent, ParentProps, ValidComponent } from 'solid-js';
 
+import type { RoutePreloadFuncArgs } from '@solidjs/router';
+
+import type { APIEvent, APIHandler } from '@solidjs/start/server';
+
 import type { ClassValue } from 'clsx';
 
 declare global {
+	var __DEV__: boolean;
+	var __ENABLE_MSW__: boolean;
+
 	namespace CLSX {
 		export type { ClassValue };
 
@@ -12,6 +19,9 @@ declare global {
 		};
 
 		export type ClassListValueProps = {
+			/**
+			 * @deprecated
+			 */
 			classList?: ClassValue;
 		};
 
@@ -33,6 +43,9 @@ declare global {
 		};
 
 		export type ClassListProps = {
+			/**
+			 * @deprecated
+			 */
 			classList?: Record<string, any>;
 		};
 
@@ -41,5 +54,17 @@ declare global {
 		export type NeverChildrenProps<P> = Omit<P, 'children'> & {
 			children?: never;
 		};
+	}
+
+	namespace SolidJS {
+		export namespace Router {
+			export type { RoutePreloadFuncArgs };
+		}
+
+		export namespace Start {
+			export namespace Server {
+				export type { APIEvent, APIHandler };
+			}
+		}
 	}
 }

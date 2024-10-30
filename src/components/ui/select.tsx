@@ -1,11 +1,8 @@
-import { createMemo, splitProps } from 'solid-js';
-
 import { createControllableSignal } from '@kobalte/core/primitives/create-controllable-signal';
 import * as K from '@kobalte/core/select';
 
 import { CheckIcon, ChevronsUpDownIcon } from 'lucide-solid';
 
-import { classesSplitter, classesx } from '~/utils';
 import { type FormControlProps, ShowFormControlLayout, formControlSplitter, formControlValidationState } from './utils';
 
 export namespace Select {
@@ -54,7 +51,7 @@ export const Select = <V extends string>(props: Select.Props<V>) => {
 		<K.Root<Select.Item>
 			flip
 			slide
-			class={classesx(classes, [ShowFormControlLayout.scope, scope])}
+			class={clsx(ShowFormControlLayout.scope, scope, classesToArray(classes))}
 			{...others}
 			options={$options()}
 			value={$value()}
