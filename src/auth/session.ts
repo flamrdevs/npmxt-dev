@@ -7,7 +7,7 @@ type SessionData = {
 };
 
 const config: SessionConfig = {
-	password: __ENV__.SESSION_PASSWORD,
+	password: process.env.SESSION_PASSWORD,
 };
 
 export const getSession = () => useSession<SessionData>(config);
