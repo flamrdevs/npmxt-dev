@@ -1,6 +1,6 @@
 import { Meta, Title, useHead } from '@solidjs/meta';
-
-import * as env from '~/env';
+import { useLocation } from '@solidjs/router';
+import { createMemo, createUniqueId } from 'solid-js';
 
 const TITLE = 'npmxt';
 const DESCRIPTION = 'npmxt';
@@ -41,13 +41,15 @@ export const OG = (() => {
 		});
 	};
 
+	const HOST = __DEV__ ? 'http://localhost:3000' : 'https://npmxt.netlify.app';
+
 	return (props: OG.Props) => {
 		const location = useLocation();
 
 		const title = createMemo(() => `${props.title || TITLE}`);
 		const description = createMemo(() => `${props.description || DESCRIPTION}`);
-		const url = createMemo(() => `${env.HOST}/${location.pathname}`);
-		const image = createMemo(() => `${env.HOST}/og/${props.img || 'main'}`);
+		const url = createMemo(() => `${HOST}/${location.pathname}`);
+		const image = createMemo(() => `${HOST}/og/${props.img || 'main'}`);
 
 		use('og:type', 'website');
 		use('og:url', url());

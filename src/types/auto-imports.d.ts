@@ -6,21 +6,5 @@
 // biome-ignore lint: disable
 export {}
 declare global {
-  const ErrorBoundary: typeof import('solid-js')['ErrorBoundary']
-  const For: typeof import('solid-js')['For']
-  const HttpStatusCode: typeof import('@solidjs/start')['HttpStatusCode']
-  const Show: typeof import('solid-js')['Show']
-  const Suspense: typeof import('solid-js')['Suspense']
-  const classesSplitter: typeof import('~/utils/classes')['splitter']
-  const classesToArray: typeof import('~/utils/classes')['toArray']
   const clsx: typeof import('clsx')['clsx']
-  const createAsync: typeof import('@solidjs/router')['createAsync']
-  const createMemo: typeof import('solid-js')['createMemo']
-  const createSignal: typeof import('solid-js')['createSignal']
-  const createUniqueId: typeof import('solid-js')['createUniqueId']
-  const json: typeof import('@solidjs/router')['json']
-  const splitProps: typeof import('solid-js')['splitProps']
-  const useLocation: typeof import('@solidjs/router')['useLocation']
-  const useParams: typeof import('@solidjs/router')['useParams']
-  const useSearchParams: typeof import('@solidjs/router')['useSearchParams']
 }

@@ -1,6 +1,8 @@
-import { afterAll, afterEach, beforeAll } from 'vitest';
+import indexeddb from 'fake-indexeddb';
 
-import { server } from './src/mocks/node';
+import { server } from '~/mocks/node';
+
+globalThis.indexedDB = indexeddb;
 
 beforeAll(() => {
 	server.listen();

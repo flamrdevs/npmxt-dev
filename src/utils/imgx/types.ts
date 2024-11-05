@@ -3,10 +3,8 @@ import type { Properties as CSSTypeProperties } from 'csstype';
 export namespace CSS {
 	export type Properties = CSSTypeProperties;
 
-	export type OmitSize<P extends { [key in 'width' | 'height']?: unknown }> = Omit<P, 'width' | 'height'>;
-
 	export namespace Properties {
-		export type Root = OmitSize<Properties> & { width: number; height: number };
+		export type Root = TF.OverrideProperties<Properties, { width: number; height: number }>;
 	}
 }
 

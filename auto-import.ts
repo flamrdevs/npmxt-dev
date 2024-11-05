@@ -4,16 +4,7 @@ export default () =>
 	plugin({
 		imports: [
 			{
-				clsx: ['clsx'],
-
-				'solid-js': ['ErrorBoundary', 'For', 'Show', 'Suspense', 'createMemo', 'createSignal', 'createUniqueId', 'splitProps'],
-				'@solidjs/router': ['createAsync', 'json', 'useLocation', 'useParams', 'useSearchParams'],
-				'@solidjs/start': ['HttpStatusCode'],
-
-				'~/utils/classes': [
-					['splitter', 'classesSplitter'],
-					['toArray', 'classesToArray'],
-				],
+				['clsx']: ['clsx'],
 			},
 		],
 		include: [/\.tsx?$/],

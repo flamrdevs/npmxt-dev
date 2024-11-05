@@ -1,0 +1,22 @@
+.xt-separator {
+	@apply appearance-none border-none;
+
+	&.x {
+		&-color {
+			&-n {
+				@apply bg-cn-3;
+			}
+			&-p {
+				@apply bg-cp-3;
+			}
+		}
+	}
+
+	&[data-orientation="horizontal"] {
+		@apply h-px w-full;
+	}
+
+	&[data-orientation="vertical"] {
+		@apply h-full w-px;
+	}
+}

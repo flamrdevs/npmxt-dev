@@ -1,12 +1,15 @@
 import { Router } from '@solidjs/router';
 import { FileRoutes } from '@solidjs/start/router';
+import { ErrorBoundary, Suspense } from 'solid-js';
 
 import { MetaProvider } from '@solidjs/meta';
 
+import { ColorModeProvider, ColorModeScript } from '@kobalte/core/color-mode';
+
 import { RenderStatusMessageError } from '~/components/error';
 import * as Meta from '~/components/meta';
-import { ColorMode } from '~/components/theme';
 
+import '~/styles/fonts.css';
 import '~/styles/app.css';
 
 export default function App() {
@@ -15,12 +18,13 @@ export default function App() {
 			root={(props) => (
 				<MetaProvider>
 					<Meta.Base />
-					<ColorMode>
+					<ColorModeScript />
+					<ColorModeProvider>
 						<ErrorBoundary
 							fallback={(error) => (
 								<RenderStatusMessageError error={error}>
 									{(message) => (
-										<div class="flex items-center justify-center w-dvw h-dvh bg-neutral-1 font-medium text-lg text-neutral-12">
+										<div class="flex items-center justify-center w-dvw h-dvh bg-cn-1 font-medium text-lg text-cn-12">
 											<div>{message}</div>
 										</div>
 									)}
@@ -29,7 +33,7 @@ export default function App() {
 						>
 							<Suspense>{props.children}</Suspense>
 						</ErrorBoundary>
-					</ColorMode>
+					</ColorModeProvider>
 				</MetaProvider>
 			)}
 		>

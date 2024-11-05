@@ -1,8 +1,13 @@
-import { Dynamic } from 'solid-js/web';
+import { children, createMemo, splitProps } from 'solid-js';
+import { Dynamic, Show } from 'solid-js/web';
 
 import { type ValidationState, mergeDefaultProps } from '@kobalte/utils';
 
 import { XIcon } from 'lucide-solid';
+
+import { classesSplitter, classesToArray } from '../utils';
+
+import './utils.css';
 
 export type FormControlProps = {
 	label?: string;
@@ -50,7 +55,7 @@ export const ShowFormControlLayout = (props: ShowFormControlLayout.Props) => {
 			</Show>
 			<Show when={props.errorMessage}>
 				{(errorMessage) => (
-					<Dynamic component={props.ErrorMessage} class={`${scope}-error-message`}>
+					<Dynamic component={props.ErrorMessage} class={`${scope}-ce-message`}>
 						{errorMessage()}
 					</Dynamic>
 				)}

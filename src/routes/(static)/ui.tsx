@@ -1,3 +1,4 @@
+import { For } from 'solid-js';
 import { type SetStoreFunction, createStore } from 'solid-js/store';
 
 import { useColorMode } from '@kobalte/core/color-mode';
@@ -12,7 +13,7 @@ import * as defaultProps from '~/components/ui/default-props';
 const Blocks: Solid.Component = (() => {
 	const Panel = (() => {
 		const PopoverTrigger = (props: Record<string, any>) => (
-			<IconButton {...props} class="absolute top-4 right-4 z-50">
+			<IconButton {...props} class="absolute top-4 right-4 z-50" title="Settings">
 				<Settings2Icon />
 			</IconButton>
 		);
@@ -20,7 +21,7 @@ const Blocks: Solid.Component = (() => {
 			popover: Solid.JSX.Element;
 			children: Solid.JSX.Element;
 		}) => (
-			<div class="relative flex items-center justify-center gap-4 w-full min-h-64 bg-neutral-1 border border-neutral-3 rounded-3xl">
+			<div class="relative flex items-center justify-center gap-4 w-full min-h-64 bg-cn-1 border border-cn-3 rounded-3xl">
 				{props.children}
 
 				<Popover trigger={PopoverTrigger} title="Props">
@@ -171,7 +172,7 @@ const Blocks: Solid.Component = (() => {
 				<Panel
 					popover={
 						<div class="flex flex-col gap-4 my-2 p-2">
-							<ControlColor map={{ neutral: 'Neutral', primary: 'Primary' }} get={props} set={setProps} />
+							<ControlColor map={{ n: 'Neutral', p: 'Primary' }} get={props} set={setProps} />
 							<Separator />
 							<ControlSize map={{ sm: 'Small', md: 'Medium', lg: 'Large' }} get={props} set={setProps} />
 							<Separator />
@@ -193,7 +194,7 @@ const Blocks: Solid.Component = (() => {
 				<Panel
 					popover={
 						<div class="flex flex-col gap-4 my-2 p-2">
-							<ControlColor map={{ neutral: 'Neutral', primary: 'Primary' }} get={props} set={setProps} />
+							<ControlColor map={{ n: 'Neutral', p: 'Primary' }} get={props} set={setProps} />
 							<Separator />
 							<ControlSize map={{ sm: 'Small', md: 'Medium', lg: 'Large' }} get={props} set={setProps} />
 							<Separator />
@@ -201,7 +202,7 @@ const Blocks: Solid.Component = (() => {
 						</div>
 					}
 				>
-					<IconButton {...props}>
+					<IconButton {...props} title="Rocket">
 						<RocketIcon />
 					</IconButton>
 				</Panel>
@@ -353,17 +354,17 @@ export default function UIPage() {
 				<div class="flex items-center justify-end p-2">
 					<Popover
 						trigger={(triggerProps) => (
-							<IconButton {...triggerProps}>
+							<IconButton {...triggerProps} title="Palette">
 								<PaletteIcon />
 							</IconButton>
 						)}
 						title="Color Mode"
 					>
 						<div class="flex items-center gap-2 p-2 min-w-40">
-							<Button color={colorMode() === 'light' ? 'primary' : 'neutral'} class="w-24" onClick={() => setColorMode('light')}>
+							<Button color={colorMode() === 'light' ? 'p' : 'n'} class="w-24" onClick={() => setColorMode('light')}>
 								light
 							</Button>
-							<Button color={colorMode() === 'dark' ? 'primary' : 'neutral'} class="w-24" onClick={() => setColorMode('dark')}>
+							<Button color={colorMode() === 'dark' ? 'p' : 'n'} class="w-24" onClick={() => setColorMode('dark')}>
 								dark
 							</Button>
 						</div>
