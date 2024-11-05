@@ -8,12 +8,12 @@
 	},
 	"files": {
 		"ignoreUnknown": false,
-		"ignore": ["src/types/auto-imports.d.ts", "src/styles/theme.css"]
+		"ignore": ["public/mockServiceWorker.js", "src/types/auto-imports.d.ts"]
 	},
 	"formatter": {
 		"enabled": true,
 		"indentStyle": "tab",
-		"lineWidth": 178
+		"lineWidth": 200
 	},
 	"organizeImports": {
 		"enabled": true

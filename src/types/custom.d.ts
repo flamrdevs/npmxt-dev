@@ -11,12 +11,15 @@ declare global {
 	var __DEV__: boolean;
 	var __ENABLE_MSW__: boolean;
 
+	namespace TF {
+		export type * from 'type-fest';
+		import('type-fest');
+	}
+
 	namespace CLSX {
 		export type { ClassValue };
 
-		export type ClassValueProps = {
-			class?: ClassValue;
-		};
+		export type ClassValueProps = { class?: ClassValue };
 
 		export type ClassListValueProps = {
 			/**
@@ -38,9 +41,7 @@ declare global {
 		export type { JSX };
 		export type { Accessor, Component, ParentComponent, ParentProps, ValidComponent };
 
-		export type ClassProps = {
-			class?: string;
-		};
+		export type ClassProps = { class?: string };
 
 		export type ClassListProps = {
 			/**
@@ -51,9 +52,7 @@ declare global {
 
 		export type ClassesProps = ClassProps & ClassListProps;
 
-		export type NeverChildrenProps<P> = Omit<P, 'children'> & {
-			children?: never;
-		};
+		export type NeverChildrenProps<P> = TF.Merge<P, { children?: never }>;
 	}
 
 	namespace SolidJS {

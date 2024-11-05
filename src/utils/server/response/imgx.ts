@@ -1,17 +1,19 @@
 import type { Node } from '~/utils/imgx';
 
-type Options = { maxAge?: number };
+import { cacheControl } from '../header';
 
-const init = (contentType: string, options?: Options) => {
-	const maxAge = options?.maxAge ?? (__DEV__ ? 1 : 86400);
+type Options = {
+	maxAge?: number;
+	headers?: Record<string, string>;
+};
 
-	const cache = `public, durable, max-age=${maxAge}, s-maxage=${maxAge}`;
+const init = (contentType: string, { maxAge = __DEV__ ? 1 : 86400, headers = {} }: Options = {}) => {
 	return {
 		headers: {
 			'Content-Type': contentType,
-			'Netlify-CDN-Cache-Control': cache,
-			'CDN-Cache-Control': cache,
-			'Cache-Control': cache,
+			...cacheControl(`public, durable, max-age=${maxAge}, s-maxage=${maxAge}`),
+			'Cross-Origin-Resource-Policy': 'cross-origin',
+			...headers,
 		},
 	};
 };

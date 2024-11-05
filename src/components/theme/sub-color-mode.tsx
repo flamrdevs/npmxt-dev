@@ -1,5 +1,6 @@
 import { type ColorMode, ColorModeContext, useColorMode } from '@kobalte/core/color-mode';
 import { Polymorphic, type PolymorphicProps } from '@kobalte/core/polymorphic';
+import { createMemo, createSignal, splitProps } from 'solid-js';
 
 export namespace SubColorMode {
 	export type Props = {

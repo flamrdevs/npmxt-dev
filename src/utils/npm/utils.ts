@@ -1,96 +1,74 @@
-import { ofetch } from 'ofetch';
-
 import { StatusError } from '~/utils/error';
-import { type TPackageDownloadRangeSchema, type TPackageSchema, parsePackage, parsePackageDownloadRange, parsePackageName } from './schema';
 
-export const transformPackageParam = (param: string) => {
-	const splitted = param.split('/');
+import { type TPackageDownloadRangeSchema, type TPackageSchema, parsePackage, parsePackageDownloadRange, parsePackageDownloadRangeLast, parsePackageName } from './schema';
 
-	let name: string;
-	let version = 'latest';
+import { fetcherPackage, fetcherPackageDownloadRange } from './fetcher';
 
-	const length = splitted.length;
-	if (length === 0) throw new StatusError('Require package name', 400);
+import { createDailyCacheStorage } from './storage';
 
-	if (length === 1) {
-		name = splitted[0];
-	} else if (length === 2) {
-		const [s1, s2] = splitted;
-		if (s1.startsWith('@')) {
+export const splitPackageNameAndVersion = (() => {
+	const scoped = (str: string) => str.startsWith('@');
+	return (input: string) => {
+		const splitted = input.split('/');
+
+		let name: string;
+		let version: string | undefined;
+
+		const length = splitted.length;
+		if (length === 0) throw new StatusError(`${__DEV__ ? '[splitPackageNameAndVersion] ' : ''}Require package name`, 400);
+
+		if (length === 1) {
+			name = splitted[0];
+		} else if (length === 2) {
+			const [s1, s2] = splitted;
+			if (scoped(s1)) {
+				name = `${s1}/${s2}`;
+			} else {
+				name = s1;
+				version = s2;
+			}
+		} else if (length === 3 && scoped(splitted[0])) {
+			const [s1, s2, s3] = splitted;
 			name = `${s1}/${s2}`;
+			version = s3;
 		} else {
-			name = s1;
-			version = s2;
+			throw new StatusError(`${__DEV__ ? '[splitPackageNameAndVersion] ' : ''}Invalid format package name & version`, 400);
 		}
-	} else if (length === 3) {
-		const [s1, s2, s3] = splitted;
-		name = `${s1}/${s2}`;
-		version = s3;
-	} else {
-		throw new StatusError('Invalid package name', 400);
-	}
 
-	return { name, version };
-};
+		return [name, version] as const;
+	};
+})();
 
 export const fetchPackage = (() => {
-	// in memory cache (serverless functions only)
-	const cache: Record<string, { ok: 0; data: null } | { ok: 1; data: TPackageSchema }> = {};
+	const withStorage = createDailyCacheStorage<TPackageSchema>(__DEV__ ? 'npm:package' : 'npm:pkg');
 
 	return async (rawName: string, rawVersion: string | undefined = 'latest'): Promise<TPackageSchema> => {
 		const validName = parsePackageName(rawName);
 		const validVersion = rawVersion;
-
-		const key = `${validName}@${validVersion}`;
-
-		const cached: (typeof cache)[string] | undefined = cache[key];
-
-		if (cached?.ok) {
-			if (__DEV__) console.log(`fetchPackage() ${'cache hit'.padEnd(11)} | ${key}`);
-			return cached.data;
-		}
-
-		try {
-			const data = parsePackage(await ofetch(`https://registry.npmjs.org/${validName}/${validVersion}`));
-			cache[key] = { ok: 1, data };
-			if (__DEV__) console.log(`fetchPackage() ${'cache miss'.padEnd(11)} | ${key}`);
-			return data;
-		} catch (error) {
-			cache[key] = { ok: 0, data: null };
-			throw new StatusError(`Package not found : ${key}`, 404);
-		}
+		return await withStorage(`${validName}@${validVersion}`, async () => {
+			try {
+				return parsePackage(await fetcherPackage(validName, validVersion));
+			} catch (error) {
+				throw new StatusError('Package not found', 404);
+			}
+		});
 	};
 })();
 
-export const fetchPackageFromParam = (param: string) => {
-	const { name, version } = transformPackageParam(param);
-	return fetchPackage(name, version);
-};
+export const fetchPackageAlt = (input: string): Promise<TPackageSchema> => fetchPackage(...splitPackageNameAndVersion(input));
 
-export const fetchPackageDownloadRange = (() => {
-	// in memory cache (serverless functions only)
-	const cache: Record<string, { ok: 0; data: null } | { ok: 1; data: TPackageDownloadRangeSchema }> = {};
+export const fetchPackageLastDownload = (() => {
+	const withStorage = createDailyCacheStorage<TPackageDownloadRangeSchema>(__DEV__ ? 'npm:package-download-range-last' : 'npm:pkg-dr-ly');
 
-	return async (rawName: string, last: 'week' | 'month' | 'year'): Promise<TPackageDownloadRangeSchema> => {
+	return async (rawName: string, rawLast: string): Promise<TPackageDownloadRangeSchema> => {
 		const validName = parsePackageName(rawName);
-
-		const key = `${validName}/${last}`;
-
-		const cached: (typeof cache)[string] | undefined = cache[key];
-
-		if (cached?.ok) {
-			if (__DEV__) console.log(`fetchPackageDownloadRange() ${'cache hit'.padEnd(11)} | ${key}`);
-			return cached.data;
-		}
-
-		try {
-			const data = parsePackageDownloadRange(await ofetch(`https://api.npmjs.org/downloads/range/last-${last}/${validName}`));
-			cache[key] = { ok: 1, data };
-			if (__DEV__) console.log(`fetchPackageDownloadRange() ${'cache miss'.padEnd(11)} | ${key}`);
-			return data;
-		} catch (error) {
-			cache[key] = { ok: 0, data: null };
-			throw new StatusError(`Package not found : ${key}`, 404);
-		}
+		const validLast = parsePackageDownloadRangeLast(rawLast);
+		return await withStorage(`${validName}/${validLast}`, async () => {
+			try {
+				return parsePackageDownloadRange(await fetcherPackageDownloadRange(`last-${validLast}`, validName));
+			} catch (error) {
+				throw new StatusError('Package not found', 404);
+			}
+		});
 	};
 })();

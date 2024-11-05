@@ -4,17 +4,16 @@ import autoImport from './auto-import';
 
 import define from './define';
 
-const minify = false;
+const minify = true;
 
 export default defineConfig({
 	server: {
-		// preset: 'netlify',
 		prerender: {
 			routes: ['/', '/about', '/ui'],
 		},
 		minify,
-		sourceMap: false,
 	},
+	middleware: './src/middleware.ts',
 	vite: {
 		define: define({
 			__DEV__: process.argv.includes('dev'),
@@ -23,13 +22,6 @@ export default defineConfig({
 		plugins: [autoImport()],
 		build: {
 			minify,
-			rollupOptions: {
-				output: {
-					manualChunks(id) {
-						if (id.includes('node_modules/valibot')) return 'valibot';
-					},
-				},
-			},
 		},
 	},
 });

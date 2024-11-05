@@ -1,6 +1,6 @@
-import path from 'node:path';
-
 import { defineConfig } from 'vitest/config';
+
+import tsconfigPaths from 'vite-tsconfig-paths';
 
 import solid from 'vite-plugin-solid';
 
@@ -9,20 +9,18 @@ import autoImport from './auto-import';
 import define from './define';
 
 export default defineConfig({
-	plugins: [autoImport(), solid()],
+	plugins: [tsconfigPaths(), autoImport(), solid()],
 	define: define({
 		__DEV__: true,
 		__ENABLE_MSW__: true,
 	}),
 	test: {
+		globals: true,
 		environment: 'jsdom',
-		include: ['test/**/*.test.ts?(x)'],
+		include: ['src/**/*.test.ts?(x)'],
 		setupFiles: ['./vitest.setup.ts'],
 	},
 	resolve: {
-		alias: {
-			'~': path.resolve(__dirname, 'src'),
-		},
 		conditions: ['development', 'browser'],
 	},
 });

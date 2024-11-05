@@ -1,10 +1,10 @@
-import { createNonKeyedCache } from '~/utils/server/response/cache';
+import { createNonKeyedMemoCache } from '~/utils/server/response/memo-cache';
 import { og } from '~/utils/server/response/og';
 
-const cache = createNonKeyedCache();
+const withCache = createNonKeyedMemoCache();
 
 export async function GET() {
-	return await cache(() =>
+	return await withCache(() =>
 		og(
 			(e) => [
 				e('div', {

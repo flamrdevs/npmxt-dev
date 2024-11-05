@@ -1,4 +1,7 @@
-import { cache } from '@solidjs/router';
+import { createAsync, query, useParams } from '@solidjs/router';
+import { ErrorBoundary, Show, Suspense } from 'solid-js';
+
+import { NPMPackageDownloadChart } from '~/components/npm/charts/package-download';
 
 import { RenderStatusMessageError } from '~/components/error';
 import * as Meta from '~/components/meta';
@@ -6,37 +9,23 @@ import * as Meta from '~/components/meta';
 import type { TPackageSchema } from '~/utils/npm/schema';
 import { fetchPackage } from '~/utils/npm/utils';
 
-const InvalidPackageName = (props: { name: string }) => {
-	return (
-		<>
-			<Meta.Base title={`invalid - ${props.name}`} description={`invalid package name - ${props.name}`} />
-
-			<div class="flex items-center justify-center w-dvw h-dvh bg-neutral-1 font-medium text-3xl text-error-12">
-				<h2>Invalid package name</h2>
-			</div>
-		</>
-	);
-};
-
-const validPackageName = (pkg: TPackageSchema) => {
-	const title = () => `${pkg.name} - package`;
-	const description = () => `${pkg.name} - package`;
+const RenderPackage = (props: { pkg: TPackageSchema }) => {
+	const title = () => `${props.pkg.name} - package`;
+	const description = () => `${props.pkg.name} - package`;
 
 	return (
 		<>
 			<Meta.Base title={title()} description={description()} />
-			<Meta.OG title={title()} description={description()} img={`d/${pkg.name}`} />
+			<Meta.OG title={title()} description={description()} img={`d/${props.pkg.name}`} />
 
-			<div class="flex items-center justify-center w-dvw h-dvh bg-neutral-1 font-bold text-4xl text-neutral-12">
-				<h1>
-					{pkg.name}@{pkg.version}
-				</h1>
+			<div class="flex items-center justify-center w-dvw h-dvh bg-cn-1 font-bold text-4xl text-cn-12">
+				<NPMPackageDownloadChart pkg={props.pkg} />
 			</div>
 		</>
 	);
 };
 
-const getPackage = cache((name: string) => fetchPackage(name), 'package-by-name');
+const getPackage = query((name: string) => fetchPackage(name), 'package-by-name');
 
 export const route = { preload: ({ params }: SolidJS.Router.RoutePreloadFuncArgs) => getPackage(params['name']) };
 
@@ -50,16 +39,16 @@ export default function PackageNamePage() {
 			fallback={(error) => (
 				<RenderStatusMessageError error={error}>
 					{(message) => (
-						<div class="flex items-center justify-center w-dvw h-dvh bg-neutral-1 font-medium text-lg text-neutral-12">
+						<div class="flex items-center justify-center w-dvw h-dvh bg-cn-1 font-medium text-lg text-cn-12">
 							<div>{message}</div>
 						</div>
 					)}
 				</RenderStatusMessageError>
 			)}
 		>
-			<Show when={pkg()} fallback={<InvalidPackageName name={params['name']} />} keyed>
-				{validPackageName}
-			</Show>
+			<Suspense fallback="Loading...">
+				<Show when={pkg()}>{(pkg) => <RenderPackage pkg={pkg()} />}</Show>
+			</Suspense>
 		</ErrorBoundary>
 	);
 }
