@@ -9,7 +9,9 @@ type Env = {
 };
 
 declare global {
-	var __ENV__: Env;
+	namespace NodeJS {
+		interface ProcessEnv extends Env {}
+	}
 }
 
 export {};
