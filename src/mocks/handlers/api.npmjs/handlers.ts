@@ -7,18 +7,20 @@ import { BASE_URL_API as NPM_BASE_URL_API } from '~/utils/npm/url';
 
 import { MOCK_PACKAGE_METADATA } from '../registry.npmjs/handlers';
 
-const MOCK_PACKAGE_DOWNLOAD_RANGE: Record<string, TPackageDownloadRangeSchema['downloads']> = {
-	['@klass/core']: [],
-	['@kobalte/core']: [],
-	['@solidjs/meta']: [],
-	['@solidjs/router']: [],
-	['@solidjs/start']: [],
-	['npmxt']: [],
-	['react']: [],
-	['react-dom']: [],
-	['solid-js']: [],
-	['svelte']: [],
-	['vue']: [],
+const MOCK_PACKAGE_DOWNLOAD_RANGE: Record<string, number | TPackageDownloadRangeSchema['downloads']> = {
+	['@klass/core']: 1,
+	['@kobalte/core']: 1,
+	['@solidjs/meta']: 2,
+	['@solidjs/router']: 2,
+	['@solidjs/start']: 1,
+	['npmxt']: 1,
+	['react']: 5,
+	['react-dom']: 5,
+	['solid-js']: 2,
+	['svelte']: 3,
+	['vue']: 4,
+	['looooooooo-oooooooo-oooooooooooooooong']: 100,
+	['@looooooooo/oooooooooooooooooooooooong']: 10000,
 };
 
 const DATE_FORMAT = 'YYYY-MM-DD';
@@ -30,7 +32,7 @@ const generateDownloads = (() => {
 
 	const range = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
 
-	return (name: string) => {
+	return (name: string, factor: number) => {
 		if (name in MOCK_PACKAGE_METADATA) {
 			const result: TPackageDownloadRangeSchema['downloads'] = [];
 
@@ -41,8 +43,8 @@ const generateDownloads = (() => {
 			const diffDays = now.diff(startDayjs, 'days');
 
 			for (let index = 0; index < diffDays; index++) {
-				const min = (index + 1) * 10;
-				const max = min * 5;
+				const min = (index + 1) * 9 * factor;
+				const max = min * 5 * factor;
 
 				result.push({
 					downloads: range(min, max),
@@ -58,7 +60,7 @@ const generateDownloads = (() => {
 })();
 
 const getDownloadsRecord = (name: string) => {
-	if (MOCK_PACKAGE_DOWNLOAD_RANGE[name].length === 0) MOCK_PACKAGE_DOWNLOAD_RANGE[name] = generateDownloads(name);
+	if (typeof MOCK_PACKAGE_DOWNLOAD_RANGE[name] === 'number') MOCK_PACKAGE_DOWNLOAD_RANGE[name] = generateDownloads(name, MOCK_PACKAGE_DOWNLOAD_RANGE[name]);
 	const allDownloads = MOCK_PACKAGE_DOWNLOAD_RANGE[name];
 	const record: {
 		[key in 'start' | 'end']: string;

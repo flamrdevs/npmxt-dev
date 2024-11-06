@@ -24,5 +24,5 @@ export const v_cp10 = v_c('p', 10);
 export const v_cp11 = v_c('p', 11);
 export const v_cp12 = v_c('p', 12);
 
-export const fontFamilySans = 'Inter Variable';
-export const fontFamilyMono = 'Source Code Pro Variable';
+export const fontFamilySans = 'Inter Variable, ui-sans-serif, sans-serif';
+export const fontFamilyMono = 'Source Code Pro Variable, ui-monospace, monospace';

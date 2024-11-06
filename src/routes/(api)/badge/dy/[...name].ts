@@ -4,7 +4,7 @@ import { fetchPackage, fetchPackageLastDownload } from '~/utils/npm/utils';
 import { errorStatusMessageResponse } from '~/utils/server/response/error';
 import { createKeyedMemoCache } from '~/utils/server/response/memo-cache';
 
-import * as badge from '~/components/npm/imgx/badge/d';
+import * as badge from '~/components/npm/imgx/badge/download';
 
 const withCache = createKeyedMemoCache();
 

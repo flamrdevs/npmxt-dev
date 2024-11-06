@@ -14,7 +14,7 @@ export const svg = async (node: Node.Root) => {
 	const { width, height } = props.style;
 	props.style.width = props.style.height = '100%' as unknown as number;
 	if (typeof props.style.fontFamily === 'undefined') props.style.fontFamily = name;
-	if (typeof props.style.fontSize === 'undefined') props.style.fontSize = '16px';
+	if (typeof props.style.fontSize === 'undefined') props.style.fontSize = 16;
 	if (typeof props.style.fontStyle === 'undefined') props.style.fontStyle = 'normal';
 	if (typeof props.style.fontWeight === 'undefined') props.style.fontWeight = 400;
 	return await satori({ type, props } as any, {
