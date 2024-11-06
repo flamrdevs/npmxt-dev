@@ -18,6 +18,8 @@ export const MOCK_PACKAGE_METADATA: Record<string, MockPackageMetadataValue> = {
 	['solid-js']: /*        */ { time: { created: '2018-04-25T04:09:31.206Z' } },
 	['svelte']: /*          */ { time: { created: '2016-11-17T22:58:41.644Z' } },
 	['vue']: /*             */ { time: { created: '2013-12-07T06:09:46.299Z' } },
+	['looooooooo-oooooooo-oooooooooooooooong']: { time: { created: '2011-01-01T01:01:01.001Z' } },
+	['@looooooooo/oooooooooooooooooooooooong']: { time: { created: '2011-01-01T01:01:01.001Z' } },
 };
 
 type MockPackageValue = Omit<TPackageSchema, 'name' | 'version'> & { tags: Record<string, string>; versions: TPackageSchema['version'][] };
@@ -139,6 +141,30 @@ const MOCK_PACKAGE: Record<string, MockPackageValue> = {
 			name: 'Evan You',
 		},
 		homepage: 'https://github.com/vuejs/core/tree/main/packages/vue#readme',
+	},
+	['looooooooo-oooooooo-oooooooooooooooong']: {
+		description: 'maybe looooooooo-oooooooo-oooooooooooooooong description',
+		tags: {
+			latest: '100.100.100',
+		},
+		versions: ['100.100.100'],
+		license: 'LICENSE',
+		author: {
+			name: 'Loooo Oooo Ong Developer',
+		},
+		homepage: 'https://loooooooooooooooooooooooooooooong.dev/pathname/path/path/path/path/path/path/path/path/path/path/path/path/path',
+	},
+	['@looooooooo/oooooooooooooooooooooooong']: {
+		description: 'maybe @looooooooo/oooooooooooooooooooooooong description and description and description and description and description and description',
+		tags: {
+			latest: '10000.10000.10000',
+		},
+		versions: ['10000.10000.10000'],
+		license: 'LOOOOOOOOONG LICENSE',
+		author: {
+			name: 'Loooo Oooo Ong Developer',
+		},
+		homepage: 'https://loooooooooooooooooooooooooooooong.dev/pathname/path/path/path/path/path/path/path/path/path/path/path/path/path/path/path/path/path/path/path',
 	},
 };
 

@@ -4,7 +4,7 @@ import { fetchPackage, fetchPackageLastDownload } from '~/utils/npm/utils';
 import { errorStatusMessageResponse } from '~/utils/server/response/error';
 import { createKeyedMemoCache } from '~/utils/server/response/memo-cache';
 
-import * as chart from '~/components/npm/imgx/chart/d';
+import * as chart from '~/components/npm/imgx/chart/download';
 
 const withCache = createKeyedMemoCache();
 

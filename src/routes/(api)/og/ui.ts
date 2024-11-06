@@ -9,7 +9,7 @@ export async function GET() {
 			(e) => [
 				e('div', {
 					style: {
-						fontSize: '24px',
+						fontSize: 24,
 						fontWeight: 700,
 					},
 					children: 'UI',
