@@ -3,7 +3,7 @@ import * as d3 from 'd3';
 import { ArrowRight, Download } from 'lucide';
 
 import type { TPackageDownloadRangeSchema } from '~/utils/npm/schema';
-import { og, width, height } from '~/utils/server/response/og';
+import { height, og, width } from '~/utils/server/response/og';
 
 import { formatNumberCompact } from '~/utils/formatter';
 
