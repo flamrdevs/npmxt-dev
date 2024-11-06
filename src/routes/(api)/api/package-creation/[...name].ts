@@ -66,7 +66,7 @@ export async function GET(event: SolidJS.Start.Server.APIEvent) {
 				{ date: await getPackageCreationDate(validName) },
 				{
 					headers: {
-						...cacheControl('public, durable, max-age=43200, s-maxage=43200' /* 12 hours */),
+						...cacheControl('public, max-age=43200, s-maxage=43200' /* 12 hours */),
 					},
 				},
 			);

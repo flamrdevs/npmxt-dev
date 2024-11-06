@@ -1,10 +1,11 @@
 # npmxt
+
 npmxt
 
-## badge 
+## badge
 
-![solid-js - last year download](https://npmxt.netlify.app/badge/dy/solid-js "solid-js")
+![solid-js - last year download](https://npmxt.vercel.app/badge/dy/solid-js "solid-js")
 
-## chart 
+## chart
 
-![solid-js - last year download](https://npmxt.netlify.app/chart/dy/solid-js "solid-js")
+![solid-js - last year download](https://npmxt.vercel.app/chart/dy/solid-js "solid-js")
