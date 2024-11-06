@@ -11,7 +11,7 @@ const init = (contentType: string, { maxAge = __DEV__ ? 1 : 86400, headers = {} 
 	return {
 		headers: {
 			'Content-Type': contentType,
-			...cacheControl(`public, durable, max-age=${maxAge}, s-maxage=${maxAge}`),
+			...cacheControl(`public, max-age=${maxAge}, s-maxage=${maxAge}`),
 			'Cross-Origin-Resource-Policy': 'cross-origin',
 			...headers,
 		},
