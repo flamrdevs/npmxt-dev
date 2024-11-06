@@ -9,7 +9,7 @@ import * as Plot from '@observablehq/plot';
 import type { TPackageDownloadRangeSchema, TPackageSchema } from '~/utils/npm/schema';
 import { fetchPackageAllDownload } from '~/utils/npm/utils.client';
 
-import { fontFamilySans, v_cn2, v_cn6, v_cn9, v_cn11, v_cp9 } from '~/styles/utils';
+import { fontFamilySans, v_cn2, v_cn6, v_cn9, v_cp9 } from '~/styles/utils';
 import { dayjs } from '~/utils/dayjs';
 import { formatNumber, formatNumberCompact } from '~/utils/formatter';
 
@@ -23,16 +23,25 @@ type TransformedPackageAllDownload = {
 const transformPackageDownloadRange = (pkg: TPackageDownloadRangeSchema): TransformedPackageAllDownload => {
 	const record: Record<string, number> = {};
 
+	let tempDate: string;
 	for (const download of pkg.downloads) {
-		const key = download.day.slice(0, -3);
-		record[key] = (record[key] ?? 0) + download.downloads;
+		record[(tempDate = download.day.slice(0, -3))] = (record[tempDate] ?? 0) + download.downloads;
+	}
+
+	const downloads: {
+		x: Date;
+		y: number;
+	}[] = [];
+
+	for (tempDate in record) {
+		downloads.push({ x: new Date(tempDate), y: record[tempDate] });
 	}
 
 	return {
 		name: pkg.package,
 		start: new Date(pkg.start),
 		end: new Date(pkg.end),
-		downloads: Object.entries(record).map(([key, value]) => ({ x: new Date(key), y: value })),
+		downloads,
 	};
 };
 
@@ -52,11 +61,11 @@ const RenderChart = (props: { tpkg: TransformedPackageAllDownload }) => {
 		return [
 			Plot.axisX({ anchor: 'bottom', labelAnchor: 'right', ticks: data.length > 60 ? '6 months' : data.length > 30 ? '3 months' : 'month' }),
 			Plot.axisY({ anchor: 'left', labelAnchor: 'top', ticks: 10, tickFormat: yAxisTickFormatter }),
-			Plot.gridY({ stroke: v_cn11, strokeDasharray: '1,2' }),
+			Plot.gridY({ stroke: v_cn9, strokeDasharray: '1,2' }),
 			Plot.lineY(data, { x, y, curve: 'catmull-rom', stroke: v_cp9 }),
-			Plot.ruleX(data, Plot.pointerX({ x, py: y, stroke: v_cn11 })),
+			Plot.ruleX(data, Plot.pointerX({ x, py: y, stroke: v_cn9 })),
 			Plot.ruleY([0], { stroke: v_cn9 }),
-			Plot.dot(data, Plot.pointerX({ x, y, stroke: v_cn11 })),
+			Plot.dot(data, Plot.pointerX({ x, y, stroke: v_cn9 })),
 			Plot.tip(data, Plot.pointerX({ x, y, title: titleTipFormatter, fill: v_cn2, stroke: v_cn6, fontSize: 12, textPadding: 10 })),
 		];
 	});
@@ -101,19 +110,25 @@ const Chart = (props: { pkg: TPackageSchema }) => {
 	const tpkg = createAsync(() => getTransformedPackageAllDownload(props.pkg));
 
 	return (
-		<ErrorBoundary fallback="Error loading chart">
+		<ErrorBoundary
+			fallback={
+				<div class="relative flex items-center justify-center size-full">
+					<div class="relative font-medium text-xl">Error while loading chart</div>
+				</div>
+			}
+		>
 			<Suspense
 				fallback={
 					<div class="relative flex items-center justify-center size-full">
-						<div class="relative size-2/3 animate-pulse">
-							<div class="absolute top-1/3 left-0 w-full h-px bg-cn-3 rounded" />
-							<div class="absolute top-2/3 left-0 w-full h-px bg-cn-3 rounded" />
+						<div class="relative size-[90%] animate-pulse">
+							<div class="absolute top-1/3 left-0 w-full h-px bg-cn-4 rounded" />
+							<div class="absolute top-2/3 left-0 w-full h-px bg-cn-4 rounded" />
 
-							<div class="absolute bottom-0 left-0 w-full h-1 bg-cn-6 rounded" />
-							<div class="absolute top-0 left-0 w-1 h-full bg-cn-6 rounded" />
+							<div class="absolute bottom-2 left-0 w-full h-0.5 bg-cn-6 rounded" />
+							<div class="absolute top-0 left-2 w-0.5 h-full bg-cn-6 rounded" />
 
-							<div class="absolute top-3/5 left-1/6 w-1/2 h-px bg-cn-9 rounded -rotate-12" />
-							<div class="absolute top-1/4 left-4/6 w-1/4 h-px bg-cn-9 rounded -rotate-12" />
+							<div class="absolute h-px bg-cp-9 rounded -rotate-[12deg]" style={{ top: '40%', left: '15%', width: '60%' }} />
+							<div class="absolute h-px bg-cp-9 rounded -rotate-[15deg]" style={{ top: '70%', left: '65%', width: '30%' }} />
 						</div>
 					</div>
 				}

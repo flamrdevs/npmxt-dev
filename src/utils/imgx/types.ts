@@ -1,7 +1,7 @@
 import type { Properties as CSSTypeProperties } from 'csstype';
 
 export namespace CSS {
-	export type Properties = CSSTypeProperties;
+	export type Properties = CSSTypeProperties<string | number>;
 
 	export namespace Properties {
 		export type Root = TF.OverrideProperties<Properties, { width: number; height: number }>;

@@ -14,16 +14,16 @@ export default createMiddleware({
 		secureRequest({
 			crossOriginResourcePolicy: 'same-origin',
 			csp: (() => {
-				const withNonce = false; // reason : maybe some framework or library issue ('style-src-elem' nonce-{nonce} is not listed)
+				const withNonce = false;
 
 				// prod
-				const DEFAULT_SRC = [CSP.SELF];
+				const DEFAULT_SRC = [CSP.SELF, CSP.UNSAFE_INLINE];
 				const FRAME_SRC = [CSP.SELF];
 				const SCRIPT_SRC = [CSP.SELF];
 				const SCRIPT_SRC_ELEM = [CSP.SELF, CSP.UNSAFE_INLINE];
 				const FONT_SRC = [CSP.SELF, CDN_JSDELIVR];
 				const STYLE_SRC = [CSP.SELF, CSP.UNSAFE_INLINE];
-				const STYLE_SRC_ELEM = STYLE_SRC;
+				const STYLE_SRC_ELEM = [CSP.NONE];
 				const CONNECT_SRC = [CSP.SELF, NPM.BASE_URL_REGISTRY, NPM.BASE_URL_API];
 				const IMG_SRC = [CSP.SELF, CSP.DATA];
 
