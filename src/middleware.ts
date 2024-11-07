@@ -19,8 +19,8 @@ export default createMiddleware({
 				// prod
 				const DEFAULT_SRC = [CSP.SELF, CSP.UNSAFE_INLINE];
 				const FRAME_SRC = [CSP.SELF];
-				const SCRIPT_SRC = [CSP.SELF];
-				const SCRIPT_SRC_ELEM = [CSP.SELF, CSP.UNSAFE_INLINE];
+				const SCRIPT_SRC = [CSP.SELF, CSP.UNSAFE_EVAL];
+				const SCRIPT_SRC_ELEM = [CSP.SELF, CSP.UNSAFE_EVAL, CSP.UNSAFE_INLINE];
 				const FONT_SRC = [CSP.SELF, CDN_JSDELIVR];
 				const STYLE_SRC = [CSP.SELF, CSP.UNSAFE_INLINE];
 				const STYLE_SRC_ELEM = [CSP.NONE];
@@ -50,8 +50,8 @@ export default createMiddleware({
 						value: {
 							'default-src': DEFAULT_SRC,
 							'frame-src': FRAME_SRC,
-							'script-src': [...SCRIPT_SRC, CSP.UNSAFE_EVAL, CSP.UNSAFE_INLINE],
-							'script-src-elem': [...SCRIPT_SRC_ELEM, CSP.UNSAFE_EVAL],
+							'script-src': [...SCRIPT_SRC, CSP.UNSAFE_INLINE],
+							'script-src-elem': SCRIPT_SRC_ELEM,
 							'font-src': FONT_SRC,
 							'style-src': STYLE_SRC,
 							'style-src-elem': STYLE_SRC_ELEM,
