@@ -1,10 +1,19 @@
-export default (
-	record: {
-		[key in '__DEV__' | '__ENABLE_MSW__']: any;
-	} & {
-		[key: string]: any;
-	},
-) => {
+export default ({
+	dev,
+	msw,
+}: {
+	dev: boolean;
+	msw?: {
+		delay?: boolean;
+	};
+}) => {
+	const record: Record<any, any> = {};
+
+	record['__DEV__'] = dev;
+
+	record['__MSW__'] = Boolean(msw);
+	record['__MSW_DELAY__'] = Boolean(msw?.delay);
+
 	console.log('');
 	console.log('define');
 	let key: string;

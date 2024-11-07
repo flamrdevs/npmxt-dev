@@ -2,8 +2,9 @@ import { http, HttpResponse, delay } from 'msw';
 
 import { dayjs } from '~/utils/dayjs';
 
-import { PACKAGE_DOWNLOAD_RANGE_LAST_LIST, PACKAGE_DOWNLOAD_RANGE_LAST_MAP, type TPackageDownloadRangeSchema, parsePackageDownloadRangeLast } from '~/utils/npm/schema';
-import { BASE_URL_API as NPM_BASE_URL_API } from '~/utils/npm/url';
+import { DOWNLOAD_DATE_FORMAT } from '~/npm/const';
+import { PACKAGE_DOWNLOAD_LAST_LIST, PACKAGE_DOWNLOAD_LAST_MAP, type TPackageDownloadPointSchema, type TPackageDownloadRangeSchema, parsePackageDownloadLast } from '~/npm/schema';
+import { BASE_URL_API as NPM_BASE_URL_API } from '~/npm/url';
 
 import { MOCK_PACKAGE_METADATA } from '../registry.npmjs/handlers';
 
@@ -23,9 +24,7 @@ const MOCK_PACKAGE_DOWNLOAD_RANGE: Record<string, number | TPackageDownloadRange
 	['@looooooooo/oooooooooooooooooooooooong']: 10000,
 };
 
-const DATE_FORMAT = 'YYYY-MM-DD';
-
-const MIN_START_DATE_DAYJS = dayjs('2015-01-01' /* behind 2015-01-10 */, DATE_FORMAT);
+const MIN_START_DATE_DAYJS = dayjs('2015-01-01' /* behind MIN_START_DOWNLOAD_DATE */, DOWNLOAD_DATE_FORMAT);
 
 const generateDownloads = (() => {
 	const now = dayjs().startOf('day');
@@ -48,7 +47,7 @@ const generateDownloads = (() => {
 
 				result.push({
 					downloads: range(min, max),
-					day: startDayjs.clone().add(index, 'days').format(DATE_FORMAT),
+					day: startDayjs.clone().add(index, 'days').format(DOWNLOAD_DATE_FORMAT),
 				});
 			}
 
@@ -76,21 +75,31 @@ const getDownloadsRecord = (name: string) => {
 	return record;
 };
 
+type DownloadType = 'point' | 'range';
+const isValidDownloadType = (type: unknown): type is DownloadType => type === 'point' || type === 'range';
+
 const isLastPeriod = (() => {
-	const list = PACKAGE_DOWNLOAD_RANGE_LAST_LIST.map((last) => `last-${last}`);
+	const list = PACKAGE_DOWNLOAD_LAST_LIST.map((last) => `last-${last}`);
 	return (value: string) => list.includes(value);
 })();
 
+const transformDownloadsByType = (type: DownloadType, downloads: TPackageDownloadRangeSchema['downloads']) =>
+	(type === 'point' ? downloads.reduce((a, { downloads }) => a + downloads, 0) : downloads) as any;
+
 export default [
-	http.get<{ period: string; 0: string }>(`${NPM_BASE_URL_API}/downloads/range/:period/*`, async ({ params }) => {
-		await delay(1000);
+	http.get<{ type: string; period: string; 0: string }>(`${NPM_BASE_URL_API}/downloads/:type/:period/*`, async ({ params }) => {
+		if (__MSW_DELAY__) await delay(1000);
+
+		const type = params['type'];
 
 		const period = params['period'];
 		const name = params['0'];
 
+		if (!isValidDownloadType(type)) throw HttpResponse.json({ error: `download ${type} not implemented` }, { status: 501 });
+
 		if (isLastPeriod(period)) {
-			const last = parsePackageDownloadRangeLast(period.slice(5));
-			const lastLength = PACKAGE_DOWNLOAD_RANGE_LAST_MAP[last];
+			const last = parsePackageDownloadLast(period.slice(5));
+			const lastLength = PACKAGE_DOWNLOAD_LAST_MAP[last];
 
 			if (name in MOCK_PACKAGE_DOWNLOAD_RANGE) {
 				const allDownloadsRecord = getDownloadsRecord(name);
@@ -100,7 +109,7 @@ export default [
 
 				let tempDay: string;
 				const lastYearDownloads: TPackageDownloadRangeSchema['downloads'] = Array.from({ length: lastLength }).map((_, index) => {
-					tempDay = startDayjs.clone().add(index, 'days').format(DATE_FORMAT);
+					tempDay = startDayjs.clone().add(index, 'days').format(DOWNLOAD_DATE_FORMAT);
 					return { downloads: allDownloadsRecord[tempDay] ?? 0, day: tempDay };
 				});
 
@@ -109,8 +118,8 @@ export default [
 						start: lastYearDownloads.at(0)?.day as string,
 						end: lastYearDownloads.at(-1)?.day as string,
 						package: name,
-						downloads: lastYearDownloads,
-					} satisfies TPackageDownloadRangeSchema,
+						downloads: transformDownloadsByType(type, lastYearDownloads),
+					} satisfies TPackageDownloadPointSchema | TPackageDownloadRangeSchema,
 					{ status: 200 },
 				);
 			}
@@ -120,7 +129,7 @@ export default [
 
 		const periodSplitted = period.split(':');
 
-		if (periodSplitted.length !== 2) throw HttpResponse.json({ error: 'not implemented' }, { status: 501 });
+		if (periodSplitted.length !== 2) throw HttpResponse.json({ error: 'period type not implemented' }, { status: 501 });
 
 		const [startPeriod, endPeriod] = periodSplitted;
 
@@ -140,7 +149,7 @@ export default [
 
 				let tempDay: string;
 				const periodDownloads: TPackageDownloadRangeSchema['downloads'] = Array.from({ length: diffDays }).map((_, index) => {
-					tempDay = startDayjs.clone().add(index, 'days').format(DATE_FORMAT);
+					tempDay = startDayjs.clone().add(index, 'days').format(DOWNLOAD_DATE_FORMAT);
 					return { downloads: allDownloadsRecord[tempDay] ?? 0, day: tempDay };
 				});
 
@@ -149,8 +158,8 @@ export default [
 						start: periodDownloads.at(0)?.day as string,
 						end: periodDownloads.at(-1)?.day as string,
 						package: name,
-						downloads: periodDownloads,
-					} satisfies TPackageDownloadRangeSchema,
+						downloads: transformDownloadsByType(type, periodDownloads),
+					} satisfies TPackageDownloadPointSchema | TPackageDownloadRangeSchema,
 					{ status: 200 },
 				);
 			}

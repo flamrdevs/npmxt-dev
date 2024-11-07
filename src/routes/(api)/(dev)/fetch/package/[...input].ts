@@ -1,8 +1,8 @@
 import { json } from '@solidjs/router';
 
-import { fetchPackageAlt } from '~/utils/npm/utils';
+import { fetchPackageAlt } from '~/npm/utils';
 
-import { handleNotImplemented } from '~/utils/server/handler/defaults';
-import { catchErrorStatusMessage } from '~/utils/server/response/error';
+import { handleNotImplemented } from '~/server/handler/defaults';
+import { catchErrorStatusMessage } from '~/server/response/error';
 
 export const GET = __DEV__ ? (event: SolidJS.Start.Server.APIEvent) => catchErrorStatusMessage(async () => json(await fetchPackageAlt(event.params['input']))) : handleNotImplemented;

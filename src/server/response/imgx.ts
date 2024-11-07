@@ -1,4 +1,4 @@
-import type { Node } from '~/utils/imgx';
+import type { Node } from '~/imgx';
 
 import { cacheControl } from '../header';
 
@@ -18,6 +18,6 @@ const init = (contentType: string, { maxAge = __DEV__ ? 1 : 86400, headers = {} 
 	};
 };
 
-export const svg = async (node: Node.Root, options?: Options) => new Response(await (await import('~/utils/imgx/svg')).svg(node), init('image/svg+xml', options));
+export const svg = async (node: Node.Root, options?: Options) => new Response(await (await import('~/imgx/svg')).svg(node), init('image/svg+xml', options));
 
-export const png = async (node: Node.Root, options?: Options) => new Response(await (await import('~/utils/imgx/png')).png(node), init('image/png', options));
+export const png = async (node: Node.Root, options?: Options) => new Response(await (await import('~/imgx/png')).png(node), init('image/png', options));

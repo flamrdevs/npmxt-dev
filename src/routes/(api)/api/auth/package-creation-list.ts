@@ -3,7 +3,7 @@ import { json } from '@solidjs/router';
 import { db } from '~/db/db';
 import { packageCreationTable } from '~/db/schema';
 
-import { errorStatusMessageResponse } from '~/utils/server/response/error';
+import { errorStatusMessageResponse } from '~/server/response/error';
 
 export async function GET() {
 	try {

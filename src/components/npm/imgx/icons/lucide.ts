@@ -1,6 +1,6 @@
 import type { IconNode } from 'lucide';
 
-import { h } from '~/utils/imgx';
+import { h } from '~/imgx';
 
 export namespace LucideIcon {
 	export type Props = {

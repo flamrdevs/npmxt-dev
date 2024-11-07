@@ -1,8 +1,8 @@
 import { json } from '@solidjs/router';
 
-import { fetchPackage, fetchPackageLastDownload } from '~/utils/npm/utils';
-import { errorStatusMessageResponse } from '~/utils/server/response/error';
-import { createKeyedMemoCache } from '~/utils/server/response/memo-cache';
+import { fetchPackage, fetchPackageLastDownloadRange } from '~/npm/utils';
+import { errorStatusMessageResponse } from '~/server/response/error';
+import { createKeyedMemoCache } from '~/server/response/memo-cache';
 
 import * as badge from '~/components/npm/imgx/badge/download';
 
@@ -14,7 +14,7 @@ export async function GET(event: SolidJS.Start.Server.APIEvent) {
 
 		const { name } = await fetchPackage(event.params['name']);
 
-		const { downloads } = await fetchPackageLastDownload(name, 'year');
+		const { downloads } = await fetchPackageLastDownloadRange(name, 'year');
 
 		return await withCache(name, () => badge.y(downloads.reduce((a, { downloads }) => a + downloads, 0)));
 	} catch (error) {

@@ -2,10 +2,10 @@ import * as d3 from 'd3';
 
 import { Download } from 'lucide';
 
-import type { TPackageDownloadRangeSchema } from '~/utils/npm/schema';
-import { svg } from '~/utils/server/response/imgx';
+import type { TPackageDownloadRangeSchema } from '~/npm/schema';
+import { svg } from '~/server/response/imgx';
 
-import { h } from '~/utils/imgx';
+import { h } from '~/imgx';
 
 import { formatNumber } from '~/utils/formatter';
 

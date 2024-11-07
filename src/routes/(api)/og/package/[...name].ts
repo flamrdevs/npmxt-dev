@@ -1,8 +1,8 @@
 import { json } from '@solidjs/router';
 
-import { fetchPackage } from '~/utils/npm/utils';
-import { errorStatusMessageResponse } from '~/utils/server/response/error';
-import { createKeyedMemoCache } from '~/utils/server/response/memo-cache';
+import { fetchPackage } from '~/npm/utils';
+import { errorStatusMessageResponse } from '~/server/response/error';
+import { createKeyedMemoCache } from '~/server/response/memo-cache';
 
 import og from '~/components/npm/imgx/og/package';
 
