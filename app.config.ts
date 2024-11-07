@@ -16,8 +16,12 @@ export default defineConfig({
 	middleware: './src/middleware.ts',
 	vite: {
 		define: define({
-			__DEV__: process.argv.includes('dev'),
-			__ENABLE_MSW__: process.argv.includes('--msw'),
+			dev: process.argv.includes('dev'),
+			msw: process.argv.includes('--msw')
+				? {
+						delay: true,
+					}
+				: undefined,
 		}),
 		plugins: [autoImport()],
 		build: {

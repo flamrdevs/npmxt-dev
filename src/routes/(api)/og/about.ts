@@ -1,5 +1,5 @@
-import { createNonKeyedMemoCache } from '~/utils/server/response/memo-cache';
-import { og } from '~/utils/server/response/og';
+import { createNonKeyedMemoCache } from '~/server/response/memo-cache';
+import { og } from '~/server/response/og';
 
 const withCache = createNonKeyedMemoCache();
 

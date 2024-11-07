@@ -6,46 +6,37 @@ import { createResizeObserver } from '@solid-primitives/resize-observer';
 
 import * as Plot from '@observablehq/plot';
 
-import type { TPackageDownloadRangeSchema, TPackageSchema } from '~/utils/npm/schema';
-import { fetchPackageAllDownload } from '~/utils/npm/utils.client';
+import type { TPackageSchema } from '~/npm/schema';
+import type { PackageDownloadsRecord } from '~/npm/utils.get';
 
 import { fontFamilySans, v_cn2, v_cn6, v_cn9, v_cp9 } from '~/styles/utils';
 import { dayjs } from '~/utils/dayjs';
 import { formatNumber, formatNumberCompact } from '~/utils/formatter';
 
-type TransformedPackageAllDownload = {
+import { fetchPackageAllDownloadsRecord } from './utils';
+
+type TransformedPackageAllDownloads = {
 	name: string;
 	start: Date;
 	end: Date;
 	downloads: { x: Date; y: number }[];
 };
 
-const transformPackageDownloadRange = (pkg: TPackageDownloadRangeSchema): TransformedPackageAllDownload => {
+const transformPackageDownloadRange = (pkg: PackageDownloadsRecord): TransformedPackageAllDownloads => {
 	const record: Record<string, number> = {};
 
 	let tempDate: string;
-	for (const download of pkg.downloads) {
-		record[(tempDate = download.day.slice(0, -3))] = (record[tempDate] ?? 0) + download.downloads;
-	}
 
-	const downloads: {
-		x: Date;
-		y: number;
-	}[] = [];
+	for (const date in pkg.record) record[(tempDate = date.slice(0, -3))] = (record[tempDate] ?? 0) + pkg.record[date];
 
-	for (tempDate in record) {
-		downloads.push({ x: new Date(tempDate), y: record[tempDate] });
-	}
+	const downloads: { x: Date; y: number }[] = [];
 
-	return {
-		name: pkg.package,
-		start: new Date(pkg.start),
-		end: new Date(pkg.end),
-		downloads,
-	};
+	for (tempDate in record) downloads.push({ x: new Date(tempDate), y: record[tempDate] });
+
+	return { name: pkg.name, start: new Date(pkg.start), end: new Date(pkg.end), downloads };
 };
 
-const RenderChart = (props: { tpkg: TransformedPackageAllDownload }) => {
+const RenderChart = (props: { tpkg: TransformedPackageAllDownloads }) => {
 	let containerRef: HTMLDivElement | undefined;
 
 	const yAxisTickFormatter = (d: any) => formatNumberCompact(d);
@@ -104,10 +95,13 @@ const RenderChart = (props: { tpkg: TransformedPackageAllDownload }) => {
 	return <div ref={containerRef} class="size-full select-none" />;
 };
 
-const getTransformedPackageAllDownload = query(async (pkg: TPackageSchema) => transformPackageDownloadRange(await fetchPackageAllDownload(pkg.name)), 'transformed-package-download');
+const getTransformedPackageAllDownloadsRecord = query(
+	async (pkg: TPackageSchema) => transformPackageDownloadRange(await fetchPackageAllDownloadsRecord(pkg.name)),
+	'transformed-package-downloads-record',
+);
 
 const Chart = (props: { pkg: TPackageSchema }) => {
-	const tpkg = createAsync(() => getTransformedPackageAllDownload(props.pkg));
+	const tpkg = createAsync(() => getTransformedPackageAllDownloadsRecord(props.pkg));
 
 	return (
 		<ErrorBoundary

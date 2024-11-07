@@ -11,8 +11,10 @@ import define from './define';
 export default defineConfig({
 	plugins: [tsconfigPaths(), autoImport(), solid()],
 	define: define({
-		__DEV__: true,
-		__ENABLE_MSW__: true,
+		dev: true,
+		msw: {
+			delay: false,
+		},
 	}),
 	test: {
 		globals: true,

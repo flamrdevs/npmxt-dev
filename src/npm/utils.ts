@@ -1,8 +1,17 @@
 import { StatusError } from '~/utils/error';
 
-import { type TPackageDownloadRangeSchema, type TPackageSchema, parsePackage, parsePackageDownloadRange, parsePackageDownloadRangeLast, parsePackageName } from './schema';
+import {
+	type TPackageDownloadPointSchema,
+	type TPackageDownloadRangeSchema,
+	type TPackageSchema,
+	parsePackage,
+	parsePackageDownloadLast,
+	parsePackageDownloadPoint,
+	parsePackageDownloadRange,
+	parsePackageName,
+} from './schema';
 
-import { fetcherPackage, fetcherPackageDownloadRange } from './fetcher';
+import { fetcherPackage, fetcherPackageDownloadPoint, fetcherPackageDownloadRange } from './fetcher';
 
 import { createDailyCacheStorage } from './storage';
 
@@ -57,12 +66,28 @@ export const fetchPackage = (() => {
 
 export const fetchPackageAlt = (input: string): Promise<TPackageSchema> => fetchPackage(...splitPackageNameAndVersion(input));
 
-export const fetchPackageLastDownload = (() => {
+export const fetchPackageLastDownloadPoint = (() => {
+	const withStorage = createDailyCacheStorage<TPackageDownloadPointSchema>(__DEV__ ? 'npm:package-download-point-last' : 'npm:pkg-dp-ly');
+
+	return async (rawName: string, rawLast: string): Promise<TPackageDownloadPointSchema> => {
+		const validName = parsePackageName(rawName);
+		const validLast = parsePackageDownloadLast(rawLast);
+		return await withStorage(`${validName}/${validLast}`, async () => {
+			try {
+				return parsePackageDownloadPoint(await fetcherPackageDownloadPoint(`last-${validLast}`, validName));
+			} catch (error) {
+				throw new StatusError('Package not found', 404);
+			}
+		});
+	};
+})();
+
+export const fetchPackageLastDownloadRange = (() => {
 	const withStorage = createDailyCacheStorage<TPackageDownloadRangeSchema>(__DEV__ ? 'npm:package-download-range-last' : 'npm:pkg-dr-ly');
 
 	return async (rawName: string, rawLast: string): Promise<TPackageDownloadRangeSchema> => {
 		const validName = parsePackageName(rawName);
-		const validLast = parsePackageDownloadRangeLast(rawLast);
+		const validLast = parsePackageDownloadLast(rawLast);
 		return await withStorage(`${validName}/${validLast}`, async () => {
 			try {
 				return parsePackageDownloadRange(await fetcherPackageDownloadRange(`last-${validLast}`, validName));

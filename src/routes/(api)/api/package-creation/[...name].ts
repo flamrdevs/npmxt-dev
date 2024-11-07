@@ -9,11 +9,11 @@ import * as v from 'valibot';
 import { db } from '~/db/db';
 import { packageCreationTable } from '~/db/schema';
 
-import { PackageNameSchema, parsePackageName } from '~/utils/npm/schema';
-import { BASE_URL_REGISTRY } from '~/utils/npm/url';
-import { cacheControl } from '~/utils/server/header';
-import { errorStatusMessageResponse } from '~/utils/server/response/error';
-import { createKeyedMemoCache } from '~/utils/server/response/memo-cache';
+import { PackageNameSchema, parsePackageName } from '~/npm/schema';
+import { BASE_URL_REGISTRY } from '~/npm/url';
+import { cacheControl } from '~/server/header';
+import { errorStatusMessageResponse } from '~/server/response/error';
+import { createKeyedMemoCache } from '~/server/response/memo-cache';
 import { createParser } from '~/utils/valibot';
 
 const parsePackageMetadata = createParser(

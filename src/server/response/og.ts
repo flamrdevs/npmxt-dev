@@ -1,4 +1,4 @@
-import { type CSS, type Children, h } from '~/utils/imgx';
+import { type CSS, type Children, h } from '~/imgx';
 
 import { png } from './imgx';
 

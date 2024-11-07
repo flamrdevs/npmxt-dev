@@ -1,4 +1,4 @@
-import { height, og, width } from '~/utils/server/response/og';
+import { height, og, width } from '~/server/response/og';
 
 import * as colors from './../styles/colors';
 

@@ -1,9 +1,9 @@
 import { Download } from 'lucide';
 
-import { svg } from '~/utils/server/response/imgx';
+import { svg } from '~/server/response/imgx';
 
+import { h } from '~/imgx';
 import { formatNumberCompact } from '~/utils/formatter';
-import { h } from '~/utils/imgx';
 
 import * as colors from './../styles/colors';
 

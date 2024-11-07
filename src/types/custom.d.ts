@@ -9,7 +9,8 @@ import type { ClassValue } from 'clsx';
 
 declare global {
 	var __DEV__: boolean;
-	var __ENABLE_MSW__: boolean;
+	var __MSW__: boolean;
+	var __MSW_DELAY__: boolean;
 
 	namespace TF {
 		export type * from 'type-fest';

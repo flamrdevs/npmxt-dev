@@ -4,7 +4,7 @@ import { csrfProtection, secureRequest } from 'shieldwall/start';
 
 import * as CSP from 'csp-header';
 
-import * as NPM from './utils/npm/url';
+import * as NPM from './npm/url';
 import { CDN_JSDELIVR } from './utils/url';
 
 export default createMiddleware({

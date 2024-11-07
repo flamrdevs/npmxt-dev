@@ -1,8 +1,8 @@
 import { http, HttpResponse, delay } from 'msw';
 
-import type { TPackageSchema } from '~/utils/npm/schema';
-import { BASE_URL_REGISTRY as NPM_BASE_URL_REGISTRY } from '~/utils/npm/url';
-import { splitPackageNameAndVersion } from '~/utils/npm/utils';
+import type { TPackageSchema } from '~/npm/schema';
+import { BASE_URL_REGISTRY as NPM_BASE_URL_REGISTRY } from '~/npm/url';
+import { splitPackageNameAndVersion } from '~/npm/utils';
 
 type MockPackageMetadataValue = { time: { created: string } };
 
@@ -170,7 +170,7 @@ const MOCK_PACKAGE: Record<string, MockPackageValue> = {
 
 export default [
 	http.get<{ 0: string }>(`${NPM_BASE_URL_REGISTRY}/*`, async ({ params }) => {
-		await delay(1000);
+		if (__MSW_DELAY__) await delay(1000);
 
 		const [tName, tVersion] = splitPackageNameAndVersion(params['0']);
 

@@ -4,8 +4,8 @@ import { ErrorBoundary, Show, Suspense } from 'solid-js';
 import { RenderStatusMessageError } from '~/components/error';
 import * as Meta from '~/components/meta';
 
-import type { TPackageSchema } from '~/utils/npm/schema';
-import { fetchPackageAlt } from '~/utils/npm/utils';
+import type { TPackageSchema } from '~/npm/schema';
+import { fetchPackageAlt } from '~/npm/utils';
 
 const RenderPackage = (props: { pkg: TPackageSchema }) => {
 	const title = () => `${props.pkg.name} - package`;

@@ -6,8 +6,8 @@ import { NPMPackageDownloadChart } from '~/components/npm/charts/package-downloa
 import { RenderStatusMessageError } from '~/components/error';
 import * as Meta from '~/components/meta';
 
-import type { TPackageSchema } from '~/utils/npm/schema';
-import { fetchPackage } from '~/utils/npm/utils';
+import type { TPackageSchema } from '~/npm/schema';
+import { fetchPackage } from '~/npm/utils';
 
 const RenderPackage = (props: { pkg: TPackageSchema }) => {
 	const title = () => `${props.pkg.name} - package`;
@@ -16,7 +16,7 @@ const RenderPackage = (props: { pkg: TPackageSchema }) => {
 	return (
 		<>
 			<Meta.Base title={title()} description={description()} />
-			<Meta.OG title={title()} description={description()} img={`d/${props.pkg.name}`} />
+			<Meta.OG title={title()} description={description()} img={`download/${props.pkg.name}`} />
 
 			<div class="flex items-center justify-center w-dvw h-dvh bg-cn-1 font-bold text-4xl text-cn-12">
 				<NPMPackageDownloadChart pkg={props.pkg} />
