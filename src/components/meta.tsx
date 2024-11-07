@@ -41,7 +41,7 @@ export const OG = (() => {
 		});
 	};
 
-	const HOST = __DEV__ ? 'http://localhost:3000' : 'https://npmxt-dev.vercel.app';
+	const HOST = __DEV__ ? 'http://localhost:3000' : 'https://npmxt-dev.netlify.app';
 
 	return (props: OG.Props) => {
 		const location = useLocation();
