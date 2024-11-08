@@ -1,5 +1,5 @@
 import { StatusError } from '~/utils/error';
-import { fetchPackage, fetchPackageAlt, fetchPackageLastDownloadRange, splitPackageNameAndVersion } from './utils';
+import { fetchPackage, fetchPackageAlt, fetchPackageLastDownloadsRange, splitPackageNameAndVersion } from './utils';
 
 describe('splitPackageNameAndVersion', () => {
 	it('Parse package name', () => {
@@ -46,7 +46,7 @@ describe('fetchPackage', () => {
 	});
 });
 
-describe('fetchPackageLastDownloadRange', () => {
+describe('fetchPackageLastDownloadsRange', () => {
 	it.for([
 		//
 		['solid-js', 'day'],
@@ -58,7 +58,7 @@ describe('fetchPackageLastDownloadRange', () => {
 		['@solidjs/start', 'month'],
 		['@solidjs/start', 'year'],
 	])('found - %s last-%s', async ([name, last]) => {
-		await expect(fetchPackageLastDownloadRange(name, last)).resolves.toMatchObject({
+		await expect(fetchPackageLastDownloadsRange(name, last)).resolves.toMatchObject({
 			package: name,
 			start: expect.any(String),
 			end: expect.any(String),
@@ -72,6 +72,6 @@ describe('fetchPackageLastDownloadRange', () => {
 		['next'],
 		['nuxt'],
 	])('not found - %s last-week', async ([name]) => {
-		await expect(fetchPackageLastDownloadRange(name, 'week')).rejects.toThrow(StatusError);
+		await expect(fetchPackageLastDownloadsRange(name, 'week')).rejects.toThrow(StatusError);
 	});
 });

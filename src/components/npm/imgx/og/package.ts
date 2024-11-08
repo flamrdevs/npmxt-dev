@@ -1,13 +1,13 @@
-import { height, og, width } from '~/server/response/og';
+import { OGImageResponse, height, width } from '~/server/imgx/response/og';
 
-import * as colors from './../styles/colors';
+import * as colors from '~/imgx/colors';
 
 export default (name: string, version: string) => {
 	const theme = 'dark';
 
 	const neutral = colors.n[theme];
 
-	return og(
+	return OGImageResponse(
 		(e) => [
 			e('div', {
 				style: {
@@ -24,11 +24,13 @@ export default (name: string, version: string) => {
 			}),
 		],
 		{
-			display: 'flex',
-			backgroundColor: neutral[1],
-			color: neutral[12],
-			border: `1px solid ${neutral[3]}`,
-			overflow: 'hidden',
-		},
+			style: {
+				display: 'flex',
+				backgroundColor: neutral[2],
+				color: neutral[12],
+				border: `1px solid ${neutral[3]}`,
+				overflow: 'hidden',
+			},
+		}
 	);
 };

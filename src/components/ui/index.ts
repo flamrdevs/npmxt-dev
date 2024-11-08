@@ -9,3 +9,5 @@ export { Checkbox } from './checkbox';
 export { Switch } from './switch';
 
 export { Separator } from './separator';
+
+export { Loader } from './loader';

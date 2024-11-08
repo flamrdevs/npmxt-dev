@@ -17,9 +17,11 @@ export const svg = async (node: Node.Root) => {
 	if (typeof props.style.fontSize === 'undefined') props.style.fontSize = 16;
 	if (typeof props.style.fontStyle === 'undefined') props.style.fontStyle = 'normal';
 	if (typeof props.style.fontWeight === 'undefined') props.style.fontWeight = 400;
-	return await satori({ type, props } as any, {
-		fonts: await fonts(),
-		width,
-		height,
-	});
+	return (
+		await satori({ type, props } as any, {
+			fonts: await fonts(),
+			width,
+			height,
+		})
+	).replaceAll('satori_', 'xt');
 };

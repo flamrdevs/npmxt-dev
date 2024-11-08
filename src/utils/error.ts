@@ -6,7 +6,7 @@ import { getErrorMessage as getValibotErrorMessage } from '~/utils/valibot';
 export class StatusError extends Error {
 	constructor(
 		message: string,
-		public status = 200,
+		public status = 200
 	) {
 		super(message);
 	}

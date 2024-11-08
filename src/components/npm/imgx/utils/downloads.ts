@@ -1,6 +1,6 @@
-import type { TPackageDownloadRangeSchema } from '~/npm/schema';
+import type { TPackageDownloadsRangeSchema } from '~/npm/schema';
 
-export const chartDataLastYearDownloads = (downloads: TPackageDownloadRangeSchema['downloads'], perDays: number | undefined = 14) => {
+export const chartDataLastYearDownloads = (downloads: TPackageDownloadsRangeSchema['downloads'], perDays: number | undefined = 14) => {
 	const data: number[] = [];
 	let total = 0;
 

@@ -35,7 +35,7 @@ export const theme = Object.keys(ALIAS).reduce(
 				record[shade] = `hsl(var(--c-${alias}-${shade}))`;
 				return record;
 			},
-			{} as Record<string, string>,
+			{} as Record<string, string>
 		);
 		return record;
 	},
@@ -73,7 +73,7 @@ export const theme = Object.keys(ALIAS).reduce(
 			11: 'rgba(255, 255, 255, 0.9)',
 			12: 'rgba(255, 255, 255, 0.95)',
 		},
-	} as Record<string, string | Record<string, string>>,
+	} as Record<string, string | Record<string, string>>
 );
 
 export const plugin = () =>
@@ -83,9 +83,9 @@ export const plugin = () =>
 		for (const name in COLORS) {
 			const [LIGHT, DARK] = COLORS[name as keyof typeof COLORS];
 
-			SHADES.forEach((_, index) => {
-				light[`--c-${name}-${index}`] = LIGHT[index];
-				dark[`--c-${name}-${index}`] = DARK[index];
+			SHADES.forEach((shade, index) => {
+				light[`--c-${name}-${shade}`] = LIGHT[index];
+				dark[`--c-${name}-${shade}`] = DARK[index];
 			});
 		}
 
@@ -94,7 +94,7 @@ export const plugin = () =>
 				for (const SHADE of SHADES) record[`--c-${alias}-${SHADE}`] = `var(--c-${name}-${SHADE})`;
 				return record;
 			},
-			{} as Record<`--${string}`, string>,
+			{} as Record<`--${string}`, string>
 		);
 
 		addBase({

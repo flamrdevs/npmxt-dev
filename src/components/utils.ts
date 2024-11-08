@@ -6,7 +6,7 @@ export const klassXVariants = <
 		[variant: string]: string[];
 	},
 >(
-	record: T,
+	record: T
 ) => {
 	const result = {} as {
 		[K in keyof T]: {

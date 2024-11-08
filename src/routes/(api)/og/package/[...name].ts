@@ -1,8 +1,8 @@
 import { json } from '@solidjs/router';
 
 import { fetchPackage } from '~/npm/utils';
-import { errorStatusMessageResponse } from '~/server/response/error';
-import { createKeyedMemoCache } from '~/server/response/memo-cache';
+import { jsonErrorStatusMessageResponse } from '~/server/error';
+import { createKeyedMemoCache } from '~/server/memo-cache';
 
 import og from '~/components/npm/imgx/og/package';
 
@@ -16,6 +16,6 @@ export async function GET(event: SolidJS.Start.Server.APIEvent) {
 
 		return await withCache(name, () => og(name, version));
 	} catch (error) {
-		return errorStatusMessageResponse(error);
+		return jsonErrorStatusMessageResponse(error);
 	}
 }

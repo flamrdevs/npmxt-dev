@@ -2,6 +2,8 @@ import { Meta, Title, useHead } from '@solidjs/meta';
 import { useLocation } from '@solidjs/router';
 import { createMemo, createUniqueId } from 'solid-js';
 
+import { height as og_height, width as og_width } from '~/server/imgx/response/og/config';
+
 const TITLE = 'npmxt';
 const DESCRIPTION = 'npmxt';
 
@@ -56,6 +58,10 @@ export const OG = (() => {
 		use('og:title', title());
 		use('og:description', description());
 		use('og:image', image());
+
+		use('og:image:type', 'image/png');
+		use('og:image:width', `${og_width}`);
+		use('og:image:height', `${og_height}`);
 
 		use('twitter:card', 'summary_large_image');
 		use('twitter:url', url());

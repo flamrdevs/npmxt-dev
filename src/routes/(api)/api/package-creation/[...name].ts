@@ -11,9 +11,9 @@ import { packageCreationTable } from '~/db/schema';
 
 import { PackageNameSchema, parsePackageName } from '~/npm/schema';
 import { BASE_URL_REGISTRY } from '~/npm/url';
+import { jsonErrorStatusMessageResponse } from '~/server/error';
 import { cacheControl } from '~/server/header';
-import { errorStatusMessageResponse } from '~/server/response/error';
-import { createKeyedMemoCache } from '~/server/response/memo-cache';
+import { createKeyedMemoCache } from '~/server/memo-cache';
 import { createParser } from '~/utils/valibot';
 
 const parsePackageMetadata = createParser(
@@ -22,7 +22,7 @@ const parsePackageMetadata = createParser(
 		time: v.object({
 			created: v.string(),
 		}),
-	}),
+	})
 );
 
 const withCache = createKeyedMemoCache();
@@ -66,12 +66,12 @@ export async function GET(event: SolidJS.Start.Server.APIEvent) {
 				{ date: await getPackageCreationDate(validName) },
 				{
 					headers: {
-						...cacheControl('public, max-age=43200, s-maxage=43200' /* 12 hours */),
+						...cacheControl('public, durable, max-age=43200, s-maxage=43200' /* 12 hours */),
 					},
-				},
+				}
 			);
 		});
 	} catch (error) {
-		return errorStatusMessageResponse(error);
+		return jsonErrorStatusMessageResponse(error);
 	}
 }

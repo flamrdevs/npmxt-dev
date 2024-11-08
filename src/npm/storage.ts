@@ -4,7 +4,7 @@ import { isServer } from 'solid-js/web';
 import indexedb from 'unstorage/drivers/indexedb';
 import memory from 'unstorage/drivers/memory';
 
-export const createDailyCacheStorage = <T>(base: string) => {
+export const createCacheStorage = <T>(base: string) => {
 	type StorageValue = (
 		| {
 				/**
@@ -52,7 +52,7 @@ export const createDailyCacheStorage = <T>(base: string) => {
 			await storage.set<StorageValue>(key, {
 				i: 1,
 				d: data,
-				t: now + 86400000, // + 24 hours
+				t: now + 64_800_000, // + 18 hours
 			});
 			if (__DEV__) console.log(`[${base}] ${'cache miss'.padEnd(11)} | ${key}`);
 			return data;
@@ -60,7 +60,7 @@ export const createDailyCacheStorage = <T>(base: string) => {
 			await storage.set<StorageValue>(key, {
 				i: 0,
 				d: null,
-				t: now + 10800000, // + 3 hours
+				t: now + 7_200_000, // + 2 hours
 			});
 			throw error;
 		}
