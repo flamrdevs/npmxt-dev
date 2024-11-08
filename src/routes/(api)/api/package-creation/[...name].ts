@@ -45,7 +45,7 @@ const getPackageCreationDate = async (validName: string): Promise<string> => {
 
 export async function GET(event: SolidJS.Start.Server.APIEvent) {
 	try {
-		if (new URL(event.request.url).searchParams.has('cache')) return json(Object.keys(withCache.get()));
+		if (__DEV__) if (new URL(event.request.url).searchParams.has('cache')) return json(Object.keys(withCache.get()));
 
 		const validName = parsePackageName(event.params['name']);
 

@@ -6,7 +6,8 @@ export const createNonKeyedMemoCache = () => {
 			return (v ??= await fx()).clone();
 		} catch (error) {
 			v = null;
-			return await fx();
+			if (error instanceof TypeError) return await fx();
+			throw error;
 		}
 	};
 	fn.get = () => v as Response | null;
@@ -21,7 +22,8 @@ export const createKeyedMemoCache = () => {
 			return (v[key] ??= await fx()).clone();
 		} catch (error) {
 			v[key] = undefined;
-			return await fx();
+			if (error instanceof TypeError) return await fx();
+			throw error;
 		}
 	};
 	fn.get = () => v as Record<string, Response>;

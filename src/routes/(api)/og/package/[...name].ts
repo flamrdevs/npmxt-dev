@@ -1,5 +1,6 @@
 import { json } from '@solidjs/router';
 
+import { parsePackageName } from '~/npm/schema';
 import { fetchPackage } from '~/npm/utils';
 import { jsonErrorStatusMessageResponse } from '~/server/error';
 import { createKeyedMemoCache } from '~/server/memo-cache';
@@ -10,11 +11,14 @@ const withCache = createKeyedMemoCache();
 
 export async function GET(event: SolidJS.Start.Server.APIEvent) {
 	try {
-		if (new URL(event.request.url).searchParams.has('cache')) return json(Object.keys(withCache.get()));
+		if (__DEV__) if (new URL(event.request.url).searchParams.has('cache')) return json(Object.keys(withCache.get()));
 
-		const { name, version } = await fetchPackage(event.params['name']);
+		const validName = parsePackageName(event.params['name']);
 
-		return await withCache(name, () => og(name, version));
+		return await withCache(validName, async () => {
+			const { version, description } = await fetchPackage(validName);
+			return await og(validName, version, description);
+		});
 	} catch (error) {
 		return jsonErrorStatusMessageResponse(error);
 	}
