@@ -1,6 +1,6 @@
 import { json } from '@solidjs/router';
 
-import { fetchPackage, fetchPackageLastDownloadsRange } from '~/npm/utils';
+import { fetchPackageLastDownloadsRange } from '~/npm/utils';
 import { jsonErrorStatusMessageResponse } from '~/server/error';
 import { createKeyedMemoCache } from '~/server/memo-cache';
 
@@ -12,9 +12,7 @@ export async function GET(event: SolidJS.Start.Server.APIEvent) {
 	try {
 		if (new URL(event.request.url).searchParams.has('cache')) return json(Object.keys(withCache.get()));
 
-		const { name } = await fetchPackage(event.params['name']);
-
-		const { downloads } = await fetchPackageLastDownloadsRange(name, 'year');
+		const { package: name, downloads } = await fetchPackageLastDownloadsRange(event.params['name'], 'year');
 
 		return await withCache(name, () => badge.y(downloads.reduce((a, { downloads }) => a + downloads, 0)));
 	} catch (error) {

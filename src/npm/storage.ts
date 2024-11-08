@@ -66,11 +66,7 @@ export const createCacheStorage = <T>(base: string) => {
 		}
 	};
 
-	if (!isServer) {
-		window.addEventListener('beforeunload', async () => {
-			await storage.dispose();
-		});
-	}
+	if (!isServer) window.addEventListener('beforeunload', () => storage.dispose());
 
 	return fn;
 };

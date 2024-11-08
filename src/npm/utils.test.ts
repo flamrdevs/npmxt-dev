@@ -1,5 +1,5 @@
 import { StatusError } from '~/utils/error';
-import { fetchPackage, fetchPackageAlt, fetchPackageLastDownloadsRange, splitPackageNameAndVersion } from './utils';
+import { fetchPackage, fetchPackageAlt, fetchPackageLastDownloadsPoint, fetchPackageLastDownloadsRange, splitPackageNameAndVersion } from './utils';
 
 describe('splitPackageNameAndVersion', () => {
 	it('Parse package name', () => {
@@ -43,6 +43,36 @@ describe('fetchPackage', () => {
 	])('not found - %s@%s', async ([name, version]) => {
 		await expect(fetchPackage(name, version)).rejects.toThrow(StatusError);
 		await expect(fetchPackageAlt(`${name}/${version}`)).rejects.toThrow(StatusError);
+	});
+});
+
+describe('fetchPackageLastDownloadsPoint', () => {
+	it.for([
+		//
+		['solid-js', 'day'],
+		['solid-js', 'week'],
+		['solid-js', 'month'],
+		['solid-js', 'year'],
+		['@solidjs/start', 'day'],
+		['@solidjs/start', 'week'],
+		['@solidjs/start', 'month'],
+		['@solidjs/start', 'year'],
+	])('found - %s last-%s', async ([name, last]) => {
+		await expect(fetchPackageLastDownloadsPoint(name, last)).resolves.toMatchObject({
+			package: name,
+			start: expect.any(String),
+			end: expect.any(String),
+			downloads: expect.any(Number),
+		});
+	});
+
+	it.for([
+		//
+		['astro'],
+		['next'],
+		['nuxt'],
+	])('not found - %s last-week', async ([name]) => {
+		await expect(fetchPackageLastDownloadsPoint(name, 'week')).rejects.toThrow(StatusError);
 	});
 });
 

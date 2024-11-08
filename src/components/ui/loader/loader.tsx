@@ -10,4 +10,8 @@ export const Loader = klassed('div', {
 		color: ['n', 'p'],
 		size: ['sm', 'md', 'lg'],
 	}),
+	defaults: {
+		color: 'n',
+		size: 'md',
+	},
 });

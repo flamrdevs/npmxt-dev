@@ -6,7 +6,7 @@ import type { TPackageDownloadsRangeSchema } from '~/npm/schema';
 import { SVGImageResponse } from '~/server/imgx/response/svg';
 
 import { h } from '~/imgx';
-import * as colors from '~/imgx/colors';
+import { neutral_dark as neutral, primary_dark as primary } from '~/imgx/colors';
 
 import { formatNumber } from '~/utils/formatter';
 
@@ -15,11 +15,6 @@ import { LucideIcon } from '../icons/lucide';
 import { chartDataLastYearDownloads } from '../utils/downloads';
 
 export const y = (downloads: TPackageDownloadsRangeSchema['downloads']) => {
-	const theme = 'dark';
-
-	const neutral = colors.n[theme];
-	const primary = colors.p[theme];
-
 	const [chartData, totalDownloads] = chartDataLastYearDownloads(downloads);
 
 	const width = 400;

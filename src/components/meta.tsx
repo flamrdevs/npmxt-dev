@@ -1,6 +1,6 @@
 import { Meta, Title, useHead } from '@solidjs/meta';
 import { useLocation } from '@solidjs/router';
-import { createMemo, createUniqueId } from 'solid-js';
+import { createEffect, createMemo, createUniqueId } from 'solid-js';
 
 import { height as og_height, width as og_width } from '~/server/imgx/response/og/config';
 
@@ -52,6 +52,13 @@ export const OG = (() => {
 		const description = createMemo(() => `${props.description || DESCRIPTION}`);
 		const url = createMemo(() => `${HOST}/${location.pathname}`);
 		const image = createMemo(() => `${HOST}/og/${props.img || 'main'}`);
+
+		if (__DEV__) {
+			createEffect(() => {
+				console.log(`Meta.OG - url ${url()}`);
+				console.log(`Meta.OG - image ${image()}`);
+			});
+		}
 
 		use('og:type', 'website');
 		use('og:url', url());

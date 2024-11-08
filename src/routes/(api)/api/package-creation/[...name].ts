@@ -4,26 +4,14 @@ import { eq } from 'drizzle-orm';
 
 import { ofetch } from 'ofetch';
 
-import * as v from 'valibot';
-
 import { db } from '~/db/db';
 import { packageCreationTable } from '~/db/schema';
 
-import { PackageNameSchema, parsePackageName } from '~/npm/schema';
+import { parsePackageMetadata, parsePackageName } from '~/npm/schema';
 import { BASE_URL_REGISTRY } from '~/npm/url';
 import { jsonErrorStatusMessageResponse } from '~/server/error';
 import { cacheControl } from '~/server/header';
 import { createKeyedMemoCache } from '~/server/memo-cache';
-import { createParser } from '~/utils/valibot';
-
-const parsePackageMetadata = createParser(
-	v.object({
-		name: PackageNameSchema,
-		time: v.object({
-			created: v.string(),
-		}),
-	})
-);
 
 const withCache = createKeyedMemoCache();
 

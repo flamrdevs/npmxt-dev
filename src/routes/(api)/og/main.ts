@@ -1,17 +1,13 @@
 import { OGImageResponse } from '~/server/imgx/response/og';
 import { createNonKeyedMemoCache } from '~/server/memo-cache';
 
-import * as colors from '~/imgx/colors';
+import { neutral_dark as neutral } from '~/imgx/colors';
 
 const withCache = createNonKeyedMemoCache();
 
-export async function GET() {
-	return await withCache(() => {
-		const theme = 'dark';
-
-		const neutral = colors.n[theme];
-
-		return OGImageResponse(
+export function GET() {
+	return withCache(() =>
+		OGImageResponse(
 			(e) => [
 				e('div', {
 					style: {
@@ -33,6 +29,6 @@ export async function GET() {
 				},
 				maxAge: 864000, // 10 days
 			}
-		);
-	});
+		)
+	);
 }

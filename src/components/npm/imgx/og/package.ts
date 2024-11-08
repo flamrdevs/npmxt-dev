@@ -1,12 +1,8 @@
 import { OGImageResponse, height, width } from '~/server/imgx/response/og';
 
-import * as colors from '~/imgx/colors';
+import { neutral_dark as neutral } from '~/imgx/colors';
 
 export default (name: string, version: string) => {
-	const theme = 'dark';
-
-	const neutral = colors.n[theme];
-
 	return OGImageResponse(
 		(e) => [
 			e('div', {
