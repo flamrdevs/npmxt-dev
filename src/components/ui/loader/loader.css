@@ -5,10 +5,10 @@
 	&.x {
 		&-color {
 			&-n {
-				@apply border-cn-6 border-b-cn-6;
+				@apply border-cn-3 border-b-cn-9;
 			}
 			&-p {
-				@apply border-cp-6 border-b-cp-6;
+				@apply border-cp-3 border-b-cp-9;
 			}
 		}
 

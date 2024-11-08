@@ -3,6 +3,7 @@ import { ErrorBoundary, Show, Suspense } from 'solid-js';
 
 import { RenderStatusMessageError } from '~/components/error';
 import * as Meta from '~/components/meta';
+import { Loader } from '~/components/ui';
 
 import type { TPackageSchema } from '~/npm/schema';
 import { fetchPackageAlt } from '~/npm/utils';
@@ -46,7 +47,13 @@ export default function PackageNamePage() {
 				</RenderStatusMessageError>
 			)}
 		>
-			<Suspense fallback="Loading...">
+			<Suspense
+				fallback={
+					<div class="flex items-center justify-center min-h-80 bg-cn-1 text-cn-12">
+						<Loader />
+					</div>
+				}
+			>
 				<Show when={pkg()}>{(pkg) => <RenderPackage pkg={pkg()} />}</Show>
 			</Suspense>
 		</ErrorBoundary>

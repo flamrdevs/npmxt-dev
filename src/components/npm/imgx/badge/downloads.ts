@@ -3,17 +3,13 @@ import { Download } from 'lucide';
 import { SVGImageResponse } from '~/server/imgx/response/svg';
 
 import { h } from '~/imgx';
-import * as colors from '~/imgx/colors';
+import { neutral_dark as neutral } from '~/imgx/colors';
 
 import { formatNumberCompact } from '~/utils/formatter';
 
 import { LucideIcon } from '../icons/lucide';
 
 export const y = (downloads: number) => {
-	const theme = 'dark';
-
-	const neutral = colors.n[theme];
-
 	const text = `${formatNumberCompact(downloads)}/year`;
 
 	const height = 24;

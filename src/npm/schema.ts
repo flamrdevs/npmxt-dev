@@ -12,7 +12,12 @@ export const PackageNameSchema = v.pipe(StringSchema, v.trim(), v.regex(PACKAGE_
 export const parsePackageName = createParser(PackageNameSchema);
 
 export type TPackageMetadataSchema = v.InferOutput<typeof PackageMetadataSchema>;
-export const PackageMetadataSchema = v.object({});
+export const PackageMetadataSchema = v.object({
+	name: PackageNameSchema,
+	time: v.object({
+		created: v.string(),
+	}),
+});
 export const parsePackageMetadata = createParser(PackageMetadataSchema);
 
 const DependenciesSchema = v.optional(v.record(PackageNameSchema, StringSchema));

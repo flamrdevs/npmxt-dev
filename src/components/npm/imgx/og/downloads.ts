@@ -5,7 +5,7 @@ import { ArrowRight, Download } from 'lucide';
 import type { TPackageDownloadsRangeSchema } from '~/npm/schema';
 import { OGImageResponse, height, width } from '~/server/imgx/response/og';
 
-import * as colors from '~/imgx/colors';
+import { neutral_dark as neutral, primary_dark as primary } from '~/imgx/colors';
 
 import { formatNumberCompact } from '~/utils/formatter';
 
@@ -14,11 +14,6 @@ import { LucideIcon } from '../icons/lucide';
 import { chartDataLastYearDownloads } from '../utils/downloads';
 
 export default (name: string, downloads: TPackageDownloadsRangeSchema['downloads']) => {
-	const theme = 'dark';
-
-	const neutral = colors.n[theme];
-	const primary = colors.p[theme];
-
 	const [chartData, totalDownloads] = chartDataLastYearDownloads(downloads, 28);
 
 	const totalDownloadsFormatted = formatNumberCompact(totalDownloads);
