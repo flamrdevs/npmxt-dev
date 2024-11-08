@@ -50,7 +50,7 @@ export const OG = (() => {
 
 		const title = createMemo(() => `${props.title || TITLE}`);
 		const description = createMemo(() => `${props.description || DESCRIPTION}`);
-		const url = createMemo(() => `${HOST}/${location.pathname}`);
+		const url = createMemo(() => `${HOST}${location.pathname}`);
 		const image = createMemo(() => `${HOST}/og/${props.img || 'main'}`);
 
 		if (__DEV__) {

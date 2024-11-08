@@ -23,9 +23,9 @@ export default (name: string, downloads: TPackageDownloadsRangeSchema['downloads
 		(e) => [
 			(() => {
 				const chartWidth = width - 500;
-				const chartHeight = height - 380;
+				const chartHeight = height - 330;
 
-				const chartTop = 180;
+				const chartTop = 170;
 				const chartRight = 100;
 
 				const mx = 0;
@@ -43,7 +43,7 @@ export default (name: string, downloads: TPackageDownloadsRangeSchema['downloads
 						height: chartHeight,
 						style: { position: 'absolute', top: chartTop, right: chartRight },
 						children: [
-							e('path', { fill: 'none', stroke: primary[9], strokeWidth: '2', d: pathd, style: { filter: 'blur(2px)' } }),
+							e('path', { fill: 'none', stroke: primary[3], strokeWidth: '4', d: pathd, style: { filter: 'blur(6px)' } }),
 							e('path', { fill: 'none', stroke: primary[9], strokeWidth: '2', d: pathd }),
 						],
 					}),
@@ -95,10 +95,10 @@ export default (name: string, downloads: TPackageDownloadsRangeSchema['downloads
 				style: {
 					display: 'flex',
 					position: 'absolute',
-					top: 85,
-					left: 90,
+					top: 90,
+					left: 95,
 					width: width - 220,
-					fontSize: 50,
+					fontSize: 55,
 					fontWeight: 600,
 					textOverflow: 'ellipsis',
 					whiteSpace: 'nowrap',
@@ -116,7 +116,7 @@ export default (name: string, downloads: TPackageDownloadsRangeSchema['downloads
 					gap: 2,
 					position: 'absolute',
 					top: 200,
-					left: 110,
+					left: 115,
 				},
 				children: [
 					e('div', {
@@ -134,10 +134,10 @@ export default (name: string, downloads: TPackageDownloadsRangeSchema['downloads
 				],
 			}),
 
-			e('div', { style: { position: 'absolute', bottom: 80, left: 115, color: neutral[10], fontSize: 38, fontWeight: 700 }, children: 'npmxt' }),
+			e('div', { style: { position: 'absolute', bottom: 85, left: 120, color: neutral[10], fontSize: 38, fontWeight: 700 }, children: 'npmxt' }),
 
 			e('div', {
-				style: { display: 'flex', alignItems: 'center', gap: 20, position: 'absolute', bottom: 80, right: 165 },
+				style: { display: 'flex', alignItems: 'center', gap: 20, position: 'absolute', bottom: 85, right: 150 },
 				children: LucideIcon({ i: ArrowRight, size: 44, color: neutral[11] }),
 			}),
 		],

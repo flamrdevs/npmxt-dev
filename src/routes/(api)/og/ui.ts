@@ -11,7 +11,7 @@ export function GET() {
 			(e) => [
 				e('div', {
 					style: {
-						fontSize: 24,
+						fontSize: 36,
 						fontWeight: 700,
 					},
 					children: 'UI',
