@@ -27,36 +27,36 @@ export const PackageSchema = v.object({
 	author: v.optional(
 		v.object({
 			name: StringSchema,
-		}),
+		})
 	),
 	peerDependencies: DependenciesSchema,
 	dependencies: DependenciesSchema,
 });
 export const parsePackage = createParser(PackageSchema);
 
-export const PACKAGE_DOWNLOAD_LAST_MAP = {
+export const PACKAGE_DOWNLOADS_LAST_MAP = {
 	day: 1,
 	week: 7,
 	month: 30,
 	year: 365,
 };
-export const PACKAGE_DOWNLOAD_LAST_LIST = Object.keys(PACKAGE_DOWNLOAD_LAST_MAP) as (keyof typeof PACKAGE_DOWNLOAD_LAST_MAP)[];
+export const PACKAGE_DOWNLOADS_LAST_LIST = Object.keys(PACKAGE_DOWNLOADS_LAST_MAP) as (keyof typeof PACKAGE_DOWNLOADS_LAST_MAP)[];
 
-export type TPackageDownloadLastSchema = v.InferOutput<typeof PackageDownloadLastSchema>;
-export const PackageDownloadLastSchema = v.picklist(PACKAGE_DOWNLOAD_LAST_LIST);
-export const parsePackageDownloadLast = createParser(PackageDownloadLastSchema);
+export type TPackageDownloadsLastSchema = v.InferOutput<typeof PackageDownloadsLastSchema>;
+export const PackageDownloadsLastSchema = v.picklist(PACKAGE_DOWNLOADS_LAST_LIST);
+export const parsePackageDownloadsLast = createParser(PackageDownloadsLastSchema);
 
-export type TPackageDownloadPointSchema = v.InferOutput<typeof PackageDownloadPointSchema>;
-export const PackageDownloadPointSchema = v.object({
+export type TPackageDownloadsPointSchema = v.InferOutput<typeof PackageDownloadsPointSchema>;
+export const PackageDownloadsPointSchema = v.object({
 	package: PackageNameSchema,
 	start: StringSchema,
 	end: StringSchema,
 	downloads: NumberSchema,
 });
-export const parsePackageDownloadPoint = createParser(PackageDownloadPointSchema);
+export const parsePackageDownloadsPoint = createParser(PackageDownloadsPointSchema);
 
-export type TPackageDownloadRangeSchema = v.InferOutput<typeof PackageDownloadRangeSchema>;
-export const PackageDownloadRangeSchema = v.object({
+export type TPackageDownloadsRangeSchema = v.InferOutput<typeof PackageDownloadsRangeSchema>;
+export const PackageDownloadsRangeSchema = v.object({
 	package: PackageNameSchema,
 	start: StringSchema,
 	end: StringSchema,
@@ -64,7 +64,7 @@ export const PackageDownloadRangeSchema = v.object({
 		v.object({
 			downloads: NumberSchema,
 			day: StringSchema,
-		}),
+		})
 	),
 });
-export const parsePackageDownloadRange = createParser(PackageDownloadRangeSchema);
+export const parsePackageDownloadsRange = createParser(PackageDownloadsRangeSchema);

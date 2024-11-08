@@ -1,19 +1,19 @@
 import { StatusError } from '~/utils/error';
 
 import {
-	type TPackageDownloadPointSchema,
-	type TPackageDownloadRangeSchema,
+	type TPackageDownloadsPointSchema,
+	type TPackageDownloadsRangeSchema,
 	type TPackageSchema,
 	parsePackage,
-	parsePackageDownloadLast,
-	parsePackageDownloadPoint,
-	parsePackageDownloadRange,
+	parsePackageDownloadsLast,
+	parsePackageDownloadsPoint,
+	parsePackageDownloadsRange,
 	parsePackageName,
 } from './schema';
 
-import { fetcherPackage, fetcherPackageDownloadPoint, fetcherPackageDownloadRange } from './fetcher';
+import { fetcherPackage, fetcherPackageDownloadsPoint, fetcherPackageDownloadsRange } from './fetcher';
 
-import { createDailyCacheStorage } from './storage';
+import { createCacheStorage } from './storage';
 
 export const splitPackageNameAndVersion = (() => {
 	const scoped = (str: string) => str.startsWith('@');
@@ -49,7 +49,7 @@ export const splitPackageNameAndVersion = (() => {
 })();
 
 export const fetchPackage = (() => {
-	const withStorage = createDailyCacheStorage<TPackageSchema>(__DEV__ ? 'npm:package' : 'npm:pkg');
+	const withStorage = createCacheStorage<TPackageSchema>(__DEV__ ? 'npm:package' : 'npm:pkg');
 
 	return async (rawName: string, rawVersion: string | undefined = 'latest'): Promise<TPackageSchema> => {
 		const validName = parsePackageName(rawName);
@@ -66,15 +66,15 @@ export const fetchPackage = (() => {
 
 export const fetchPackageAlt = (input: string): Promise<TPackageSchema> => fetchPackage(...splitPackageNameAndVersion(input));
 
-export const fetchPackageLastDownloadPoint = (() => {
-	const withStorage = createDailyCacheStorage<TPackageDownloadPointSchema>(__DEV__ ? 'npm:package-download-point-last' : 'npm:pkg-dp-ly');
+export const fetchPackageLastDownloadsPoint = (() => {
+	const withStorage = createCacheStorage<TPackageDownloadsPointSchema>(__DEV__ ? 'npm:package-downloads-point-last' : 'npm:pkg-dp-l');
 
-	return async (rawName: string, rawLast: string): Promise<TPackageDownloadPointSchema> => {
+	return async (rawName: string, rawLast: string): Promise<TPackageDownloadsPointSchema> => {
 		const validName = parsePackageName(rawName);
-		const validLast = parsePackageDownloadLast(rawLast);
+		const validLast = parsePackageDownloadsLast(rawLast);
 		return await withStorage(`${validName}/${validLast}`, async () => {
 			try {
-				return parsePackageDownloadPoint(await fetcherPackageDownloadPoint(`last-${validLast}`, validName));
+				return parsePackageDownloadsPoint(await fetcherPackageDownloadsPoint(`last-${validLast}`, validName));
 			} catch (error) {
 				throw new StatusError('Package not found', 404);
 			}
@@ -82,15 +82,15 @@ export const fetchPackageLastDownloadPoint = (() => {
 	};
 })();
 
-export const fetchPackageLastDownloadRange = (() => {
-	const withStorage = createDailyCacheStorage<TPackageDownloadRangeSchema>(__DEV__ ? 'npm:package-download-range-last' : 'npm:pkg-dr-ly');
+export const fetchPackageLastDownloadsRange = (() => {
+	const withStorage = createCacheStorage<TPackageDownloadsRangeSchema>(__DEV__ ? 'npm:package-downloads-range-last' : 'npm:pkg-dr-l');
 
-	return async (rawName: string, rawLast: string): Promise<TPackageDownloadRangeSchema> => {
+	return async (rawName: string, rawLast: string): Promise<TPackageDownloadsRangeSchema> => {
 		const validName = parsePackageName(rawName);
-		const validLast = parsePackageDownloadLast(rawLast);
+		const validLast = parsePackageDownloadsLast(rawLast);
 		return await withStorage(`${validName}/${validLast}`, async () => {
 			try {
-				return parsePackageDownloadRange(await fetcherPackageDownloadRange(`last-${validLast}`, validName));
+				return parsePackageDownloadsRange(await fetcherPackageDownloadsRange(`last-${validLast}`, validName));
 			} catch (error) {
 				throw new StatusError('Package not found', 404);
 			}

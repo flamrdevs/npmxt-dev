@@ -2,18 +2,18 @@ import * as d3 from 'd3';
 
 import { ArrowRight, Download } from 'lucide';
 
-import type { TPackageDownloadRangeSchema } from '~/npm/schema';
-import { height, og, width } from '~/server/response/og';
+import type { TPackageDownloadsRangeSchema } from '~/npm/schema';
+import { OGImageResponse, height, width } from '~/server/imgx/response/og';
+
+import * as colors from '~/imgx/colors';
 
 import { formatNumberCompact } from '~/utils/formatter';
 
-import * as colors from './../styles/colors';
-
 import { LucideIcon } from '../icons/lucide';
 
-import { chartDataLastYearDownloads } from '../utils/download';
+import { chartDataLastYearDownloads } from '../utils/downloads';
 
-export default (name: string, downloads: TPackageDownloadRangeSchema['downloads']) => {
+export default (name: string, downloads: TPackageDownloadsRangeSchema['downloads']) => {
 	const theme = 'dark';
 
 	const neutral = colors.n[theme];
@@ -24,14 +24,14 @@ export default (name: string, downloads: TPackageDownloadRangeSchema['downloads'
 	const totalDownloadsFormatted = formatNumberCompact(totalDownloads);
 	const isTotalDownloadsFormattedLengthGreaterThan4 = totalDownloadsFormatted.length > 4;
 
-	return og(
+	return OGImageResponse(
 		(e) => [
 			(() => {
-				const chartWidth = width - 520;
-				const chartHeight = height - 390;
+				const chartWidth = width - 500;
+				const chartHeight = height - 380;
 
 				const chartTop = 180;
-				const chartRight = 120;
+				const chartRight = 100;
 
 				const mx = 0;
 				const my = 10;
@@ -56,7 +56,7 @@ export default (name: string, downloads: TPackageDownloadRangeSchema['downloads'
 					e('div', {
 						style: {
 							position: 'absolute',
-							backgroundImage: `linear-gradient(to right, ${neutral[1]} 0%, ${neutral[3]} 55%)`,
+							backgroundImage: `linear-gradient(to right, ${neutral[2]} 0%, ${neutral[4]} 55%)`,
 							top: chartTop,
 							left: 0,
 							width: width,
@@ -66,7 +66,7 @@ export default (name: string, downloads: TPackageDownloadRangeSchema['downloads'
 					e('div', {
 						style: {
 							position: 'absolute',
-							backgroundImage: `linear-gradient(to right, ${neutral[1]} 0%, ${neutral[3]} 55%)`,
+							backgroundImage: `linear-gradient(to right, ${neutral[2]} 0%, ${neutral[4]} 55%)`,
 							top: chartTop + chartHeight,
 							left: 0,
 							width: width,
@@ -76,7 +76,7 @@ export default (name: string, downloads: TPackageDownloadRangeSchema['downloads'
 					e('div', {
 						style: {
 							position: 'absolute',
-							backgroundImage: `linear-gradient(to bottom, ${neutral[1]} 0%, ${neutral[3]} 55%)`,
+							backgroundImage: `linear-gradient(to bottom, ${neutral[2]} 0%, ${neutral[4]} 55%)`,
 							top: 0,
 							right: chartRight,
 							width: 1,
@@ -86,7 +86,7 @@ export default (name: string, downloads: TPackageDownloadRangeSchema['downloads'
 					e('div', {
 						style: {
 							position: 'absolute',
-							backgroundImage: `linear-gradient(to bottom, ${neutral[1]} 0%, ${neutral[3]} 55%)`,
+							backgroundImage: `linear-gradient(to bottom, ${neutral[2]} 0%, ${neutral[4]} 55%)`,
 							top: 0,
 							right: chartRight + chartWidth,
 							width: 1,
@@ -101,7 +101,7 @@ export default (name: string, downloads: TPackageDownloadRangeSchema['downloads'
 					display: 'flex',
 					position: 'absolute',
 					top: 85,
-					left: 100,
+					left: 90,
 					width: width - 220,
 					fontSize: 50,
 					fontWeight: 600,
@@ -121,7 +121,7 @@ export default (name: string, downloads: TPackageDownloadRangeSchema['downloads'
 					gap: 2,
 					position: 'absolute',
 					top: 200,
-					left: 120,
+					left: 110,
 				},
 				children: [
 					e('div', {
@@ -139,19 +139,21 @@ export default (name: string, downloads: TPackageDownloadRangeSchema['downloads'
 				],
 			}),
 
-			e('div', { style: { position: 'absolute', bottom: 80, left: 125, color: neutral[10], fontSize: 38, fontWeight: 700 }, children: 'npmxt' }),
+			e('div', { style: { position: 'absolute', bottom: 80, left: 115, color: neutral[10], fontSize: 38, fontWeight: 700 }, children: 'npmxt' }),
 
 			e('div', {
-				style: { display: 'flex', alignItems: 'center', gap: 20, position: 'absolute', bottom: 80, right: 175 },
+				style: { display: 'flex', alignItems: 'center', gap: 20, position: 'absolute', bottom: 80, right: 165 },
 				children: LucideIcon({ i: ArrowRight, size: 44, color: neutral[11] }),
 			}),
 		],
 		{
-			display: 'flex',
-			backgroundColor: neutral[1],
-			color: neutral[12],
-			border: `1px solid ${neutral[3]}`,
-			overflow: 'hidden',
-		},
+			style: {
+				display: 'flex',
+				backgroundColor: neutral[2],
+				color: neutral[12],
+				border: `1px solid ${neutral[3]}`,
+				overflow: 'hidden',
+			},
+		}
 	);
 };

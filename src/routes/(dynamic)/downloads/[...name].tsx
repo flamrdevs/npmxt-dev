@@ -1,7 +1,7 @@
 import { createAsync, query, useParams } from '@solidjs/router';
 import { ErrorBoundary, Show, Suspense } from 'solid-js';
 
-import { NPMPackageDownloadChart } from '~/components/npm/charts/package-download';
+import { NPMPackageDownloadsChart } from '~/components/npm/charts/package-downloads';
 
 import { RenderStatusMessageError } from '~/components/error';
 import * as Meta from '~/components/meta';
@@ -16,16 +16,16 @@ const RenderPackage = (props: { pkg: TPackageSchema }) => {
 	return (
 		<>
 			<Meta.Base title={title()} description={description()} />
-			<Meta.OG title={title()} description={description()} img={`download/${props.pkg.name}`} />
+			<Meta.OG title={title()} description={description()} img={`downloads/${props.pkg.name}`} />
 
 			<div class="flex items-center justify-center w-dvw h-dvh bg-cn-1 font-bold text-4xl text-cn-12">
-				<NPMPackageDownloadChart pkg={props.pkg} />
+				<NPMPackageDownloadsChart pkg={props.pkg} />
 			</div>
 		</>
 	);
 };
 
-const getPackage = query((name: string) => fetchPackage(name), 'package-by-name');
+const getPackage = query((name: string) => fetchPackage(name), 'package');
 
 export const route = { preload: ({ params }: SolidJS.Router.RoutePreloadFuncArgs) => getPackage(params['name']) };
 

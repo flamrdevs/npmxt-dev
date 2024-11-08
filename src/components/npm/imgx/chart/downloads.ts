@@ -2,20 +2,19 @@ import * as d3 from 'd3';
 
 import { Download } from 'lucide';
 
-import type { TPackageDownloadRangeSchema } from '~/npm/schema';
-import { svg } from '~/server/response/imgx';
+import type { TPackageDownloadsRangeSchema } from '~/npm/schema';
+import { SVGImageResponse } from '~/server/imgx/response/svg';
 
 import { h } from '~/imgx';
+import * as colors from '~/imgx/colors';
 
 import { formatNumber } from '~/utils/formatter';
 
-import * as colors from './../styles/colors';
-
 import { LucideIcon } from '../icons/lucide';
 
-import { chartDataLastYearDownloads } from '../utils/download';
+import { chartDataLastYearDownloads } from '../utils/downloads';
 
-export const y = (downloads: TPackageDownloadRangeSchema['downloads']) => {
+export const y = (downloads: TPackageDownloadsRangeSchema['downloads']) => {
 	const theme = 'dark';
 
 	const neutral = colors.n[theme];
@@ -26,7 +25,7 @@ export const y = (downloads: TPackageDownloadRangeSchema['downloads']) => {
 	const width = 400;
 	const height = 220;
 
-	return svg(
+	return SVGImageResponse(
 		h.r('div', {
 			style: {
 				display: 'flex',
@@ -81,6 +80,6 @@ export const y = (downloads: TPackageDownloadRangeSchema['downloads']) => {
 					],
 				}),
 			],
-		}),
+		})
 	);
 };

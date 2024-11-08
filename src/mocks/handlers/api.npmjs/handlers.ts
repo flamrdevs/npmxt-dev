@@ -3,12 +3,12 @@ import { http, HttpResponse, delay } from 'msw';
 import { dayjs } from '~/utils/dayjs';
 
 import { DOWNLOAD_DATE_FORMAT } from '~/npm/const';
-import { PACKAGE_DOWNLOAD_LAST_LIST, PACKAGE_DOWNLOAD_LAST_MAP, type TPackageDownloadPointSchema, type TPackageDownloadRangeSchema, parsePackageDownloadLast } from '~/npm/schema';
+import { PACKAGE_DOWNLOADS_LAST_LIST, PACKAGE_DOWNLOADS_LAST_MAP, type TPackageDownloadsPointSchema, type TPackageDownloadsRangeSchema, parsePackageDownloadsLast } from '~/npm/schema';
 import { BASE_URL_API as NPM_BASE_URL_API } from '~/npm/url';
 
 import { MOCK_PACKAGE_METADATA } from '../registry.npmjs/handlers';
 
-const MOCK_PACKAGE_DOWNLOAD_RANGE: Record<string, number | TPackageDownloadRangeSchema['downloads']> = {
+const MOCK_PACKAGE_DOWNLOAD_RANGE: Record<string, number | TPackageDownloadsRangeSchema['downloads']> = {
 	['@klass/core']: 1,
 	['@kobalte/core']: 1,
 	['@solidjs/meta']: 2,
@@ -33,7 +33,7 @@ const generateDownloads = (() => {
 
 	return (name: string, factor: number) => {
 		if (name in MOCK_PACKAGE_METADATA) {
-			const result: TPackageDownloadRangeSchema['downloads'] = [];
+			const result: TPackageDownloadsRangeSchema['downloads'] = [];
 
 			let startDayjs = dayjs(MOCK_PACKAGE_METADATA[name].time.created).startOf('day');
 
@@ -79,11 +79,11 @@ type DownloadType = 'point' | 'range';
 const isValidDownloadType = (type: unknown): type is DownloadType => type === 'point' || type === 'range';
 
 const isLastPeriod = (() => {
-	const list = PACKAGE_DOWNLOAD_LAST_LIST.map((last) => `last-${last}`);
+	const list = PACKAGE_DOWNLOADS_LAST_LIST.map((last) => `last-${last}`);
 	return (value: string) => list.includes(value);
 })();
 
-const transformDownloadsByType = (type: DownloadType, downloads: TPackageDownloadRangeSchema['downloads']) =>
+const transformDownloadsByType = (type: DownloadType, downloads: TPackageDownloadsRangeSchema['downloads']) =>
 	(type === 'point' ? downloads.reduce((a, { downloads }) => a + downloads, 0) : downloads) as any;
 
 export default [
@@ -98,8 +98,8 @@ export default [
 		if (!isValidDownloadType(type)) throw HttpResponse.json({ error: `download ${type} not implemented` }, { status: 501 });
 
 		if (isLastPeriod(period)) {
-			const last = parsePackageDownloadLast(period.slice(5));
-			const lastLength = PACKAGE_DOWNLOAD_LAST_MAP[last];
+			const last = parsePackageDownloadsLast(period.slice(5));
+			const lastLength = PACKAGE_DOWNLOADS_LAST_MAP[last];
 
 			if (name in MOCK_PACKAGE_DOWNLOAD_RANGE) {
 				const allDownloadsRecord = getDownloadsRecord(name);
@@ -108,7 +108,7 @@ export default [
 				const startDayjs = dayjs(endDate).subtract(lastLength - 1, 'days');
 
 				let tempDay: string;
-				const lastYearDownloads: TPackageDownloadRangeSchema['downloads'] = Array.from({ length: lastLength }).map((_, index) => {
+				const lastYearDownloads: TPackageDownloadsRangeSchema['downloads'] = Array.from({ length: lastLength }).map((_, index) => {
 					tempDay = startDayjs.clone().add(index, 'days').format(DOWNLOAD_DATE_FORMAT);
 					return { downloads: allDownloadsRecord[tempDay] ?? 0, day: tempDay };
 				});
@@ -119,8 +119,8 @@ export default [
 						end: lastYearDownloads.at(-1)?.day as string,
 						package: name,
 						downloads: transformDownloadsByType(type, lastYearDownloads),
-					} satisfies TPackageDownloadPointSchema | TPackageDownloadRangeSchema,
-					{ status: 200 },
+					} satisfies TPackageDownloadsPointSchema | TPackageDownloadsRangeSchema,
+					{ status: 200 }
 				);
 			}
 
@@ -148,7 +148,7 @@ export default [
 				const allDownloadsRecord = getDownloadsRecord(name);
 
 				let tempDay: string;
-				const periodDownloads: TPackageDownloadRangeSchema['downloads'] = Array.from({ length: diffDays }).map((_, index) => {
+				const periodDownloads: TPackageDownloadsRangeSchema['downloads'] = Array.from({ length: diffDays }).map((_, index) => {
 					tempDay = startDayjs.clone().add(index, 'days').format(DOWNLOAD_DATE_FORMAT);
 					return { downloads: allDownloadsRecord[tempDay] ?? 0, day: tempDay };
 				});
@@ -159,8 +159,8 @@ export default [
 						end: periodDownloads.at(-1)?.day as string,
 						package: name,
 						downloads: transformDownloadsByType(type, periodDownloads),
-					} satisfies TPackageDownloadPointSchema | TPackageDownloadRangeSchema,
-					{ status: 200 },
+					} satisfies TPackageDownloadsPointSchema | TPackageDownloadsRangeSchema,
+					{ status: 200 }
 				);
 			}
 

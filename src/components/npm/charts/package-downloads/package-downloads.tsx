@@ -13,16 +13,16 @@ import { fontFamilySans, v_cn2, v_cn6, v_cn9, v_cp9 } from '~/styles/utils';
 import { dayjs } from '~/utils/dayjs';
 import { formatNumber, formatNumberCompact } from '~/utils/formatter';
 
-import { fetchPackageAllDownloadsRecord } from './utils';
+import { fetchPackageDownloadsRecord } from './utils';
 
-type TransformedPackageAllDownloads = {
+type TransformedPackageDownloadsRecord = {
 	name: string;
 	start: Date;
 	end: Date;
 	downloads: { x: Date; y: number }[];
 };
 
-const transformPackageDownloadRange = (pkg: PackageDownloadsRecord): TransformedPackageAllDownloads => {
+const transformPackageDownloadsRange = (pkg: PackageDownloadsRecord): TransformedPackageDownloadsRecord => {
 	const record: Record<string, number> = {};
 
 	let tempDate: string;
@@ -36,7 +36,7 @@ const transformPackageDownloadRange = (pkg: PackageDownloadsRecord): Transformed
 	return { name: pkg.name, start: new Date(pkg.start), end: new Date(pkg.end), downloads };
 };
 
-const RenderChart = (props: { tpkg: TransformedPackageAllDownloads }) => {
+const RenderChart = (props: { tpkg: TransformedPackageDownloadsRecord }) => {
 	let containerRef: HTMLDivElement | undefined;
 
 	const yAxisTickFormatter = (d: any) => formatNumberCompact(d);
@@ -46,23 +46,27 @@ const RenderChart = (props: { tpkg: TransformedPackageAllDownloads }) => {
 	const x = 'x';
 	const y = 'y';
 
+	let varPlotAxisX: Plot.CompoundMark;
+	let varPlotGridY: Plot.RuleY;
+	let varPlotRuleY: Plot.RuleY;
+
 	const marks = createMemo(() => {
 		const data = props.tpkg.downloads;
 
 		return [
 			Plot.axisX({ anchor: 'bottom', labelAnchor: 'right', ticks: data.length > 60 ? '6 months' : data.length > 30 ? '3 months' : 'month' }),
-			Plot.axisY({ anchor: 'left', labelAnchor: 'top', ticks: 10, tickFormat: yAxisTickFormatter }),
-			Plot.gridY({ stroke: v_cn9, strokeDasharray: '1,2' }),
+			(varPlotAxisX ??= Plot.axisY({ anchor: 'left', labelAnchor: 'top', ticks: 10, tickFormat: yAxisTickFormatter })),
+			(varPlotGridY ??= Plot.gridY({ stroke: v_cn9, strokeDasharray: '1,2' })),
 			Plot.lineY(data, { x, y, curve: 'catmull-rom', stroke: v_cp9 }),
 			Plot.ruleX(data, Plot.pointerX({ x, py: y, stroke: v_cn9 })),
-			Plot.ruleY([0], { stroke: v_cn9 }),
+			(varPlotRuleY ??= Plot.ruleY([0], { stroke: v_cn9 })),
 			Plot.dot(data, Plot.pointerX({ x, y, stroke: v_cn9 })),
 			Plot.tip(data, Plot.pointerX({ x, y, title: titleTipFormatter, fill: v_cn2, stroke: v_cn6, fontSize: 12, textPadding: 10 })),
 		];
 	});
 
 	const rerender = createMemo(() => () => {
-		if (__DEV__) console.log('NPMPackageDownloadChart - RenderChart rerender');
+		if (__DEV__) console.log('NPMPackageDownloadsChart - RenderChart rerender');
 
 		containerRef?.firstChild?.remove();
 		containerRef?.append(
@@ -74,7 +78,7 @@ const RenderChart = (props: { tpkg: TransformedPackageAllDownloads }) => {
 				style: {
 					fontFamily: fontFamilySans,
 				},
-			}),
+			})
 		);
 	});
 
@@ -95,13 +99,10 @@ const RenderChart = (props: { tpkg: TransformedPackageAllDownloads }) => {
 	return <div ref={containerRef} class="size-full select-none" />;
 };
 
-const getTransformedPackageAllDownloadsRecord = query(
-	async (pkg: TPackageSchema) => transformPackageDownloadRange(await fetchPackageAllDownloadsRecord(pkg.name)),
-	'transformed-package-downloads-record',
-);
+const getTransformedPackageDownloadsRecord = query(async (pkg: TPackageSchema) => transformPackageDownloadsRange(await fetchPackageDownloadsRecord(pkg.name)), 'transformed-package-downloads-record');
 
 const Chart = (props: { pkg: TPackageSchema }) => {
-	const tpkg = createAsync(() => getTransformedPackageAllDownloadsRecord(props.pkg));
+	const tpkg = createAsync(() => getTransformedPackageDownloadsRecord(props.pkg));
 
 	return (
 		<ErrorBoundary
@@ -138,8 +139,8 @@ export default (props: { pkg: TPackageSchema }) => {
 		<div class="relative flex flex-col w-full max-w-[60rem] px-5 py-4 md:px-8 md:py-6 2xl:px-10 2xl:py-8 bg-cn-2 border border-cn-6 rounded-3xl">
 			<div class="shrink-0 flex gap-2">
 				<div class="flex flex-col gap-2">
-					<h1 class="font-bold text-3xl text-cn-12">{props.pkg.name}</h1>
-					<Show when={props.pkg.description}>{(description) => <p class="font-normal text-lg text-cn-11">{description()}</p>}</Show>
+					<h1 class="font-bold text-3xl lg:text-4xl text-cn-12">{props.pkg.name}</h1>
+					<Show when={props.pkg.description}>{(description) => <p class="font-normal text-base lg:text-lg text-cn-11">{description()}</p>}</Show>
 				</div>
 			</div>
 			<div class="grow p-1 aspect-video">

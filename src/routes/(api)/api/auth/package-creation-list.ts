@@ -3,7 +3,7 @@ import { json } from '@solidjs/router';
 import { db } from '~/db/db';
 import { packageCreationTable } from '~/db/schema';
 
-import { errorStatusMessageResponse } from '~/server/response/error';
+import { jsonErrorStatusMessageResponse } from '~/server/error';
 
 export async function GET() {
 	try {
@@ -11,6 +11,6 @@ export async function GET() {
 
 		return json(rows.map(({ n, d, t }) => [n, d, t]));
 	} catch (error) {
-		return errorStatusMessageResponse(error);
+		return jsonErrorStatusMessageResponse(error);
 	}
 }

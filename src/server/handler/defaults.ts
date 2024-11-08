@@ -1,3 +1,3 @@
-import { jsonNotImplemented } from '../response/message';
+import { jsonNotImplemented } from '../message';
 
 export const handleNotImplemented = () => jsonNotImplemented();

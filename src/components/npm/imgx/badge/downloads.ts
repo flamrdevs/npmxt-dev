@@ -1,11 +1,11 @@
 import { Download } from 'lucide';
 
-import { svg } from '~/server/response/imgx';
+import { SVGImageResponse } from '~/server/imgx/response/svg';
 
 import { h } from '~/imgx';
-import { formatNumberCompact } from '~/utils/formatter';
+import * as colors from '~/imgx/colors';
 
-import * as colors from './../styles/colors';
+import { formatNumberCompact } from '~/utils/formatter';
 
 import { LucideIcon } from '../icons/lucide';
 
@@ -19,7 +19,7 @@ export const y = (downloads: number) => {
 	const height = 24;
 	const width = 24 + (text.length * 8 + 16);
 
-	return svg(
+	return SVGImageResponse(
 		h.r('div', {
 			style: {
 				display: 'flex',
@@ -69,6 +69,6 @@ export const y = (downloads: number) => {
 					children: text,
 				}),
 			],
-		}),
+		})
 	);
 };

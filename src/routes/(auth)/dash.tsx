@@ -18,7 +18,7 @@ const preload = query(async () => {
 	}
 
 	throw redirect('/login');
-}, 'dash');
+}, 'page:dash');
 
 export const route = { preload: () => preload() };
 

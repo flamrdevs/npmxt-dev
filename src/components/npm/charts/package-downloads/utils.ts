@@ -4,11 +4,11 @@ import { dayjs } from '~/utils/dayjs';
 
 import { DOWNLOAD_DATE_FORMAT } from '~/npm/const';
 import { parsePackageName } from '~/npm/schema';
-import { createDailyCacheStorage } from '~/npm/storage';
+import { createCacheStorage } from '~/npm/storage';
 import { type PackageDownloadsRecord, getPackageAllDownloadsRecord } from '~/npm/utils.get';
 
-export const fetchPackageAllDownloadsRecord = (() => {
-	const withStorage = createDailyCacheStorage<PackageDownloadsRecord>(__DEV__ ? 'npm:package-download-range-all' : 'npm:pkg-dr-a');
+export const fetchPackageDownloadsRecord = (() => {
+	const withStorage = createCacheStorage<PackageDownloadsRecord>(__DEV__ ? 'npm:package-downloads-record' : 'npm:pkg-dr-r');
 
 	const MIN_START_DATE_DAYJS = dayjs('2015-02-01' /* ahead MIN_START_DOWNLOAD_DATE */, DOWNLOAD_DATE_FORMAT);
 
