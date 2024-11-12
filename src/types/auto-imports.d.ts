@@ -7,4 +7,6 @@
 export {}
 declare global {
   const clsx: typeof import('clsx')['clsx']
+  const delay: typeof import('~/utils/delay')['delay']
+  const range: typeof import('~/utils/range')['range']
 }

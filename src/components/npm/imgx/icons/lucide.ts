@@ -13,7 +13,7 @@ export namespace LucideIcon {
 		 */
 		size?: number;
 		/**
-		 * @description fill color
+		 * @description stroke color
 		 */
 		color?: string;
 	};

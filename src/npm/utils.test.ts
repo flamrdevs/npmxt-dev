@@ -1,5 +1,5 @@
 import { StatusError } from '~/utils/error';
-import { fetchPackage, fetchPackageAlt, fetchPackageLastDownloadsPoint, fetchPackageLastDownloadsRange, splitPackageNameAndVersion } from './utils';
+import { fetchPackage, fetchPackageAlt, fetchPackageLastDownloadsPoint, fetchPackageLastDownloadsRange, fetchPackageMetadata, splitPackageNameAndVersion } from './utils';
 
 describe('splitPackageNameAndVersion', () => {
 	it('Parse package name', () => {
@@ -43,6 +43,20 @@ describe('fetchPackage', () => {
 	])('not found - %s@%s', async ([name, version]) => {
 		await expect(fetchPackage(name, version)).rejects.toThrow(StatusError);
 		await expect(fetchPackageAlt(`${name}/${version}`)).rejects.toThrow(StatusError);
+	});
+});
+
+describe('fetchPackageMetadata', () => {
+	it.for([['solid-js'], ['@solidjs/start']])('found - %s', async ([name]) => {
+		await expect(fetchPackageMetadata(name)).resolves.toMatchObject({ name });
+	});
+
+	it.for([
+		['astro', 'latest'],
+		['next', 'latest'],
+		['nuxt', 'latest'],
+	])('not found - %s', async ([name]) => {
+		await expect(fetchPackageMetadata(name)).rejects.toThrow(StatusError);
 	});
 });
 

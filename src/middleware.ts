@@ -4,8 +4,9 @@ import { csrfProtection, secureRequest } from 'shieldwall/start';
 
 import * as CSP from 'csp-header';
 
-import * as NPM from './npm/url';
-import { CDN_JSDELIVR } from './utils/url';
+import { BASE_URL_DENO as BUNDLEJS_BASE_URL_DENO } from '~/bundlejs/url';
+import { BASE_URL_API as NPM_BASE_URL_API, BASE_URL_REGISTRY as NPM_BASE_URL_REGISTRY } from '~/npm/url';
+import { CDN_JSDELIVR } from '~/utils/url';
 
 export default createMiddleware({
 	onRequest: [
@@ -23,8 +24,8 @@ export default createMiddleware({
 				const SCRIPT_SRC_ELEM = [CSP.SELF, CSP.UNSAFE_EVAL, CSP.UNSAFE_INLINE];
 				const FONT_SRC = [CSP.SELF, CDN_JSDELIVR];
 				const STYLE_SRC = [CSP.SELF, CSP.UNSAFE_INLINE];
-				const STYLE_SRC_ELEM = [CSP.NONE];
-				const CONNECT_SRC = [CSP.SELF, NPM.BASE_URL_REGISTRY, NPM.BASE_URL_API];
+				const STYLE_SRC_ELEM = [CSP.SELF];
+				const CONNECT_SRC = [NPM_BASE_URL_API, NPM_BASE_URL_REGISTRY, BUNDLEJS_BASE_URL_DENO];
 				const IMG_SRC = [CSP.SELF, CSP.DATA];
 
 				return {
@@ -38,12 +39,12 @@ export default createMiddleware({
 							'font-src': FONT_SRC,
 							'style-src': STYLE_SRC,
 							'style-src-elem': STYLE_SRC_ELEM,
-							'connect-src': CONNECT_SRC,
+							'connect-src': [...[''] /* solve bug */, ...CONNECT_SRC],
 							'img-src': IMG_SRC,
 							'object-src': [],
 						},
 						cspReportOnly: true,
-						cspBlock: false,
+						cspBlock: true,
 					},
 					dev: {
 						withNonce,
@@ -55,7 +56,7 @@ export default createMiddleware({
 							'font-src': FONT_SRC,
 							'style-src': STYLE_SRC,
 							'style-src-elem': STYLE_SRC_ELEM,
-							'connect-src': [...CONNECT_SRC, 'ws://localhost:*'],
+							'connect-src': [...['', ''] /* solve bug */, ...CONNECT_SRC],
 							'img-src': IMG_SRC,
 							'object-src': [CSP.NONE],
 						},

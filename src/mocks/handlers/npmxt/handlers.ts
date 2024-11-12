@@ -1,6 +1,6 @@
 import { http, HttpResponse, delay } from 'msw';
 
-import { MOCK_PACKAGE_METADATA } from '../registry.npmjs/handlers';
+import { MOCK_PACKAGE } from '../registry.npmjs/handlers';
 
 export default [
 	http.get<{ 0: string }>('/api/package-creation/*', async ({ params }) => {
@@ -8,8 +8,8 @@ export default [
 
 		const name = params['0'];
 
-		if (name in MOCK_PACKAGE_METADATA) {
-			return HttpResponse.json({ date: MOCK_PACKAGE_METADATA[name].time.created } satisfies { date: string }, { status: 200 });
+		if (name in MOCK_PACKAGE) {
+			return HttpResponse.json({ date: MOCK_PACKAGE[name].time.created } satisfies { date: string }, { status: 200 });
 		}
 
 		throw HttpResponse.json({ error: 'not_found' }, { status: 404 });

@@ -1,12 +1,14 @@
 // @refresh reload
 import { StartServer, createHandler } from '@solidjs/start/server';
 
+import { getHTMLThemeProps } from '~/theme/utils.server';
+
 if (__MSW__) (await import('~/mocks/server')).listen();
 
-export default createHandler(() => (
+export default createHandler((event) => (
 	<StartServer
 		document={({ assets, children, scripts }) => (
-			<html lang="en">
+			<html lang="en" {...getHTMLThemeProps(event)}>
 				<head>
 					<meta charset="utf-8" />
 					<meta name="viewport" content="width=device-width, initial-scale=1" />

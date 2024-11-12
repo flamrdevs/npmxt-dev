@@ -18,7 +18,6 @@
 		"isolatedModules": true,
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
-		"noPropertyAccessFromIndexSignature": true,
 		"paths": {
 			"~/*": ["./src/*"]
 		}

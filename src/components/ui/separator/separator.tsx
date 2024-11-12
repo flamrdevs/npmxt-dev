@@ -18,13 +18,13 @@ export namespace Separator {
 }
 
 export const defaultSeparatorVariantsProps = {
-	color: 'n',
+	color: 'n3',
 } as const;
 
 export const separatorVariants = klass({
 	base: 'xt-separator',
 	variants: klassXVariants({
-		color: ['n', 'p'],
+		color: ['n3', 'n6', 'p3', 'p6'],
 	}),
 	defaults: defaultSeparatorVariantsProps,
 });

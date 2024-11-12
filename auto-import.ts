@@ -5,6 +5,9 @@ export default () =>
 		imports: [
 			{
 				['clsx']: ['clsx'],
+
+				['~/utils/delay']: ['delay'],
+				['~/utils/range']: ['range'],
 			},
 		],
 		include: [/\.tsx?$/],

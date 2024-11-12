@@ -9,6 +9,7 @@ import type { ClassValue } from 'clsx';
 
 declare global {
 	var __DEV__: boolean;
+	var __TEST__: boolean;
 	var __MSW__: boolean;
 	var __MSW_DELAY__: boolean;
 

@@ -5,7 +5,7 @@
 		max-width: min(calc(100dvw - 1rem), 25rem);
 		transform-origin: var(--kb-popover-content-transform-origin);
 		animation: xt-popover-content-hide 100ms ease-in forwards;
-		@apply relative z-50 px-4 py-3 bg-cn-1 border border-cn-3 rounded-2xl outline-none shadow;
+		@apply relative z-50 px-4 py-3 bg-cn-2/90 backdrop-blur border border-cn-5 rounded-2xl outline-none shadow-2xl shadow-black-2;
 
 		@keyframes xt-popover-content-hide {
 			from {
@@ -35,7 +35,7 @@
 	}
 
 	&-arrow {
-		@apply fill-cn-1 stroke-cn-3;
+		@apply fill-cn-2/90 stroke-cn-5;
 	}
 
 	&-close-button {

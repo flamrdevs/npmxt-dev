@@ -6,7 +6,7 @@ import { errorStatusMessage } from '~/utils/error';
 
 export const RenderStatusMessageError = (props: {
 	error: any;
-	children?: (message: string) => Solid.JSX.Element;
+	render?: (message: string) => Solid.JSX.Element;
 }) =>
 	createMemo(() => {
 		const { status, message } = errorStatusMessage(props.error);
@@ -14,7 +14,7 @@ export const RenderStatusMessageError = (props: {
 		return (
 			<>
 				<HttpStatusCode code={status} />
-				{props.children?.(message)}
+				{props.render?.(message)}
 			</>
 		);
 	}) as unknown as Solid.JSX.Element;

@@ -1,11 +1,14 @@
 import { Meta, Title, useHead } from '@solidjs/meta';
 import { useLocation } from '@solidjs/router';
-import { createEffect, createMemo, createUniqueId } from 'solid-js';
+import { createMemo, createUniqueId } from 'solid-js';
+import { isServer } from 'solid-js/web';
 
 import { height as og_height, width as og_width } from '~/server/imgx/response/og/config';
 
+import { NPMXT } from '~/utils/url';
+
 const TITLE = 'npmxt';
-const DESCRIPTION = 'npmxt';
+const DESCRIPTION = 'npm e-xtended tools | Supercharge your development with npm e-xtended tools - essential utilities to boost productivity.';
 
 export namespace Base {
 	export type Props = { title?: string; description?: string };
@@ -43,21 +46,21 @@ export const OG = (() => {
 		});
 	};
 
-	const HOST = __DEV__ ? 'http://localhost:3000' : 'https://npmxt-dev.netlify.app';
-
 	return (props: OG.Props) => {
 		const location = useLocation();
 
 		const title = createMemo(() => `${props.title || TITLE}`);
 		const description = createMemo(() => `${props.description || DESCRIPTION}`);
-		const url = createMemo(() => `${HOST}${location.pathname}`);
-		const image = createMemo(() => `${HOST}/og/${props.img || 'main'}`);
+		const url = createMemo(() => `${NPMXT}${location.pathname}`);
+		const image = createMemo(() => `${NPMXT}/og/${props.img || 'main'}`);
 
 		if (__DEV__) {
-			createEffect(() => {
-				console.log(`Meta.OG - url ${url()}`);
-				console.log(`Meta.OG - image ${image()}`);
-			});
+			if (!isServer) {
+				console.log('Meta.OG', {
+					url: url(),
+					image: image(),
+				});
+			}
 		}
 
 		use('og:type', 'website');
@@ -79,3 +82,12 @@ export const OG = (() => {
 		return null;
 	};
 })();
+
+export const Page = (props: Base.Props & OG.Props) => {
+	return (
+		<>
+			<Base title={props.title} description={props.description} />
+			<OG title={props.title} description={props.description} img={props.img} />
+		</>
+	);
+};

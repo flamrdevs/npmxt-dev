@@ -4,9 +4,9 @@
 	}
 
 	&-trigger {
-		@apply appearance-none inline-flex items-center justify-between border rounded-[0.625rem] outline-none focus:outline-1 cursor-pointer;
-		@apply bg-cn-1 border-cn-6 hover:border-cn-7 focus:outline-cp-9;
-		@apply min-w-[16rem] h-10 px-3 py-2 font-medium text-base;
+		@apply appearance-none inline-flex items-center justify-between border rounded-[0.625rem] outline-none focus:outline-1 cursor-pointer
+			bg-cn-1 border-cn-6 hover:border-cn-7 focus:outline-cp-9
+			min-w-[16rem] h-10 px-3 py-2 font-medium text-base;
 
 		&[data-invalid] {
 			@apply border-ce-6 hover:border-ce-7 focus:outline-ce-9;
@@ -40,7 +40,7 @@
 	&-content {
 		transform-origin: var(--kb-select-content-transform-origin);
 		animation: xt-select-content-hide 100ms ease-in forwards;
-		@apply relative z-50 bg-cn-1 border border-cn-3 rounded-[0.625rem] outline-none shadow;
+		@apply relative z-50 bg-cn-2/90 backdrop-blur border border-cn-5 rounded-[0.625rem] outline-none shadow-2xl shadow-black-2;
 
 		@keyframes xt-select-content-hide {
 			from {
@@ -74,7 +74,7 @@
 	}
 
 	&-item {
-		@apply relative flex items-center justify-between h-9 px-2 py-1 bg-transparent text-cn-11 font-normal text-base rounded-[0.375rem] outline-none;
+		@apply relative flex items-center justify-between h-9 px-2 py-1 bg-transparent text-cn-11 font-normal text-base rounded-[0.375rem] outline-none select-none;
 
 		&[data-selected] {
 			@apply text-cn-12;

@@ -22,6 +22,9 @@
 }
 
 body {
-	@apply bg-cn-1 text-cn-12;
-	@apply font-sans;
+	@apply bg-cn-1 text-cn-12 font-sans;
+}
+
+a {
+	@apply rounded-lg outline-none focus-visible:outline-1 focus-visible:outline-cn-9;
 }

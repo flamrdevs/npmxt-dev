@@ -3,7 +3,9 @@ import { createMemo, splitProps } from 'solid-js';
 import { createControllableSignal } from '@kobalte/core/primitives/create-controllable-signal';
 import * as K from '@kobalte/core/select';
 
-import { CheckIcon, ChevronsUpDownIcon } from 'lucide-solid';
+import { Check, ChevronsUpDown } from 'lucide';
+
+import { LucideIcon } from '../../icons';
 
 import { classesSplitter, classesToArray } from '../../utils';
 
@@ -71,7 +73,7 @@ export const Select = <V extends string>(props: Select.Props<V>) => {
 				<K.Item item={props.item} class={`${scope}-item`}>
 					<K.ItemLabel class={`${scope}-item-label`}>{props.item.rawValue.label}</K.ItemLabel>
 					<K.ItemIndicator class={`${scope}-item-indicator`}>
-						<CheckIcon />
+						<LucideIcon i={Check} />
 					</K.ItemIndicator>
 				</K.Item>
 			)}
@@ -81,7 +83,7 @@ export const Select = <V extends string>(props: Select.Props<V>) => {
 				<K.Trigger class={`${scope}-trigger`}>
 					<K.Value<Select.Item> class={`${scope}-value`}>{(state) => state.selectedOption().label}</K.Value>
 					<K.Icon class={`${scope}-icon`}>
-						<ChevronsUpDownIcon />
+						<LucideIcon i={ChevronsUpDown} />
 					</K.Icon>
 				</K.Trigger>
 			</ShowFormControlLayout>

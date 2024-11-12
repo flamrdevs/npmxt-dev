@@ -51,7 +51,7 @@ export default (name: string, downloads: TPackageDownloadsRangeSchema['downloads
 					e('div', {
 						style: {
 							position: 'absolute',
-							backgroundImage: `linear-gradient(to right, ${neutral[2]} 0%, ${neutral[4]} 55%)`,
+							backgroundImage: `linear-gradient(to right, ${neutral[1]} 0%, ${neutral[4]} 60%)`,
 							top: chartTop,
 							left: 0,
 							width: width,
@@ -61,7 +61,7 @@ export default (name: string, downloads: TPackageDownloadsRangeSchema['downloads
 					e('div', {
 						style: {
 							position: 'absolute',
-							backgroundImage: `linear-gradient(to right, ${neutral[2]} 0%, ${neutral[4]} 55%)`,
+							backgroundImage: `linear-gradient(to right, ${neutral[1]} 0%, ${neutral[4]} 60%)`,
 							top: chartTop + chartHeight,
 							left: 0,
 							width: width,
@@ -71,7 +71,7 @@ export default (name: string, downloads: TPackageDownloadsRangeSchema['downloads
 					e('div', {
 						style: {
 							position: 'absolute',
-							backgroundImage: `linear-gradient(to bottom, ${neutral[2]} 0%, ${neutral[4]} 55%)`,
+							backgroundImage: `linear-gradient(to bottom, ${neutral[1]} 0%, ${neutral[4]} 60%)`,
 							top: 0,
 							right: chartRight,
 							width: 1,
@@ -81,7 +81,7 @@ export default (name: string, downloads: TPackageDownloadsRangeSchema['downloads
 					e('div', {
 						style: {
 							position: 'absolute',
-							backgroundImage: `linear-gradient(to bottom, ${neutral[2]} 0%, ${neutral[4]} 55%)`,
+							backgroundImage: `linear-gradient(to bottom, ${neutral[1]} 0%, ${neutral[4]} 60%)`,
 							top: 0,
 							right: chartRight + chartWidth,
 							width: 1,
@@ -138,15 +138,15 @@ export default (name: string, downloads: TPackageDownloadsRangeSchema['downloads
 
 			e('div', {
 				style: { display: 'flex', alignItems: 'center', gap: 20, position: 'absolute', bottom: 85, right: 150 },
-				children: LucideIcon({ i: ArrowRight, size: 44, color: neutral[11] }),
+				children: LucideIcon({ i: ArrowRight, size: 40, color: neutral[11] }),
 			}),
 		],
 		{
 			style: {
 				display: 'flex',
-				backgroundColor: neutral[2],
+				backgroundColor: neutral[1],
 				color: neutral[12],
-				border: `1px solid ${neutral[3]}`,
+				border: `1px solid ${neutral[2]}`,
 				overflow: 'hidden',
 			},
 		}
