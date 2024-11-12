@@ -1,15 +1,20 @@
-import { createAsync, query, redirect } from '@solidjs/router';
+import { createAsync, query, redirect, useSubmission } from '@solidjs/router';
+import { Show } from 'solid-js';
 
+import { AlertCircle, LogIn } from 'lucide';
+
+import { RenderStatusMessageError } from '~/components/error';
+import { LucideIcon } from '~/components/icons';
 import * as Meta from '~/components/meta';
 import { Button, TextField } from '~/components/ui';
 
 import { loginAction } from '~/auth/actions';
 import { getSessionData } from '~/auth/session';
 
-const preload = query(async () => {
+const guard = query(async () => {
 	'use server';
 
-	if (__DEV__) console.log('LoginPage - preload');
+	if (__DEV__) console.log('LoginPage - guard');
 	try {
 		const sessionData = await getSessionData();
 		if (!sessionData) return null;
@@ -20,10 +25,10 @@ const preload = query(async () => {
 	throw redirect('/dash');
 }, 'page:login');
 
-export const route = { preload: () => preload() };
-
 export default function LoginPage() {
-	createAsync(() => preload());
+	createAsync(() => guard());
+
+	const submission = useSubmission(loginAction);
 
 	return (
 		<>
@@ -40,8 +45,25 @@ export default function LoginPage() {
 						<TextField name="username" type="text" label="Username" class="w-full" />
 						<TextField name="password" type="password" label="Password" class="w-full" />
 						<Button type="submit" class="mt-1 lg:mt-4">
-							Login
+							<span>Login</span>
+							<LucideIcon i={LogIn} class="ml-2 size-5" />
 						</Button>
+
+						<Show when={submission.error}>
+							{(error) => (
+								<RenderStatusMessageError
+									error={error()}
+									render={(message) => (
+										<div class="relative flex gap-2 md:gap-4 mt-1 md:mt-2 px-2 py-1 md:px-3 md:py-1.5 bg-ce-2 border border-ce-5 rounded-md shadow">
+											<div class="p-1">
+												<LucideIcon i={AlertCircle} class="text-ce-9" />
+											</div>
+											<div class="font-medium text-base lg:text-lg">{message}</div>
+										</div>
+									)}
+								/>
+							)}
+						</Show>
 					</div>
 				</form>
 			</div>

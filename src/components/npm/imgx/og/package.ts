@@ -17,16 +17,15 @@ export default (name: string, version: string, description?: string) => {
 					left: 0,
 					width,
 					height,
-					transform: 'rotate(-10deg)',
 				},
 				children: [
 					e('div', {
 						style: {
 							position: 'absolute',
-							backgroundImage: `linear-gradient(to right, ${neutral[2]} 0%, ${neutral[3]} 55%)`,
+							backgroundImage: `linear-gradient(to right, ${neutral[1]}, ${neutral[4]})`,
 							top: '15%',
 							left: '50%',
-							width: (width * 3) / 2,
+							width,
 							height: 1,
 							transform: 'translate(-50%,-50%)',
 						},
@@ -35,10 +34,10 @@ export default (name: string, version: string, description?: string) => {
 					e('div', {
 						style: {
 							position: 'absolute',
-							backgroundImage: `linear-gradient(to right, ${neutral[2]} 0%, ${neutral[3]} 55%)`,
+							backgroundImage: `linear-gradient(to right, ${neutral[1]}, ${neutral[4]})`,
 							top: '70%',
 							left: '50%',
-							width: (width * 3) / 2,
+							width,
 							height: 1,
 							transform: 'translate(-50%,-50%)',
 						},
@@ -47,11 +46,11 @@ export default (name: string, version: string, description?: string) => {
 					e('div', {
 						style: {
 							position: 'absolute',
-							backgroundImage: `linear-gradient(to bottom, ${neutral[2]} 0%, ${neutral[3]} 55%)`,
-							top: '40%',
+							backgroundImage: `linear-gradient(to bottom, ${neutral[1]}, ${neutral[4]})`,
+							top: '50%',
 							left: '45%',
 							width: 1,
-							height: (width * 3) / 2,
+							height,
 							transform: 'translate(-50%,-50%)',
 						},
 					}),
@@ -59,11 +58,11 @@ export default (name: string, version: string, description?: string) => {
 					e('div', {
 						style: {
 							position: 'absolute',
-							backgroundImage: `linear-gradient(to bottom, ${neutral[2]} 0%, ${neutral[3]} 55%)`,
-							top: '40%',
+							backgroundImage: `linear-gradient(to bottom, ${neutral[1]}, ${neutral[4]})`,
+							top: '50%',
 							left: '90%',
 							width: 1,
-							height: (width * 3) / 2,
+							height,
 							transform: 'translate(-50%,-50%)',
 						},
 					}),
@@ -124,15 +123,15 @@ export default (name: string, version: string, description?: string) => {
 
 			e('div', {
 				style: { display: 'flex', alignItems: 'center', gap: 20, position: 'absolute', bottom: 85, right: 150 },
-				children: LucideIcon({ i: ArrowRight, size: 44, color: neutral[11] }),
+				children: LucideIcon({ i: ArrowRight, size: 40, color: neutral[11] }),
 			}),
 		],
 		{
 			style: {
 				display: 'flex',
-				backgroundColor: neutral[2],
+				backgroundColor: neutral[1],
 				color: neutral[12],
-				border: `1px solid ${neutral[3]}`,
+				border: `1px solid ${neutral[2]}`,
 				overflow: 'hidden',
 			},
 		}

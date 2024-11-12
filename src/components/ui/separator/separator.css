@@ -3,11 +3,17 @@
 
 	&.x {
 		&-color {
-			&-n {
+			&-n3 {
 				@apply bg-cn-3;
 			}
-			&-p {
+			&-n6 {
+				@apply bg-cn-6;
+			}
+			&-p3 {
 				@apply bg-cp-3;
+			}
+			&-p6 {
+				@apply bg-cp-6;
 			}
 		}
 	}

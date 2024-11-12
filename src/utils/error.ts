@@ -12,6 +12,11 @@ export class StatusError extends Error {
 	}
 }
 
+export const isFetchError = (error: unknown) => error instanceof FetchError;
+export const isStatusError = (error: unknown) => error instanceof StatusError;
+
+export const isErrorStatusNotFound = <E extends { status?: unknown }>(error: E) => error.status === 404;
+
 export const errorStatusMessage = (error: unknown) => {
 	if (__DEV__) console.error(error);
 
@@ -20,7 +25,7 @@ export const errorStatusMessage = (error: unknown) => {
 	if (v.isValiError(error)) {
 		message = getValibotErrorMessage(error);
 		status = 400;
-	} else if (error instanceof FetchError || error instanceof StatusError) {
+	} else if (isFetchError(error) || isStatusError(error)) {
 		message = error.message;
 		status = error.status;
 	} else if (error instanceof Error) {

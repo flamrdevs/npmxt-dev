@@ -1,20 +1,22 @@
+import { HttpHeader } from '@solidjs/start';
 import { For } from 'solid-js';
 import { type SetStoreFunction, createStore } from 'solid-js/store';
 
 import { useColorMode } from '@kobalte/core/color-mode';
 import { Root as Link } from '@kobalte/core/link';
 
-import { PaletteIcon, RocketIcon, Settings2Icon } from 'lucide-solid';
+import { Palette, Rocket, Settings2 } from 'lucide';
 
+import { LucideIcon } from '~/components/icons';
 import * as Meta from '~/components/meta';
-import { Button, Checkbox, IconButton, Popover, Select, Separator, Switch, TextField } from '~/components/ui';
+import { Button, Checkbox, IconButton, Popover, Select, Separator, Switch, TextField, Tooltip } from '~/components/ui';
 import * as defaultProps from '~/components/ui/default-props';
 
 const Blocks: Solid.Component = (() => {
 	const Panel = (() => {
 		const PopoverTrigger = (props: Record<string, any>) => (
 			<IconButton {...props} class="absolute top-4 right-4 z-50" title="Settings">
-				<Settings2Icon />
+				<LucideIcon i={Settings2} />
 			</IconButton>
 		);
 		return (props: {
@@ -72,6 +74,20 @@ const Blocks: Solid.Component = (() => {
 			/>
 		);
 	};
+
+	const ControlTitle = <P extends { title?: string }>(props: {
+		get: P;
+		set: SetStoreFunction<P>;
+	}) => (
+		<TextField
+			label="Title"
+			placeholder="Title..."
+			value={props.get.title}
+			onChange={(value) => {
+				props.set('title' as any, value);
+			}}
+		/>
+	);
 
 	const ControlLabel = <P extends { label?: string }>(props: {
 		get: P;
@@ -203,7 +219,7 @@ const Blocks: Solid.Component = (() => {
 					}
 				>
 					<IconButton {...props} title="Rocket">
-						<RocketIcon />
+						<LucideIcon i={Rocket} />
 					</IconButton>
 				</Panel>
 			);
@@ -322,6 +338,48 @@ const Blocks: Solid.Component = (() => {
 				</Panel>
 			);
 		},
+		['Popover']: () => {
+			const [props, setProps] = createStore<Popover.Props>({
+				trigger: (props) => <Button {...props}>Open</Button>,
+				title: 'Title',
+				description: 'Description',
+				children: 'Content',
+			});
+
+			return (
+				<Panel
+					popover={
+						<div class="flex flex-col gap-4 my-2 p-2">
+							<ControlTitle get={props} set={setProps} />
+							<Separator />
+							<ControlDescription get={props} set={setProps} />
+							<Separator />
+							<TextField label="Children" value={props.children as string} onChange={(children) => setProps({ children })} />
+						</div>
+					}
+				>
+					<Popover {...props} />
+				</Panel>
+			);
+		},
+		['Tooltip']: () => {
+			const [props, setProps] = createStore<Omit<Tooltip.Props, 'children'> & { children: string }>({
+				trigger: (props) => <Button {...props}>Hover</Button>,
+				children: 'Content',
+			});
+
+			return (
+				<Panel
+					popover={
+						<div class="flex flex-col gap-4 my-2 p-2">
+							<TextField label="Children" value={props.children} onChange={(children) => setProps({ children })} />
+						</div>
+					}
+				>
+					<Tooltip {...props} />
+				</Panel>
+			);
+		},
 	} satisfies Record<string, () => Solid.JSX.Element>);
 
 	return () => (
@@ -347,15 +405,16 @@ export default function UIPage() {
 
 	return (
 		<>
-			<Meta.Base title="UI" description="UI npmxt" />
-			<Meta.OG title="UI" description="UI npmxt" img="ui" />
+			<HttpHeader name="x-robots-tag" value="noindex" />
+
+			<Meta.Page title="UI" description="UI npmxt" img="ui" />
 
 			<div class="w-full max-w-5xl mx-auto p-2">
 				<div class="flex items-center justify-end p-2">
 					<Popover
 						trigger={(triggerProps) => (
 							<IconButton {...triggerProps} title="Palette">
-								<PaletteIcon />
+								<LucideIcon i={Palette} />
 							</IconButton>
 						)}
 						title="Color Mode"

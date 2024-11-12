@@ -6,7 +6,7 @@ import { DOWNLOAD_DATE_FORMAT } from '~/npm/const';
 import { PACKAGE_DOWNLOADS_LAST_LIST, PACKAGE_DOWNLOADS_LAST_MAP, type TPackageDownloadsPointSchema, type TPackageDownloadsRangeSchema, parsePackageDownloadsLast } from '~/npm/schema';
 import { BASE_URL_API as NPM_BASE_URL_API } from '~/npm/url';
 
-import { MOCK_PACKAGE_METADATA } from '../registry.npmjs/handlers';
+import { MOCK_PACKAGE } from '../registry.npmjs/handlers';
 
 const MOCK_PACKAGE_DOWNLOAD_RANGE: Record<string, number | TPackageDownloadsRangeSchema['downloads']> = {
 	['@klass/core']: 1,
@@ -21,7 +21,7 @@ const MOCK_PACKAGE_DOWNLOAD_RANGE: Record<string, number | TPackageDownloadsRang
 	['svelte']: 3,
 	['vue']: 4,
 	['looooooooo-oooooooo-oooooooooooooooong']: 100,
-	['@looooooooo/oooooooooooooooooooooooong']: 10000,
+	['@looooooooo/oooooooooooo-oooooooooooooooooooooooong']: 10000,
 };
 
 const MIN_START_DATE_DAYJS = dayjs('2015-01-01' /* behind MIN_START_DOWNLOAD_DATE */, DOWNLOAD_DATE_FORMAT);
@@ -29,13 +29,11 @@ const MIN_START_DATE_DAYJS = dayjs('2015-01-01' /* behind MIN_START_DOWNLOAD_DAT
 const generateDownloads = (() => {
 	const now = dayjs().startOf('day');
 
-	const range = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
-
 	return (name: string, factor: number) => {
-		if (name in MOCK_PACKAGE_METADATA) {
+		if (name in MOCK_PACKAGE) {
 			const result: TPackageDownloadsRangeSchema['downloads'] = [];
 
-			let startDayjs = dayjs(MOCK_PACKAGE_METADATA[name].time.created).startOf('day');
+			let startDayjs = dayjs(MOCK_PACKAGE[name].time.created).startOf('day');
 
 			if (startDayjs.isBefore(MIN_START_DATE_DAYJS)) startDayjs = MIN_START_DATE_DAYJS.clone();
 

@@ -1,19 +1,20 @@
-import { StatusError } from '~/utils/error';
+import { createCacheStorage } from '~/utils/cache-storage';
+import { StatusError, isErrorStatusNotFound, isFetchError, isStatusError } from '~/utils/error';
 
 import {
 	type TPackageDownloadsPointSchema,
 	type TPackageDownloadsRangeSchema,
+	type TPackageMetadataSchema,
 	type TPackageSchema,
 	parsePackage,
 	parsePackageDownloadsLast,
 	parsePackageDownloadsPoint,
 	parsePackageDownloadsRange,
+	parsePackageMetadata,
 	parsePackageName,
 } from './schema';
 
-import { fetcherPackage, fetcherPackageDownloadsPoint, fetcherPackageDownloadsRange } from './fetcher';
-
-import { createCacheStorage } from './storage';
+import { fetcherPackage, fetcherPackageDownloadsPoint, fetcherPackageDownloadsRange, fetcherPackageMetadata } from './fetcher';
 
 export const splitPackageNameAndVersion = (() => {
 	const scoped = (str: string) => str.startsWith('@');
@@ -48,6 +49,12 @@ export const splitPackageNameAndVersion = (() => {
 	};
 })();
 
+const throwWithPackageNotFoundError = (error: unknown) => {
+	if (__DEV__) console.error(error);
+	if ((isFetchError(error) || isStatusError(error)) && isErrorStatusNotFound(error)) return new StatusError('Package not found', 404);
+	return error;
+};
+
 export const fetchPackage = (() => {
 	const withStorage = createCacheStorage<TPackageSchema>(__DEV__ ? 'npm:package' : 'npm:pkg');
 
@@ -58,13 +65,28 @@ export const fetchPackage = (() => {
 			try {
 				return parsePackage(await fetcherPackage(validName, validVersion));
 			} catch (error) {
-				throw new StatusError('Package not found', 404);
+				throw throwWithPackageNotFoundError(error);
 			}
 		});
 	};
 })();
 
 export const fetchPackageAlt = (input: string): Promise<TPackageSchema> => fetchPackage(...splitPackageNameAndVersion(input));
+
+export const fetchPackageMetadata = (() => {
+	const withStorage = createCacheStorage<TPackageMetadataSchema>(__DEV__ ? 'npm:package-metadata' : 'npm:pkg-m');
+
+	return async (rawName: string): Promise<TPackageMetadataSchema> => {
+		const validName = parsePackageName(rawName);
+		return await withStorage(validName, async () => {
+			try {
+				return parsePackageMetadata(await fetcherPackageMetadata(validName));
+			} catch (error) {
+				throw throwWithPackageNotFoundError(error);
+			}
+		});
+	};
+})();
 
 export const fetchPackageLastDownloadsPoint = (() => {
 	const withStorage = createCacheStorage<TPackageDownloadsPointSchema>(__DEV__ ? 'npm:package-downloads-point-last' : 'npm:pkg-dp-l');
@@ -76,7 +98,7 @@ export const fetchPackageLastDownloadsPoint = (() => {
 			try {
 				return parsePackageDownloadsPoint(await fetcherPackageDownloadsPoint(`last-${validLast}`, validName));
 			} catch (error) {
-				throw new StatusError('Package not found', 404);
+				throw throwWithPackageNotFoundError(error);
 			}
 		});
 	};
@@ -92,7 +114,7 @@ export const fetchPackageLastDownloadsRange = (() => {
 			try {
 				return parsePackageDownloadsRange(await fetcherPackageDownloadsRange(`last-${validLast}`, validName));
 			} catch (error) {
-				throw new StatusError('Package not found', 404);
+				throw throwWithPackageNotFoundError(error);
 			}
 		});
 	};

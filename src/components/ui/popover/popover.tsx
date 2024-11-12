@@ -10,13 +10,14 @@ export namespace Popover {
 	export type Props = Solid.ParentProps<
 		Pick<K.PopoverRootProps, 'open' | 'onOpenChange' | 'placement' | 'gutter'> & {
 			trigger: Solid.Component<Record<string, any>>;
+			triggerProps?: K.PopoverTriggerProps;
 			title?: string;
 			description?: string;
 		}
 	>;
 }
 
-const localSplitter = ['trigger', 'title', 'description', 'children'] as const satisfies (keyof Popover.Props)[];
+const localSplitter = ['trigger', 'triggerProps', 'title', 'description', 'children'] as const satisfies (keyof Popover.Props)[];
 
 export const Popover = (props: Popover.Props) => {
 	const [local, others] = splitProps(props as Popover.Props, localSplitter);
@@ -25,7 +26,7 @@ export const Popover = (props: Popover.Props) => {
 
 	return (
 		<K.Root flip slide {...others}>
-			<K.Trigger as={local.trigger} />
+			<K.Trigger as={local.trigger} {...local.triggerProps} />
 			<K.Portal>
 				<K.Content class={`${scope}-content`}>
 					<K.Arrow class={`${scope}-arrow`} style={{ fill: undefined, stroke: undefined }} />

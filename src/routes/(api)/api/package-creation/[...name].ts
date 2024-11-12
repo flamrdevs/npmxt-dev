@@ -2,13 +2,11 @@ import { json } from '@solidjs/router';
 
 import { eq } from 'drizzle-orm';
 
-import { ofetch } from 'ofetch';
-
 import { db } from '~/db/db';
 import { packageCreationTable } from '~/db/schema';
 
-import { parsePackageMetadata, parsePackageName } from '~/npm/schema';
-import { BASE_URL_REGISTRY } from '~/npm/url';
+import { parsePackageName } from '~/npm/schema';
+import { fetchPackageMetadata } from '~/npm/utils';
 import { jsonErrorStatusMessageResponse } from '~/server/error';
 import { cacheControl } from '~/server/header';
 import { createKeyedMemoCache } from '~/server/memo-cache';
@@ -30,7 +28,7 @@ const getPackageCreationDate = async (validName: string): Promise<string> => {
 	const {
 		name,
 		time: { created: date },
-	} = parsePackageMetadata(await ofetch(`${BASE_URL_REGISTRY}/${validName}`));
+	} = await fetchPackageMetadata(validName);
 
 	const t = now + 2592000000; // + 30 days
 
@@ -54,7 +52,7 @@ export async function GET(event: SolidJS.Start.Server.APIEvent) {
 				{ date: await getPackageCreationDate(validName) },
 				{
 					headers: {
-						...cacheControl('public, durable, max-age=43200, s-maxage=43200' /* 12 hours */),
+						...cacheControl('public, durable, max-age=43200, s-maxage=43200, must-revalidate' /* 12 hours */),
 					},
 				}
 			);

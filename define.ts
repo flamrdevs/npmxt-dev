@@ -1,8 +1,10 @@
 export default ({
 	dev,
+	test,
 	msw,
 }: {
 	dev: boolean;
+	test: boolean;
 	msw?: {
 		delay?: boolean;
 	};
@@ -10,6 +12,7 @@ export default ({
 	const record: Record<any, any> = {};
 
 	record['__DEV__'] = dev;
+	record['__TEST__'] = test;
 
 	record['__MSW__'] = Boolean(msw);
 	record['__MSW_DELAY__'] = Boolean(msw?.delay);

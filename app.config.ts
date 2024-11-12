@@ -17,6 +17,7 @@ export default defineConfig({
 	vite: {
 		define: define({
 			dev: process.argv.includes('dev'),
+			test: false,
 			msw: process.argv.includes('--msw')
 				? {
 						delay: true,

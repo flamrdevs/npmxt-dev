@@ -5,6 +5,7 @@ import * as colors from './tailwind.config.colors';
 
 export default {
 	content: ['./src/**/*.{ts,tsx}'],
+	darkMode: ['selector', '[data-kb-theme="dark"]'],
 	theme: {
 		colors: colors.theme,
 		fontFamily: {

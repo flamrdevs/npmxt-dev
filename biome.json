@@ -26,6 +26,9 @@
 				"noParameterAssign": "off",
 				"noCommaOperator": "off"
 			},
+			"a11y": {
+				"noLabelWithoutControl": "off"
+			},
 			"complexity": {
 				"useLiteralKeys": "off",
 				"noBannedTypes": "off"

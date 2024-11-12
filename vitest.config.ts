@@ -12,6 +12,7 @@ export default defineConfig({
 	plugins: [tsconfigPaths(), autoImport(), solid()],
 	define: define({
 		dev: true,
+		test: true,
 		msw: {
 			delay: false,
 		},

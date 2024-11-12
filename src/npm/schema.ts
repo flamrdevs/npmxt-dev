@@ -14,13 +14,20 @@ export const parsePackageName = createParser(PackageNameSchema);
 export type TPackageMetadataSchema = v.InferOutput<typeof PackageMetadataSchema>;
 export const PackageMetadataSchema = v.object({
 	name: PackageNameSchema,
-	time: v.object({
-		created: v.string(),
+	time: v.looseObject({
+		created: StringSchema,
+		modified: StringSchema,
 	}),
+	versions: v.pipe(
+		v.record(StringSchema, v.any()),
+		v.transform((input) => Object.keys(input))
+	),
+	'dist-tags': v.record(StringSchema, StringSchema),
 });
 export const parsePackageMetadata = createParser(PackageMetadataSchema);
 
-const DependenciesSchema = v.optional(v.record(PackageNameSchema, StringSchema));
+export type TDependenciesSchema = v.InferOutput<typeof DependenciesSchema>;
+export const DependenciesSchema = v.optional(v.record(PackageNameSchema, StringSchema));
 
 export type TPackageSchema = v.InferOutput<typeof PackageSchema>;
 export const PackageSchema = v.object({
@@ -30,12 +37,22 @@ export const PackageSchema = v.object({
 	license: OptionalStringSchema,
 	homepage: OptionalStringSchema,
 	author: v.optional(
+		v.union([
+			StringSchema,
+			v.object({
+				name: StringSchema,
+			}),
+		])
+	),
+	repository: v.optional(
 		v.object({
-			name: StringSchema,
+			type: OptionalStringSchema,
+			url: StringSchema,
 		})
 	),
-	peerDependencies: DependenciesSchema,
 	dependencies: DependenciesSchema,
+	peerDependencies: DependenciesSchema,
+	devDependencies: DependenciesSchema,
 });
 export const parsePackage = createParser(PackageSchema);
 

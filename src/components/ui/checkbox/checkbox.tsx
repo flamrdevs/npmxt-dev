@@ -2,7 +2,9 @@ import { splitProps } from 'solid-js';
 
 import * as K from '@kobalte/core/checkbox';
 
-import { CheckIcon } from 'lucide-solid';
+import { Check } from 'lucide';
+
+import { LucideIcon } from '../../icons';
 
 import { classesSplitter, classesToArray } from '../../utils';
 
@@ -28,7 +30,7 @@ export const Checkbox = (props: Checkbox.Props) => {
 				<K.Input class={`${scope}-input`} />
 				<K.Control class={`${scope}-control`}>
 					<K.Indicator class={`${scope}-indicator`}>
-						<CheckIcon />
+						<LucideIcon i={Check} />
 					</K.Indicator>
 				</K.Control>
 			</ShowInlineFormControlLayout>

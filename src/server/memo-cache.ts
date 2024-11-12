@@ -1,3 +1,5 @@
+const isTypeError = (error: unknown) => error instanceof TypeError;
+
 export const createNonKeyedMemoCache = () => {
 	// in memory cache (serverless functions only)
 	let v: Response | null = null;
@@ -6,7 +8,7 @@ export const createNonKeyedMemoCache = () => {
 			return (v ??= await fx()).clone();
 		} catch (error) {
 			v = null;
-			if (error instanceof TypeError) return await fx();
+			if (isTypeError(error)) return await fn(fx);
 			throw error;
 		}
 	};
@@ -22,7 +24,7 @@ export const createKeyedMemoCache = () => {
 			return (v[key] ??= await fx()).clone();
 		} catch (error) {
 			v[key] = undefined;
-			if (error instanceof TypeError) return await fx();
+			if (isTypeError(error)) return await fn(key, fx);
 			throw error;
 		}
 	};

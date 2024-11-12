@@ -9,8 +9,9 @@ export const createResponseInit = (contentType: string, { maxAge = __DEV__ ? 1 :
 	return {
 		headers: {
 			'Content-Type': contentType,
-			...cacheControl(`public, durable, max-age=${maxAge}, s-maxage=${maxAge}`),
+			...cacheControl(`public, durable, max-age=${maxAge}, s-maxage=${maxAge}, must-revalidate`),
 			'Cross-Origin-Resource-Policy': 'cross-origin',
+			'Content-Security-Policy': '',
 			...headers,
 		},
 	};

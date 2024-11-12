@@ -3,9 +3,11 @@ import { Dynamic } from 'solid-js/web';
 
 import { type ValidationState, mergeDefaultProps } from '@kobalte/utils';
 
-import { XIcon } from 'lucide-solid';
+import { X } from 'lucide';
 
 import { classesSplitter, classesToArray } from '../utils';
+
+import { LucideIcon } from '../icons';
 
 import './utils.css';
 
@@ -112,7 +114,7 @@ export const CloseButton = (props: Solid.NeverChildrenProps<Solid.JSX.IntrinsicE
 	const [classes, others] = splitProps(props, classesSplitter);
 	return (
 		<button class={clsx('xt-close-button', classesToArray(classes))} {...others}>
-			<XIcon />
+			<LucideIcon i={X} />
 		</button>
 	);
 };

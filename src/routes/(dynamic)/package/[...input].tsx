@@ -1,61 +1,98 @@
-import { createAsync, query, useParams } from '@solidjs/router';
-import { ErrorBoundary, Show, Suspense } from 'solid-js';
+import { createAsync, useParams } from '@solidjs/router';
+import { ErrorBoundary, Show, Suspense, createEffect } from 'solid-js';
+
+import { AlertCircle } from 'lucide';
+
+import { NPMPackageDetail } from '~/components/npm/package-detail';
 
 import { RenderStatusMessageError } from '~/components/error';
+import { LucideIcon } from '~/components/icons';
 import * as Meta from '~/components/meta';
 import { Loader } from '~/components/ui';
 
-import type { TPackageSchema } from '~/npm/schema';
-import { fetchPackageAlt } from '~/npm/utils';
+import { PackageContextProvider } from '~/contexts/package-context';
 
-const RenderPackage = (props: { pkg: TPackageSchema }) => {
-	const title = () => `${props.pkg.name} - package`;
-	const description = () => `${props.pkg.name} - package`;
+import { queryPackageAlt } from '~/npm/queries';
 
+const Blobs = () => {
 	return (
 		<>
-			<Meta.Base title={title()} description={description()} />
-			<Meta.OG title={title()} description={description()} img={`package/${props.pkg.name}`} />
+			<div class="absolute inset-x-0 top-64 sm:top-80 -z-10 transform-gpu overflow-hidden blur-3xl" aria-hidden="true">
+				<div
+					class="relative left-[calc(50%-22rem)] w-[40rem] sm:w-[56rem] -translate-x-1/2 bg-gradient-to-tr from-cn-9 to-cp-9 opacity-25 aspect-video"
+					style={{ 'clip-path': 'polygon(86% 92%, 44% 49%, 36% 95%, 5% 65%, 36% 52%, 20% 13%, 63% 43%, 80% 10%, 75% 56%)' }}
+				/>
+			</div>
 
-			<div class="flex items-center justify-center w-dvw h-dvh bg-cn-1 font-bold text-4xl text-cn-12">
-				<h1>
-					{props.pkg.name}@{props.pkg.version}
-				</h1>
+			<div class="absolute inset-x-0 top-1 sm:top-2 -z-10 transform-gpu overflow-hidden blur-3xl" aria-hidden="true">
+				<div
+					class="relative left-[calc(50%+28rem)] w-[40rem] sm:w-[56rem] -translate-x-1/2 bg-gradient-to-tr from-cn-9 to-cp-9 opacity-25 aspect-video"
+					style={{ 'clip-path': 'polygon(50% 83%, 17% 92%, 46% 49%, 15% 45%, 36% 13%, 64% 35%, 50% 66%, 88% 85%, 61% 95%)' }}
+				/>
 			</div>
 		</>
 	);
 };
 
-const getPackage = query((input: string) => fetchPackageAlt(input), 'package-alt');
+export const route = { preload: ({ params }: SolidJS.Router.RoutePreloadFuncArgs) => queryPackageAlt(params.input) };
 
-export const route = { preload: ({ params }: SolidJS.Router.RoutePreloadFuncArgs) => getPackage(params['input']) };
-
-export default function PackageNamePage() {
+export default function Package$InputPage() {
 	const params = useParams();
 
-	const pkg = createAsync(() => getPackage(params['input']));
+	const pkg = createAsync(() => queryPackageAlt(params.input));
+
+	if (__DEV__) {
+		createEffect(() => {
+			console.log({ pkg: pkg() });
+		});
+	}
 
 	return (
-		<ErrorBoundary
-			fallback={(error) => (
-				<RenderStatusMessageError error={error}>
-					{(message) => (
-						<div class="flex items-center justify-center w-dvw h-dvh bg-cn-1 font-medium text-lg text-cn-12">
-							<div>{message}</div>
-						</div>
-					)}
-				</RenderStatusMessageError>
-			)}
-		>
-			<Suspense
-				fallback={
-					<div class="flex items-center justify-center min-h-80 bg-cn-1 text-cn-12">
-						<Loader />
-					</div>
-				}
+		<>
+			<Blobs />
+
+			<ErrorBoundary
+				fallback={(error) => {
+					if (__DEV__) console.error('Package$InputPage', error);
+					return (
+						<RenderStatusMessageError
+							error={error}
+							render={(message) => (
+								<div class="flex items-center justify-center sm:pt-4 md:pt-10 xl:pt-24 sm:pb-3 md:pb-8 xl:pb-16">
+									<div class="relative flex gap-2 md:gap-4 mx-0 sm:mx-5 md:mx-10 px-5 py-4 md:px-8 md:py-6 2xl:px-10 2xl:py-8 w-full max-w-[60rem] min-h-dvh sm:min-h-fit bg-ce-2 border border-transparent md:border-ce-6 rounded-none sm:rounded-3xl shadow">
+										<div class="p-1">
+											<LucideIcon i={AlertCircle} class="text-ce-9" />
+										</div>
+										<div class="font-medium text-base lg:text-lg">{message}</div>
+									</div>
+								</div>
+							)}
+						/>
+					);
+				}}
 			>
-				<Show when={pkg()}>{(pkg) => <RenderPackage pkg={pkg()} />}</Show>
-			</Suspense>
-		</ErrorBoundary>
+				<Suspense
+					fallback={
+						<div class="flex items-center justify-center min-h-[30rem] text-cn-12">
+							<Loader />
+						</div>
+					}
+				>
+					<Show when={pkg()} keyed>
+						{(pkg) => (
+							<>
+								<Meta.Page title={`${pkg.name} - package`} description={`${pkg.description || pkg.name} - package information`} img={`package/${pkg.name}`} />
+
+								<div class="flex items-center justify-center sm:pt-4 md:pt-10 xl:pt-24 sm:pb-3 md:pb-8 xl:pb-16">
+									<PackageContextProvider value={pkg}>
+										<NPMPackageDetail />
+									</PackageContextProvider>
+								</div>
+							</>
+						)}
+					</Show>
+				</Suspense>
+			</ErrorBoundary>
+		</>
 	);
 }
